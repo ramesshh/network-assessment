@@ -1,0 +1,119 @@
+<div class="page-header">
+	<h1>Device Inventory Details</h1>
+</div>
+<form class="form form-inline">
+	<div class="row" style="margin-bottom: 20px;">
+		<div class="col-md-12">
+			<div class="form-group">
+				<div class="input-group">
+					<input
+						type="text" class="form-control" ng-model="q" placeholder="0.0.0.0 - 0.0.0.1"></input> <span
+						class="input-group-btn">
+						<button class="btn btn-default" ng-click="search()">
+							<span class="fa fa-search"></span>
+						</button>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div>
+	<div class="row" style="margin-bottom: 05px;">
+		<div class="col-md-12">
+			<div class="form-group">
+				<div class="input-group">
+					<span ng-show="searchStr"><b>Search Results for : </b>{{searchStr}}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-4">
+					<label>Select Devices : </label> <select class="form-control"
+						style="width: 60%; display: inline;">
+						<option>All Devices (Including Non Cisco)</option>
+						<option>-Routers</option>
+						<option>-Switches</option>
+						<option>-Wifi</option>
+						<option>Cisco Devices</option>
+						<option>-Routers</option>
+						<option>-Switches</option>
+						<option>-Wifi</option>
+					</select>
+				</div>
+				<div class="col-md-4">
+					<label>Group By : </label> <select class="form-control"
+						style="width: 60%; display: inline;">
+						<option>Device Type</option>
+						<option>Family</option>
+						<option>Reachability Status</option>
+					</select>
+				</div>
+			</div>
+			<div class="table-responsive">
+				<table class="table table-striped table-hover" st-table="devices">
+					<thead>
+						<!-- <tr>
+							<th st-sort="discoveryId"><msg key="discoveryId"></msg></th>
+							<th st-sort="ip"><msg key="ip"></msg></th>
+							<th st-sort="reachStatus"><msg key="reachStatus"></msg></th>
+							<th st-sort="reachReason"><msg key="reachReason"></msg></th>
+							<th><msg key="upgrade"></msg></th>
+							</tr> -->
+						<tr>
+							<th>IP Address</th>
+							<th>Platform ID</th>
+							<th>Reachability Status</th>
+							<th>UP Time</th>
+							<th>Mac Address</th>
+							<th>Memory Size</th>
+							<th>Location</th>
+							<th>Family</th>
+							<th>Software Version</th>
+							<th>Qty</th>
+							<th>Action</th>
+						</tr>
+
+					<!-- 	<tr>
+							<th colspan="5"><input st-search="" class="form-control"
+								placeholder="global search ..." type="text" /></th>
+						</tr> -->
+					</thead>
+					<tbody>
+						<tr ng-repeat="device in devices">
+							<td><a ng-href="#/discovery/{{device.id}}">{{device.managementIpAddress}}</a></td>
+							<td>{{device.platformId}}</td>
+							<td>{{device.reachabilityStatus}}</td>
+							<td>{{device.upTime}}</td>
+							<td>{{device.macAddress}}</td>
+							<td>{{device.memorySize}}</td>
+							<td>{{device.locationName}}</td>
+							<td>{{device.family}}</td>
+							<td>{{device.softwareVersion}}</td>
+							<td>{{device.Qty}}</td>
+
+							<td><!-- <span
+								ng-show="device.reachabilityStatus == 'reachabilityStatus0'"> -->
+									<a class="btn btn-sm btn-danger"
+									ng-href='#/discovery/{{device.id}}/replace'> <i
+										class="glyphicon glyphicon-remove-circle"> </i>
+								</a>
+							<!-- </span> --></td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="11" class="text-center">
+								<div st-pagination="" st-items-by-page="itemsByPage"
+									st-displayed-pages="7"></div>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</div>
+</form>
+

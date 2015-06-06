@@ -1,0 +1,28 @@
+body {
+    padding-top: 70px;
+}
+
+.page{
+    min-height: 400px;
+}
+
+footer{
+    margin-top:50px;
+    padding-top:50px;
+}
+
+.toolbar{
+    margin:10px;
+}
+
+.question{
+	border :0px solid darkgray;
+	padding: 10 px;
+	margin-bottom :10px
+}
+
+.answer{
+	border :0px solid lightgray;
+	padding: 5 px;
+	background:linear-gradient(lightgray)
+}
