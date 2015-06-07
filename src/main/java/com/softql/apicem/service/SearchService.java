@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
 
 import com.softql.apicem.model.DeviceDetails;
@@ -57,7 +58,7 @@ public class SearchService {
 						try {
 							DeviceDetails deviceDetails = getDeviceDetails(reachabilityDevice.getId());
 							log.info("Device details {}", deviceDetails);
-							deviceList.add(deviceDetails.getResponse());
+							// deviceList.add(deviceDetails.getResponse());
 						} catch (Exception e) {
 							log.info("Failed to fetch details id {}", reachabilityDevice.getId());
 							e.printStackTrace();
@@ -71,6 +72,16 @@ public class SearchService {
 			e.printStackTrace();
 		}
 
+		return deviceList;
+	}
+
+	public List<DiscoveryDevices> getDevices() {
+		RestTemplate restTemplate = getRestTemplate();
+		List<DiscoveryDevices> deviceList = new ArrayList<DiscoveryDevices>();
+		DeviceDetails deviceDetails = restTemplate.getForObject(
+				"https://sandboxapic.cisco.com/api/v0/network-device/1/10000000", DeviceDetails.class);
+		List<DiscoveryDevices> arrayToList = CollectionUtils.arrayToList(deviceDetails.getResponse());
+		deviceList.addAll(arrayToList);
 		return deviceList;
 	}
 
@@ -137,7 +148,7 @@ public class SearchService {
 
 	public List<DiscoveryDevices> replaceDevices(String deviceId) {
 		List<DiscoveryDevices> deviceDetails = new ArrayList<DiscoveryDevices>();
-		deviceDetails.add(getDeviceDetails(deviceId).getResponse());
+		// deviceDetails.add(getDeviceDetails(deviceId).getResponse());
 		return deviceDetails;
 	}
 

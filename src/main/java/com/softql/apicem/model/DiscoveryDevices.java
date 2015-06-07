@@ -63,13 +63,13 @@ public class DiscoveryDevices implements Serializable {
 
 	private String locationName;
 
-	private String qty;
+	private int qty = 1;
 
-	public String getQty() {
+	public int getQty() {
 		return qty;
 	}
 
-	public void setQty(String qty) {
+	public void setQty(int qty) {
 		this.qty = qty;
 	}
 

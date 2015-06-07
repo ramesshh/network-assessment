@@ -39,7 +39,7 @@
                         {templateUrl: 'partials/user/password.html'})
                 .when('/user/profile',
                         {templateUrl: 'partials/user/profile.html'})
-                 .when('/discovery/:id/replace',
+                 .when('/discovery/:platformId/replace',
                         {controller: 'ReplaceCtrl',
                 		 templateUrl: 'partials/em/replace.html'})       
                 .when('/discovery/:id/questionare',

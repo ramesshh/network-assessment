@@ -16,6 +16,37 @@
         };
         this.setLanguage('en');
     });
+    
+    as.service('DeviceData', function () {
+    	var savedData = {};
+    	var replaceDevices = {};
+    	var platofrmId;
+    	 
+    	function setDeviceData(deviceData) {
+    	   savedData = deviceData;
+    	 }
+    	 function getDeviceData() {
+    	  return savedData;
+    	 }
+    	 
+    	 function setPlatformId(platformId) {
+    		 platofrmId = platformId;
+      	 }
+      	 function getDeviceData() {
+      	  return savedData;
+      	 }
+      	 
+      	 function getPlatformId() {
+         	  return platofrmId;
+         	 }
+
+    	 return {
+    	  setDeviceData: setDeviceData,
+    	  getDeviceData: getDeviceData,
+    	  setPlatformId: setPlatformId,
+    	  getPlatformId: getPlatformId
+    	 }
+    });
 
     as.directive('msg', function () {
         return {

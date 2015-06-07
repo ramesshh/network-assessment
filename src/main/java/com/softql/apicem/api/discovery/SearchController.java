@@ -1,6 +1,9 @@
 package com.softql.apicem.api.discovery;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -9,7 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,13 +51,37 @@ public class SearchController {
 
 		}
 
-		List<DiscoveryDevices> discoveryDevices = searchService.searchDevicesByIP(from, to);
+		List<DiscoveryDevices> discoveryDevices = searchService.getDevices();
 
 		if (log.isDebugEnabled()) {
 			log.debug("get posts size @" + discoveryDevices.size());
 		}
 
 		return new ResponseEntity<>(discoveryDevices, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "{groupType}/groupby", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<Collection<DiscoveryDevices>> groupByData(@PathVariable("groupType") String groupType,
+			@RequestBody final List<DiscoveryDevices> deviceList) {
+
+		Map<String, DiscoveryDevices> deviceMap = new HashMap<String, DiscoveryDevices>();
+
+		if (!CollectionUtils.isEmpty(deviceList)) {
+			for (DiscoveryDevices device : deviceList) {
+
+				String platformId = device.getPlatformId();
+				if (deviceMap.containsKey(platformId)) {
+					DiscoveryDevices discoveryDevice = deviceMap.get(platformId);
+					int qty = discoveryDevice.getQty() + 1;
+					discoveryDevice.setQty(qty);
+					deviceMap.put(platformId, discoveryDevice);
+				} else {
+					deviceMap.put(platformId, device);
+				}
+			}
+		}
+		return new ResponseEntity<>(deviceMap.values(), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}/questionare", method = RequestMethod.GET)
@@ -69,21 +98,5 @@ public class SearchController {
 		}
 
 		return new ResponseEntity<>(deviceQuestionare, HttpStatus.OK);
-	}
-
-	@RequestMapping(value = "/{id}/replace", method = RequestMethod.GET)
-	@ResponseBody
-	public ResponseEntity<List<DiscoveryDevices>> replaceDevices(@PathVariable("id") String deviceId) {
-		if (log.isDebugEnabled()) {
-			log.debug("get all posts of q@" + deviceId);
-		}
-
-		List<DiscoveryDevices> discoveryDevices = searchService.replaceDevices(deviceId);
-
-		if (log.isDebugEnabled()) {
-			log.debug("get posts size @" + discoveryDevices);
-		}
-
-		return new ResponseEntity<>(discoveryDevices, HttpStatus.OK);
 	}
 }

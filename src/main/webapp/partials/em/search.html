@@ -2,31 +2,6 @@
 	<h1>Device Inventory Details</h1>
 </div>
 <form class="form form-inline">
-	<div class="row" style="margin-bottom: 20px;">
-		<div class="col-md-12">
-			<div class="form-group">
-				<div class="input-group">
-					<input
-						type="text" class="form-control" ng-model="q" placeholder="0.0.0.0 - 0.0.0.1"></input> <span
-						class="input-group-btn">
-						<button class="btn btn-default" ng-click="search()">
-							<span class="fa fa-search"></span>
-						</button>
-					</span>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div>
-	<div class="row" style="margin-bottom: 05px;">
-		<div class="col-md-12">
-			<div class="form-group">
-				<div class="input-group">
-					<span ng-show="searchStr"><b>Search Results for : </b>{{searchStr}}</span>
-				</div>
-			</div>
-		</div>
-	</div>
 	<div class="row">
 		<div class="col-md-12">
 			<div class="row">
@@ -63,16 +38,11 @@
 							<th><msg key="upgrade"></msg></th>
 							</tr> -->
 						<tr>
-							<th>IP Address</th>
 							<th>Platform ID</th>
-							<th>Reachability Status</th>
-							<th>UP Time</th>
-							<th>Mac Address</th>
-							<th>Memory Size</th>
-							<th>Location</th>
-							<th>Family</th>
-							<th>Software Version</th>
+							<th>Description</th>
 							<th>Qty</th>
+							<th>Software Version</th>
+							<th>Location</th>
 							<th>Action</th>
 						</tr>
 
@@ -83,21 +53,16 @@
 					</thead>
 					<tbody>
 						<tr ng-repeat="device in devices">
-							<td><a ng-href="#/discovery/{{device.id}}">{{device.managementIpAddress}}</a></td>
 							<td>{{device.platformId}}</td>
-							<td>{{device.reachabilityStatus}}</td>
-							<td>{{device.upTime}}</td>
-							<td>{{device.macAddress}}</td>
-							<td>{{device.memorySize}}</td>
-							<td>{{device.locationName}}</td>
-							<td>{{device.family}}</td>
+							<td>{{device.description}}</td>
+							<td>{{device.qty}}</td>
 							<td>{{device.softwareVersion}}</td>
-							<td>{{device.Qty}}</td>
+							<td>{{device.locationName}}</td>
 
 							<td><!-- <span
 								ng-show="device.reachabilityStatus == 'reachabilityStatus0'"> -->
 									<a class="btn btn-sm btn-danger"
-									ng-href='#/discovery/{{device.id}}/replace'> <i
+									ng-href='#/discovery/{{device.platformId}}/replace'> <i
 										class="glyphicon glyphicon-remove-circle"> </i>
 								</a>
 							<!-- </span> --></td>
@@ -105,7 +70,7 @@
 					</tbody>
 					<tfoot>
 						<tr>
-							<td colspan="11" class="text-center">
+							<td colspan="7" class="text-center">
 								<div st-pagination="" st-items-by-page="itemsByPage"
 									st-displayed-pages="7"></div>
 							</td>
