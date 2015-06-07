@@ -264,28 +264,53 @@
 
     });
     
-    as.controller('SearchController', function ($scope, $http, i18n,$location) {
-        $scope.itemsByPage=5;
-        $scope.q='';
-        $scope.search = function () {
+    as.controller('SearchController', function ($scope, $http, i18n,$location,DeviceData) {
+    		$scope.itemsByPage=5;
+    		$scope.originalData ='';
+    		var groupType ='platformId';
         	 var actionUrl = 'api/discovery/search';
-        	 $http.get(actionUrl+"?q="+$scope.q).success(function (data) {
-             	  console.log("Data is "+data);
-                   $scope.devices = data;
-                   $scope.searchStr=$scope.q;
-                   $scope.q='';
-               });
-        	  
-        };
+	         load = function () {
+	        		 $http.get(actionUrl+"?q="+$scope.q).success(function (data) {
+	             	  console.log("Data is "+data);
+	             	   $scope.originalData = data;
+	             	   DeviceData.setDeviceData(data);
+	                   $scope.devices = groupByData(data,groupType);
+	               });
+        	 }
+        	 load();
+        	 
+        	 groupByData=function(data,groupBy){
+          	   var groupByUrl = 'api/discovery/'+groupBy+'/groupby';
+        	   $http.post(groupByUrl,data).success(function (response) {
+        		   $scope.devices = response;
+        		   
+        	   });
+           }
+        	
+        	
+        	/*
+			 * $scope.goToReplace = function(platformId){ var replaceUrl =
+			 * 'api/discovery/'+platformId+'/replace';
+			 * $http.post(replaceUrl,$scope.originalData).success(function
+			 * (response) { $scope.replaceDevices = response;
+			 * DeviceData.set(response);
+			 * $location.path('/discovery/'+platformId+'/replace'); }); }
+			 */
+
     });
     
-    as.controller('ReplaceCtrl', function ($scope, $http, $routeParams, i18n, $location) {
-    	$scope.deviceId=$routeParams.id;
-    	var actionUrl = 'api/discovery/'+$routeParams.id+'/replace';
-    		$http.get(actionUrl).success(function (data) {
-            	  console.log("Data is "+data);
-            	  $scope.devices = data;
-              });
+    as.controller('ReplaceCtrl', function ($scope, $http, $routeParams, i18n, $location,DeviceData) {
+    		$scope.platformId=$routeParams.platformId;
+    		var actionUrl = 'api/discovery/'+$routeParams.platformId+'/replace';
+    		var fullData = DeviceData.getDeviceData();
+    		DeviceData.setPlatformId($routeParams.platformId);
+    		var replaceItemData = [];
+    		angular.forEach(fullData, function(device) {
+    		  if(device.platformId ==$scope.platformId){
+    			  replaceItemData.push(device);
+    		  }
+    		}, replaceItemData);
+    		$scope.devices = replaceItemData;
     });
     
     as.controller('QuestionCtrl', function ($scope, $http, $routeParams, i18n, $location) {
