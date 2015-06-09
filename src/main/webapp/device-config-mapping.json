@@ -1,0 +1,49 @@
+{
+    "deviceConfigMapping": [
+        {
+            "deviceType": "Router",
+            "family": "ISR-4400",
+            "products": [
+                {
+                    "productId": "NIM-2FXO"
+                },
+                {
+                    "productId": "NIM-4FXO"
+                },
+                {
+                    "productId": "NIM-2FXS"
+                }
+            ]
+        },
+        {
+            "deviceType": "Router",
+            "family": "ISR-4341",
+            "products": [
+                {
+                    "productId": "NIM-2BRI-NT/TE"
+                },
+                {
+                    "productId": "NIM-2BRI-NT/TE"
+                },
+                {
+                    "productId": "NIM-4BRI-NT/TE"
+                }
+            ]
+        },
+        {
+            "deviceType": "Router",
+            "family": "ASR1004",
+            "products": [
+                {
+                    "productId": "NIM-2BRI-NT/TE"
+                },
+                {
+                    "productId": "NIM-2BRI-NT/TE"
+                },
+                {
+                    "productId": "NIM-4BRI-NT/TE"
+                }
+            ]
+        }
+    ]
+}

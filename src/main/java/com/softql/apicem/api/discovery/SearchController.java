@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.softql.apicem.Constants;
-import com.softql.apicem.model.DeviceQuestionare;
 import com.softql.apicem.model.DiscoveryDevices;
 import com.softql.apicem.service.SearchService;
 
@@ -84,19 +83,4 @@ public class SearchController {
 		return new ResponseEntity<>(deviceMap.values(), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/{id}/questionare", method = RequestMethod.GET)
-	@ResponseBody
-	public ResponseEntity<DeviceQuestionare> getQuestionare(@PathVariable("id") String discoveryId) {
-		if (log.isDebugEnabled()) {
-			log.debug("get all posts of q@" + discoveryId);
-		}
-
-		DeviceQuestionare deviceQuestionare = searchService.getQuestionare(discoveryId);
-
-		if (log.isDebugEnabled()) {
-			log.debug("get posts size @" + deviceQuestionare);
-		}
-
-		return new ResponseEntity<>(deviceQuestionare, HttpStatus.OK);
-	}
 }

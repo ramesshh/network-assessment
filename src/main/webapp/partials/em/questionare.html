@@ -1,30 +1,181 @@
-<div class="page-header">
+ <div class="page-header">
 	<h1>Quiz for : {{deviceId}}</h1>
 </div>
-<script type="text/ng-template" id="quiz.html">
-					<div class="question">
-						<span>{{question.questionNumber}}</span> &nbsp;.&nbsp;
-						<span>{{question.question}}</span> 
-								<div class="radio answer">
-								 <label ng-repeat="option in question.options">
-								&nbsp;.&nbsp;&nbsp;.&nbsp;<input type="radio" name="{{option}}" value="{{option}}" >{{option}} </input> &nbsp;&nbsp;&nbsp;
-								</label>
-								
-					</div>
-				</div>
-				</script>
-<div ng-repeat="question in questionare" ng-include="'quiz.html'"></div>
-<br\>
-<br\>
-
-<form class="form form-inline">
-	<div class="row" style="margin-bottom: 05px;">
-		<div class="col-md-12">
-			<div class="form-group">
-				<div class="input-group">
-					<button type="button" class="btn btn-success" ng-click="quizSubmit()">Submit</button>
-				</div>
-			</div>
-		</div>
-	</div>
-</form>
+ {{replacableProducts}}
+ <div id="page-wrapper">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Questionaire Form
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div>
+                            	<table width="100%" class="table table1">
+                                  <tr>
+                                    <th>Do you need Redundant power supply ?</th>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                        <label>
+                                          <input type="checkbox" name="CheckboxGroup1" value="checkbox" id="CheckboxGroup1_0" />
+                                          Yes</label>
+                                        <br />
+                                        <label>
+                                          <input type="checkbox" name="CheckboxGroup1_" value="checkbox" id="CheckboxGroup1_1" />
+                                          No</label>
+                                           <br />
+                                          <label>
+                                          <input type="checkbox" name="CheckboxGroup1_" value="checkbox" id="CheckboxGroup1_1" />
+                                          N/A</label>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td><hr /></td>
+                                  </tr>
+                                  <tr>
+                                    
+                                    <th>Do you need integrated switch?</th>
+                                  </tr>
+                                  <tr>
+                                    
+                                    <td>
+                                        <label>
+                                          <input type="checkbox" name="CheckboxGroup2" value="checkbox" id="CheckboxGroup2_0" />
+                                          24</label>
+                                        <br />
+                                        <label>
+                                          <input type="checkbox" name="CheckboxGroup2" value="checkbox" id="CheckboxGroup2_1" />
+                                          48</label>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td><hr /></td>
+                                  </tr>
+                                  <tr>
+                                    
+                                    <th>Do you need host applications?</th>
+                                  </tr>
+                                  <tr>
+                                    
+                                    <td>
+                                        <label>
+                                          <input type="radio" name="CheckboxGroup3" value="radio" id="CheckboxGroup3_0" />
+                                          Yes</label>
+                                        <br />
+                                        <label>
+                                          <input type="radio" name="CheckboxGroup3" value="radio" id="CheckboxGroup3_1" />
+                                          No</label>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td><hr /></td>
+                                  </tr>
+                                  <tr>
+                                    
+                                    <th>Do you need to Secure WAN ?</th>
+                                  </tr>
+                                  <tr>
+                                    
+                                    <td>
+                                        <label>
+                                          <input type="checkbox" name="CheckboxGroup4" value="checkbox" id="CheckboxGroup4_0" />
+                                          Yes</label>
+                                        <br />
+                                        <label>
+                                          <input type="checkbox" name="CheckboxGroup4" value="checkbox" id="CheckboxGroup4_1" />
+                                          No</label>                                        
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td><hr /></td>
+                                  </tr>
+                                  <tr>
+                                    
+                                    <th>Are you planning to deploy intellignet WAN solutions?</th>
+                                  </tr>
+                                  <tr>
+                                    
+                                    <td>
+                                        <label>
+                                          <input type="checkbox" name="CheckboxGroup5" value="checkbox" id="CheckboxGroup5_0" />
+                                          Yes</label>
+                                        <br />
+                                        <label>
+                                          <input type="checkbox" name="CheckboxGroup5" value="checkbox" id="CheckboxGroup5_1" />
+                                          No</label>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td><hr /></td>
+                                  </tr>
+                                  <tr>
+                                    
+                                    <th>Are you going to enable Cisco Unified Communications Solutions?</th>
+                                  </tr>
+                                  <tr>
+                                   
+                                    <td>
+                                        <label>
+                                          <input type="checkbox" name="CheckboxGroup6" value="checkbox" id="CheckboxGroup6_0" />
+                                          Yes</label>
+                                        <br />
+                                        <label>
+                                          <input type="checkbox" name="CheckboxGroup6" value="checkbox" id="CheckboxGroup6_1" />
+                                          No</label>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td><hr /></td>
+                                  </tr>
+                                  <tr>
+                                    <td align="center"><a href="recommended-product.html"><button class="btn btn-primary btn-lg">Submit</button></a></td>
+                                  </tr>
+                                </table>
+                                
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                
+                <div class="col-md-9">
+                	<div class="panel panel-default">
+                        <div class="panel-heading">
+                            Recommended Products
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                           <div class="table-responsive">
+                                <table class="table table1">
+                                    <tbody>
+									<div ng-repeat="product in replacableProducts" >
+                                        <tr>
+                                            <td width="27%" rowspan="3"><img src="cisco-switch.jpg" alt="" /></td>
+                                            <td width="61%">{{product.productId}}</td>
+                                            <td width="12%" colspan="3">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                          <td>{{product.description}}</td>
+                                          <td colspan="3" align="center" valign="middle"><strong>Price :</strong> ${{product.price}}</td>
+                                        </tr>
+                                        <tr>
+                                          <td><a href="#">Data sheet Link</a></td>
+                                          <td colspan="3" align="center" valign="middle"><button class="btn btn-primary">Replace</button></td>
+                                        </tr>
+                                        
+                                        <tr><td colspan="3"><hr/></td></tr>
+                                        </div>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                </div>
+               
+            </div>
+            
+        </div>

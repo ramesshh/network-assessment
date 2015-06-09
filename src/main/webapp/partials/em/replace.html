@@ -1,5 +1,9 @@
 <div class="page-header">
 	<h1>Replaceable Device For : {{platformId}}</h1>
+	<select class="form-control" style="width: 15%; display: inline;" ng-model="family">
+		<option value="ISR-4400" selected="selected">ISR 4400</option>
+		<option value="ISR-4331">ISR 4331-VSEC</option>
+	</select>
 </div>
 <form>
 	<div class="row">
@@ -16,15 +20,10 @@
 							</tr> -->
 						<tr>
 							<th><input type="checkbox" name="" />&nbsp;All</th>
-							<th>IP Address</th>
 							<th>Platform ID</th>
-							<th>Reachability Status</th>
-							<th>UP Time</th>
-							<th>Mac Address</th>
-							<th>Memory Size</th>
+							<th>Description</th>
 							<th>Location</th>
 							<th>Family</th>
-							<th>Software Version</th>
 						</tr>
 
 						<!-- 	<tr>
@@ -35,18 +34,14 @@
 					<tbody>
 						<tr ng-repeat="device in devices">
 							<td><input type="checkbox" name="" /></td>
-							<td>{{device.managementIpAddress}}</td>
 							<td>{{device.platformId}}</td>
-							<td>{{device.reachabilityStatus}}</td>
-							<td>{{device.upTime}}</td>
-							<td>{{device.macAddress}}</td>
-							<td>{{device.memorySize}}</td>
+							<td>{{device.description}}</td>
 							<td>{{device.locationName}}</td>
 							<td>{{device.family}}</td>
-							<td>{{device.softwareVersion}}</td>
 						</tr>
 						<tr class="gradeU">
-							<td colspan="11" align="center"><a ng-href='#/discovery/{{deviceId}}/questionare'><button
+							<td colspan="11" align="center"><a
+								ng-href='#/discovery/{{platformId}}/questionare/{{family}}'><button
 										class="btn btn-primary btn-lg">Replace</button></a></td>
 						</tr>
 					</tbody>

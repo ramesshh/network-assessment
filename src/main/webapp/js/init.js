@@ -42,7 +42,7 @@
                  .when('/discovery/:platformId/replace',
                         {controller: 'ReplaceCtrl',
                 		 templateUrl: 'partials/em/replace.html'})       
-                .when('/discovery/:id/questionare',
+                .when('/discovery/:platformId/questionare/:family',
                         {controller: 'QuestionCtrl',
                 		 templateUrl: 'partials/em/questionare.html'})
                 .when('/discovery',
