@@ -317,6 +317,9 @@
     	$scope.platformId=$routeParams.platformId;
     	$scope.family=$routeParams.family;
     	
+    	
+    	load=function(){
+    	
     	$scope.deviceFamily=[];
     	$scope.deviceConfig=[];
     	$scope.productCatalog=[];
@@ -335,7 +338,7 @@
 	  				if(device.family ==config.family){
 	  					angular.forEach(config.products, function(prod) {
 		  					angular.forEach($scope.productCatalog, function(prodCatalog) {
-		  						if(prodCatalog.productId=prod.productId){
+		  						if(prodCatalog.productId==prod.productId){
 		  							$scope.replacableProducts.push(prodCatalog);
 		  						}
 		  					});
@@ -348,7 +351,10 @@
 		});
     	});
     	
-    	console.log("Products::"+$scope.replacableProducts)
+    	console.log("Products::"+$scope.replacableProducts);
+    	}
+    	
+    	load();
     });
     
     as.controller('ProductCtrl', function ($scope, $http, $routeParams, i18n, $location) {

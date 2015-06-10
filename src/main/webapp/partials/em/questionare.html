@@ -151,9 +151,13 @@
                            <div class="table-responsive">
                                 <table class="table table1">
                                     <tbody>
-									<div ng-repeat="product in replacableProducts" >
+									<div ng-repeat="product in replacableProducts">
+									Hello123  {{product}} 123
+									<tr><td>
+									product id : {{product.productId}}
+									</td></tr>
                                         <tr>
-                                            <td width="27%" rowspan="3"><img src="cisco-switch.jpg" alt="" /></td>
+                                            <td width="27%" rowspan="3"></td>
                                             <td width="61%">{{product.productId}}</td>
                                             <td width="12%" colspan="3">&nbsp;</td>
                                         </tr>
