@@ -1,0 +1,28 @@
+{  
+   "deviceFamilyMapping":[  
+      {  
+         "deviceType":"Router",
+         "family":"ISR-4400",
+         "replacableFamily":[  
+            "ISR-4400",
+            "ISR-4341"
+         ]
+      },
+      {  
+         "deviceType":"Router",
+         "family":"ASR1003",
+         "replacableFamily":[  
+            "ASR1003",
+            "ASR1004"
+         ]
+      },
+      {  
+         "deviceType":"Router",
+         "family":"ASR1004",
+         "replacableFamily":[  
+            "ASR1004",
+            "CISCO123"
+         ]
+      }
+   ]
+}

@@ -314,13 +314,47 @@
     });
     
     as.controller('QuestionCtrl', function ($scope, $http, $routeParams, i18n, $location) {
-    	$scope.deviceId=$routeParams.id;
-    	var actionUrl = 'api/discovery/'+$routeParams.id+'/questionare';
-    		$http.get(actionUrl).success(function (data) {
-            	  console.log("Data is "+data);
-            	  $scope.type =data.discoveryType;
-            	  $scope.questionare = data.questionare;
-              });
+    	$scope.platformId=$routeParams.platformId;
+    	$scope.family=$routeParams.family;
+    	
+    	
+    	load=function(){
+    	
+    	$scope.deviceFamily=[];
+    	$scope.deviceConfig=[];
+    	$scope.productCatalog=[];
+    	
+    	$scope.replacableProducts=[];
+    	
+    	$http.get('device-family-mapping.json').success(function(data) {
+    		$scope.deviceFamily = data.deviceFamilyMapping;
+		$http.get('device-config-mapping.json').success(function(data){ 
+			$scope.deviceConfig = data.deviceConfigMapping;
+		$http.get('product-catalog.json').success(function(data){ 
+			$scope.productCatalog= data.products;
+	    	angular.forEach($scope.deviceFamily, function(device) {
+	  		  if(device.family ==$scope.family){
+	  			angular.forEach($scope.deviceConfig, function(config) {
+	  				if(device.family ==config.family){
+	  					angular.forEach(config.products, function(prod) {
+		  					angular.forEach($scope.productCatalog, function(prodCatalog) {
+		  						if(prodCatalog.productId==prod.productId){
+		  							$scope.replacableProducts.push(prodCatalog);
+		  						}
+		  					});
+	  					});
+	  				}
+	  			});
+	  		  }
+	  		});
+			});
+		});
+    	});
+    	
+    	console.log("Products::"+$scope.replacableProducts);
+    	}
+    	
+    	load();
     });
     
     as.controller('ProductCtrl', function ($scope, $http, $routeParams, i18n, $location) {
