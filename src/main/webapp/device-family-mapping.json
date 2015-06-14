@@ -10,10 +10,10 @@
       },
       {  
          "deviceType":"Router",
-         "family":"ASR1003",
+         "family":"ASR1002",
          "replacableFamily":[  
-            "ASR1003",
-            "ASR1004"
+            "ASR1002",
+            "ISR-4400"
          ]
       },
       {  

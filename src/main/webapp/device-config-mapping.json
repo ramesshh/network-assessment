@@ -2,7 +2,7 @@
     "deviceConfigMapping": [
         {
             "deviceType": "Router",
-            "family": "ISR-4400",
+            "family": "ASR1002",
             "products": [
                 {
                     "productId": "NIM-2FXO"
@@ -32,7 +32,7 @@
         },
         {
             "deviceType": "Router",
-            "family": "ASR1004",
+            "family": "ISR-4400",
             "products": [
                 {
                     "productId": "NIM-2BRI-NT/TE"

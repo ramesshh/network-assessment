@@ -48,7 +48,6 @@
 	as.controller('SearchController', function($scope, $http, i18n, $location, DeviceData) {
 		$scope.currentDate = Date.now();
 		DeviceData.setCurrentDate($scope.currentDate);
-		$scope.itemsByPage = 5;
 		$scope.originalData = '';
 		$scope.deviceCategory = 'all';
 		$scope.groupBy = 'groupBy_deviceType';
@@ -99,32 +98,72 @@
 		}
 	});
 
-	as.controller('ReplaceCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData) {
-		$scope.selectedPlatform=$routeParams.platformId;
+	as.controller('ReplaceCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData, $filter) {
 		$scope.platformId = $routeParams.platformId;
-		$scope.allDevices= DeviceData.getDeviceData();
+		$scope.allDevices = DeviceData.getDeviceData();
+		$scope.selectedCount = 0;
 		DeviceData.setPlatformId($routeParams.platformId);
-		var replaceItemData = [];
-		angular.forEach($scope.allDevices, function(device) {
-			if (device.platformId == $scope.platformId) {
-				replaceItemData.push(device);
+		load = function() {
+			var replaceItemData = [];
+			angular.forEach($scope.allDevices, function(device) {
+				if (device.platformId == $scope.platformId) {
+					replaceItemData.push(device);
+				}
+			}, replaceItemData);
+			$scope.devices = replaceItemData;
+		}
+
+		load();
+
+		$scope.platformIdChange = function() {
+			load();
+			$scope.selectedAll = false;
+			angular.forEach($scope.devices, function(item) {
+				item.selected = false;
+			});
+			$scope.selectedCount = 0;
+		}
+
+		$scope.checkAll = function() {
+			if ($scope.selectedAll) {
+				$scope.selectedAll = true;
+			} else {
+				$scope.selectedAll = false;
+				$scope.selectedCount = 0;
 			}
-		}, replaceItemData);
-		$scope.devices = replaceItemData;
+			angular.forEach($scope.devices, function(item) {
+				item.selected = $scope.selectedAll;
+				$scope.selectedCount = $scope.selectedCount + 1;
+			});
+		};
+
+		$scope.checkDevice = function(device) {
+			if (device.selected == false) {
+				$scope.selectedAll = false;
+				$scope.selectedCount = $scope.selectedCount - 1;
+			} else {
+				$scope.selectedCount = $scope.selectedCount + 1;
+			}
+		}
+		
+		$scope.replaceDevices= function(){
+			if($scope.selectedCount ==0){
+				alert("Please select atleast one device to replace");
+			}else{
+				$location.url('/discovery/'+$scope.platformId+'/questionare/'+$scope.selectedCount);
+			}
+		}
+
 	});
 
 	as.controller('QuestionCtrl', function($scope, $http, $routeParams, i18n, $location) {
 		$scope.platformId = $routeParams.platformId;
-		$scope.family = $routeParams.family;
 
 		load = function() {
-
 			$scope.deviceFamily = [];
 			$scope.deviceConfig = [];
 			$scope.productCatalog = [];
-
 			$scope.replacableProducts = [];
-
 			$http.get('device-family-mapping.json').success(function(data) {
 				$scope.deviceFamily = data.deviceFamilyMapping;
 				$http.get('device-config-mapping.json').success(function(data) {
@@ -132,7 +171,7 @@
 					$http.get('product-catalog.json').success(function(data) {
 						$scope.productCatalog = data.products;
 						angular.forEach($scope.deviceFamily, function(device) {
-							if (device.family == $scope.family) {
+							if (device.family == $scope.platformId) {
 								angular.forEach($scope.deviceConfig, function(config) {
 									if (device.family == config.family) {
 										angular.forEach(config.products, function(prod) {
@@ -149,7 +188,6 @@
 					});
 				});
 			});
-
 			console.log("Products::" + $scope.replacableProducts);
 		}
 
