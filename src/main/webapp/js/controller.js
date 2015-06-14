@@ -45,6 +45,48 @@
 		};
 	});
 
+	as.controller('ApicEMLoginController', function($scope, $rootScope, $http, base64, $location, DeviceData) {
+
+		$scope.selectedApicem = '';
+		$scope.apicUsername='';
+		$scope.apicPassword='';
+		$scope.version='';
+		
+
+		$scope.allApicEms = [];
+		$http.get('apic-ems.json').success(function(data) {
+			$scope.allApicEms = data.apicems;
+			$scope.selectedApicem = $scope.allApicEms[0].apicemIp;
+		});
+		$scope.apicemLogin = function() {
+
+			DeviceData.setSelectedApicEm($scope.selectedApicem);
+			angular.forEach($scope.allApicEms, function(apicEm) {
+				if (apicEm.apicemIp == $scope.selectedApicem) {
+					DeviceData.setApicemVersion(apicEm.version);
+					$scope.version=apicEm.version;
+				}
+			});
+
+			var actionURL = "api/token";
+			var data = {
+				"username" : $scope.apicUsername,
+				"password" : $scope.apicPassword,
+				"apicemIP" : $scope.selectedApicem,
+				"version" : $scope.version
+			};
+			
+			$http.post(actionURL,data).success(function(data) {
+				console.log("Success Data is " + data);
+				DeviceData.setToken(data);
+				$location.url("/discovery");
+			}).error(function(data) {
+				console.log("Failure data Data is " + data);
+			});
+
+		};
+	});
+
 	as.controller('SearchController', function($scope, $http, i18n, $location, DeviceData) {
 		$scope.currentDate = Date.now();
 		DeviceData.setCurrentDate($scope.currentDate);
@@ -145,12 +187,12 @@
 				$scope.selectedCount = $scope.selectedCount + 1;
 			}
 		}
-		
-		$scope.replaceDevices= function(){
-			if($scope.selectedCount ==0){
+
+		$scope.replaceDevices = function() {
+			if ($scope.selectedCount == 0) {
 				alert("Please select atleast one device to replace");
-			}else{
-				$location.url('/discovery/'+$scope.platformId+'/questionare/'+$scope.selectedCount);
+			} else {
+				$location.url('/discovery/' + $scope.platformId + '/questionare/' + $scope.selectedCount);
 			}
 		}
 

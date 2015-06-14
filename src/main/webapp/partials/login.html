@@ -12,10 +12,10 @@
                         <form role="form" class="form form-horizontal" ng-submit="login()">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="CCO User ID" name="email" type="text" ng-model="username" autofocus>
+                                    <input class="form-control" placeholder="CCO User ID" name="email" type="text" ng-model="username" autofocus required="required">
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" ng-model="password" placeholder="CCO Password" name="password" type="password" value="">
+                                    <input class="form-control" ng-model="password" placeholder="CCO Password" name="password" type="password" value="" required="required">
                                 </div>
                                 <button type="submit" ng-click="login()" class="btn btn-lg btn-success btn-block">
 								<msg key="login"></msg>

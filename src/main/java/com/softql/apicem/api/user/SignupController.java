@@ -5,12 +5,6 @@
  */
 package com.softql.apicem.api.user;
 
-import com.softql.apicem.Constants;
-import com.softql.apicem.exception.InvalidRequestException;
-import com.softql.apicem.model.SignupForm;
-import com.softql.apicem.model.UserDetails;
-import com.softql.apicem.service.UserService;
-
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -28,6 +22,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.softql.apicem.Constants;
+import com.softql.apicem.exception.InvalidRequestException;
+import com.softql.apicem.model.ApicEmLoginForm;
+import com.softql.apicem.model.SignupForm;
+import com.softql.apicem.model.UserDetails;
+import com.softql.apicem.service.ApicEmService;
+import com.softql.apicem.service.UserService;
+import com.softql.apicem.util.ServiceURLS;
+import com.softql.apicem.util.URLUtil;
+
 /**
  *
  * @author Ramesh
@@ -36,35 +40,48 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RestController
 public class SignupController {
 
-    private static final Logger log = LoggerFactory.getLogger(SignupController.class);
+	private static final Logger log = LoggerFactory.getLogger(SignupController.class);
 
-    @Inject
-    private UserService userService;
+	@Inject
+	private UserService userService;
 
-    @RequestMapping(value = {"/signup"}, method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<Void> signup(
-        @RequestBody @Valid SignupForm form,
-        BindingResult errors,
-        HttpServletRequest req) {
-        if (log.isDebugEnabled()) {
-            log.debug("signup data@" + form);
-        }
+	@Inject
+	private ApicEmService apicEmService;
 
-        if (errors.hasErrors()) {
-            throw new InvalidRequestException(errors);
-        }
+	@RequestMapping(value = { "/signup" }, method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<Void> signup(@RequestBody @Valid SignupForm form, BindingResult errors, HttpServletRequest req) {
+		if (log.isDebugEnabled()) {
+			log.debug("signup data@" + form);
+		}
 
-        UserDetails saved = userService.registerUser(form);
+		if (errors.hasErrors()) {
+			throw new InvalidRequestException(errors);
+		}
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(
-            ServletUriComponentsBuilder
-            .fromContextPath(req)
-            .path(Constants.URI_API_PUBLIC + Constants.URI_USERS + "/{id}")
-            .buildAndExpand(saved.getId()).toUri()
-        );
+		UserDetails saved = userService.registerUser(form);
 
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
-    }
+		HttpHeaders headers = new HttpHeaders();
+		headers.setLocation(ServletUriComponentsBuilder.fromContextPath(req)
+				.path(Constants.URI_API_PUBLIC + Constants.URI_USERS + "/{id}").buildAndExpand(saved.getId()).toUri());
+
+		return new ResponseEntity<>(headers, HttpStatus.CREATED);
+	}
+
+	@RequestMapping(value = { "/token" }, method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<String> getToken(@RequestBody ApicEmLoginForm form, BindingResult errors,
+			HttpServletRequest req) {
+		if (log.isDebugEnabled()) {
+			log.debug("signup data@" + form);
+		}
+
+		if (errors.hasErrors()) {
+			throw new InvalidRequestException(errors);
+		}
+
+		String url = URLUtil.constructUrl(form.getApicemIP(), null, form.getVersion(), ServiceURLS.TICKET.value());
+		String token = apicEmService.getToken(form, url);
+		return new ResponseEntity<>(token, HttpStatus.CREATED);
+	}
 }

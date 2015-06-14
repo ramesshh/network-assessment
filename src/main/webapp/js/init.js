@@ -19,6 +19,9 @@
                 .when('/login',
                         {templateUrl: 'partials/login.html',
                             publicAccess: true})
+                 .when('/apicemlogin',
+                		 {controller: 'ApicEMLoginController',
+            		 templateUrl: 'partials/em/apicem-login.html'})
                  .when('/discovery/:platformId/replace',
                         {controller: 'ReplaceCtrl',
                 		 templateUrl: 'partials/em/replace.html'})       
@@ -174,8 +177,8 @@
 
 
 
-          //  $location.path('/posts');
-            $location.path('/discovery');
+            //$location.path('/posts');
+            $location.path('/apicemlogin');
         });
 
         /**

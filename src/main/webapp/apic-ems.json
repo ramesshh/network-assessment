@@ -1,0 +1,12 @@
+{  
+   "apicems":[  
+      {  
+         "apicemIp":"sandboxapic.cisco.com",
+         "version":"v0"
+      },
+      {  
+         "apicemIp":"64.103.26.55",
+         "version":"v0"
+      }
+   ]
+}
