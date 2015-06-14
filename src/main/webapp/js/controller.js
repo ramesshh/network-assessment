@@ -36,7 +36,7 @@
 
 	});
 
-	as.controller('LoginController', function($scope, $rootScope, $http, base64, $location) {
+	as.controller('LoginController', function($scope, $rootScope, $http, base64, $location,$window) {
 
 		$scope.login = function() {
 			console.log('username:password @' + $scope.username + ',' + $scope.password);

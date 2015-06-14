@@ -11,6 +11,8 @@
             as = angular.module('apicemApp', ['ngRoute', 'ngResource', 'ngCookies', 'ui.bootstrap', 'ngMessages', 'apicemApp.i18n', 'apicemApp.services', 'apicemApp.controllers', 'apicemApp.filters','smart-table']);
 
     as.config(function ($routeProvider, $httpProvider) {
+    	
+    	$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
         //configure the rounting of ng-view
         $routeProvider
                 .when('/',
@@ -44,20 +46,6 @@
                     };
                 }
             };
-//            return function(promise) {
-//                return promise.then(
-//                        //this is called after each successful server request
-//                                function(response) {
-//                                    setMessage(response);
-//                                    return response;
-//                                },
-//                                //this is called after each unsuccessful server request
-//                                        function(response) {
-//                                            setMessage(response);
-//                                            return $q.reject(response);
-//                                        }
-//                                );
-//                            };
 
             return {
                 //this is called after each successful server request
@@ -75,32 +63,6 @@
 
             };
         });
-
-        //configure $http to show a login dialog whenever a 401 unauthorized response arrives
-//        $httpProvider.responseInterceptors.push(function ($rootScope, $q) {
-//            return function (promise) {
-//                return promise.then(
-//                    //success -> don't intercept
-//                    function (response) {
-//                        return response;
-//                    },
-//                    //error -> if 401 save the request and broadcast an event
-//                    function (response) {
-//                        if (response.status === 401) {
-//                            var deferred = $q.defer(),
-//                                req = {
-//                                    config: response.config,
-//                                    deferred: deferred
-//                                };
-//                            $rootScope.requests401.push(req);
-//                            $rootScope.$broadcast('event:loginRequired');
-//                            return deferred.promise;
-//                        }
-//                        return $q.reject(response);
-//                    }
-//                );
-//            };
-//        });
 
         $httpProvider.interceptors.push(function ($rootScope, $q) {
 
@@ -142,7 +104,7 @@
     });
 
 
-    as.run(function ($rootScope, $http, $route, $location, base64) {
+    as.run(function ($rootScope, $http, $route, $location, base64,$window) {
         //make current message accessible to root scope and therefore all scopes
         $rootScope.message = function () {
             return message;
@@ -190,6 +152,7 @@
             $http.get('api/self')
                     .success(function (data) {
                         $rootScope.user = data;
+                        $window.sessionStorage.user=data;
                         $rootScope.$broadcast('event:loginConfirmed');
                     })
                     .error(function (data) {
@@ -213,10 +176,10 @@
         $rootScope.$on('$routeChangeStart', function (event, nextLoc, currentLoc) {
             //console.log('fire event@$routeChangeStart');
             var closedToPublic = (-1 === routesOpenToPublic.indexOf($location.path()));
-            if (closedToPublic && !$rootScope.user) {
+            if (closedToPublic && !$window.sessionStorage.user	) {
                 //console.log('login required...');             
                 $rootScope.$broadcast('event:loginRequired');
-            } else if (!!$rootScope.user) {
+            } else if (!!$window.sessionStorage.user) {
                 //console.log('already logged in...'); 
                 if (!!nextLoc && nextLoc.templateUrl == 'partials/login.html') {
                     $location.path('/login');
