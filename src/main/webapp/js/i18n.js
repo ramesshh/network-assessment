@@ -1,5 +1,5 @@
 (function () {
-    var as = angular.module('exampleApp.i18n',[]);
+    var as = angular.module('apicemApp.i18n',[]);
 
     as.service('i18n', function () {
         var self = this;

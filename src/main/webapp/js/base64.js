@@ -1,5 +1,5 @@
 (function () {
-var as = angular.module('exampleApp.services', []);
+var as = angular.module('apicemApp.services', []);
         as.service('base64', function () {
         var keyStr = "ABCDEFGHIJKLMNOP" +
                 "QRSTUVWXYZabcdef" +

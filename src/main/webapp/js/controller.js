@@ -1,5 +1,5 @@
 (function() {
-	var as = angular.module('exampleApp.controllers', [ 'smart-table' ]);
+	var as = angular.module('apicemApp.controllers', [ 'smart-table' ]);
 
 	as.controller('MainController', function($q, $scope, $rootScope, $http, i18n, $location) {
 		var load = function() {

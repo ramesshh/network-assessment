@@ -1,5 +1,5 @@
 (function() {
-    var app = angular.module('exampleApp.filters', []);
+    var app = angular.module('apicemApp.filters', []);
 
     app.filter('range', function() {
         return function(input, total) {
