@@ -1,0 +1,28 @@
+{  
+   "questions":[  
+      {  
+         "number":"1",
+         "family":"ASR1002",
+         "deviceType":"ROUTER",
+         "rank":"10",
+         "question":"How many ports ?",
+         "options":["Y","N"]
+      },
+      {  
+         "number":"2",
+         "family":"ASR1002",
+         "deviceType":"ROUTER",
+         "rank":"10",
+         "question":"Power reduandancy?",
+         "options":["Y","N"]
+      },
+       {  
+         "number":"1",
+         "family":"ASR1002",
+         "deviceType":"ROUTER",
+         "rank":"10",
+         "question":"How many ports ?",
+         "options":["Y","N"]
+      }
+   ]
+}

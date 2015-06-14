@@ -14,35 +14,15 @@
         //configure the rounting of ng-view
         $routeProvider
                 .when('/',
-                        {templateUrl: 'partials/home.html',
-                            publicAccess: true})
-                .when('/home',
-                        {templateUrl: 'partials/home.html',
+                        {templateUrl: 'partials/login.html',
                             publicAccess: true})
                 .when('/login',
                         {templateUrl: 'partials/login.html',
                             publicAccess: true})
-                .when('/posts',
-                        {controller: 'PostsController',
-                            templateUrl: 'partials/posts/home.html'})
-                .when('/posts/new',
-                        {controller: 'NewPostController',
-                            templateUrl: 'partials/posts/new.html'})
-                .when('/posts/:id',
-                        {controller: 'DetailsController',
-                            templateUrl: 'partials/posts/details.html'})
-                .when('/admin/users',
-                        {templateUrl: 'partials/admin/users.html'})
-                .when('/user/home',
-                        {templateUrl: 'partials/user/home.html'})
-                .when('/user/password',
-                        {templateUrl: 'partials/user/password.html'})
-                .when('/user/profile',
-                        {templateUrl: 'partials/user/profile.html'})
                  .when('/discovery/:platformId/replace',
                         {controller: 'ReplaceCtrl',
                 		 templateUrl: 'partials/em/replace.html'})       
-                .when('/discovery/:id/questionare',
+                .when('/discovery/:platformId/questionare/:family',
                         {controller: 'QuestionCtrl',
                 		 templateUrl: 'partials/em/questionare.html'})
                 .when('/discovery',
@@ -236,14 +216,11 @@
             } else if (!!$rootScope.user) {
                 //console.log('already logged in...'); 
                 if (!!nextLoc && nextLoc.templateUrl == 'partials/login.html') {
-                    console.log('in login.html, go to /user/home...');
-                    $location.path('/user/home');
+                    $location.path('/login');
                 } else {
                     //do nothing...
                 }
             }
         });
-
-        //$rootScope.$on('$viewContentChange', funtion());
     });
 }());

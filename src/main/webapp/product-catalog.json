@@ -1,0 +1,46 @@
+{  
+   "products":[  
+      {  
+         "productId":"NIM-4FXO",
+         "family":"ASR1002",
+         "redundantPowerSupply":"Y",
+         "ports":"4",
+         "integratedSwitch":"Y",
+         "hostApplication":"Y",
+         "secureWAN":"Y",
+         "intelligantWAN":"Y",
+         "ciscoUnifiedCommns":"Y",
+         "imageURL":"images/asr1002.jpg",
+         "description":"Cisco switches (network switches) deliver performance and security. Cisco switchesare scalable and cost-efficient and meet the need for any size of business",
+         "price":"1000.00"
+      },
+      {  
+         "productId":"NIM-2FXO",
+         "family":"ASR1002",
+         "redundantPowerSupply":"Y",
+         "ports":"2",
+         "integratedSwitch":"Y",
+         "hostApplication":"Y",
+         "secureWAN":"Y",
+         "intelligantWAN":"Y",
+         "ciscoUnifiedCommns":"Y",
+         "imageURL":"images/asr1002.jpg",
+         "description":"Cisco switches (network switches) deliver performance and security. Cisco switchesare scalable and cost-efficient and meet the need for any size of business",
+         "price":"1000.00"
+      },
+      {  
+         "productId":"NIM-2BRI-NT/TE",
+         "family":"ASR1002",
+         "redundantPowerSupply":"Y",
+         "ports":"24",
+         "integratedSwitch":"Y",
+         "hostApplication":"Y",
+         "secureWAN":"Y",
+         "intelligantWAN":"Y",
+         "ciscoUnifiedCommns":"Y",
+         "imageURL":"images/asr1002.jpg",
+         "description":"Cisco switches (network switches) deliver performance and security. Cisco switchesare scalable and cost-efficient and meet the need for any size of business",
+         "price":"1000.00"
+      }
+   ]
+}

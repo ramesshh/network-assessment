@@ -21,6 +21,7 @@
     	var savedData = {};
     	var replaceDevices = {};
     	var platofrmId;
+    	var currentDate;
     	 
     	function setDeviceData(deviceData) {
     	   savedData = deviceData;
@@ -36,6 +37,13 @@
       	  return savedData;
       	 }
       	 
+      	 function setCurrentDate(currentDate) {
+      		currentDate = currentDate;
+      	 }
+      	 function getCurrentDate() {
+      	  return currentDate;
+      	 }
+      	 
       	 function getPlatformId() {
          	  return platofrmId;
          	 }
@@ -44,7 +52,9 @@
     	  setDeviceData: setDeviceData,
     	  getDeviceData: getDeviceData,
     	  setPlatformId: setPlatformId,
-    	  getPlatformId: getPlatformId
+    	  getPlatformId: getPlatformId,
+    	  setCurrentDate:setCurrentDate,
+    	  getCurrentDate:getCurrentDate
     	 }
     });
 
