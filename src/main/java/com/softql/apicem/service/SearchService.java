@@ -35,9 +35,9 @@ public class SearchService {
 
 	private static final Logger log = LoggerFactory.getLogger(SearchService.class);
 
-	private static final int READ_TIME_OUT = 1000000;
+	private static final int READ_TIME_OUT = 1000000000;
 
-	private static final int CONNECTION_TIME_OUT = 1000000;
+	private static final int CONNECTION_TIME_OUT = 1000000000;
 
 	public List<DiscoveryDevices> searchDevicesByIP(String fromIp, String toIP) {
 		List<DiscoveryDevices> deviceList = new ArrayList<DiscoveryDevices>();
