@@ -1,28 +1,59 @@
 {  
    "questions":[  
+     
       {  
          "number":"1",
          "family":"ASR1002",
          "deviceType":"ROUTER",
          "rank":"10",
-         "question":"How many ports ?",
-         "options":["Y","N"]
+         "question":"Do you need Redundant power supply ?",
+         "options":["Yes","No","N/A"],
+         "type":"radio"
       },
-      {  
+       {  
          "number":"2",
          "family":"ASR1002",
          "deviceType":"ROUTER",
          "rank":"10",
-         "question":"Power reduandancy?",
-         "options":["Y","N"]
+         "question":"Do you need integrated switch ?",
+         "options":["24","48"],
+         "type":"checkbox"
       },
        {  
-         "number":"1",
+         "number":"3",
          "family":"ASR1002",
          "deviceType":"ROUTER",
          "rank":"10",
-         "question":"How many ports ?",
-         "options":["Y","N"]
+         "question":"Do you need host applications ?",
+         "options":["Y","N"],
+         "type":"radio"
+      }, 
+       {  
+         "number":"4",
+         "family":"ASR1002",
+         "deviceType":"ROUTER",
+         "rank":"10",
+         "question":"Do you need to Secure WAN ?",
+         "options":["Y","N"],
+         "type":"radio"
+      },
+        {  
+         "number":"5",
+         "family":"ASR1002",
+         "deviceType":"ROUTER",
+         "rank":"10",
+         "question":"Are you planning to deploy intellignet WAN solutions ?",
+         "options":["Y","N"],
+         "type":"radio"
+      },
+       {  
+         "number":"6",
+         "family":"ASR1002",
+         "deviceType":"ROUTER",
+         "rank":"10",
+         "question":"Are you going to enable Cisco Unified Communications Solutions ?",
+         "options":["Y","N"],
+         "type":"radio"
       }
    ]
 }

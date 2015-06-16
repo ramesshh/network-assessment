@@ -198,8 +198,10 @@
 
 	});
 
-	as.controller('QuestionCtrl', function($scope, $http, $routeParams, i18n, $location) {
+	as.controller('QuestionCtrl', function($scope, $http, $routeParams, i18n, $location,DeviceData) {
 		$scope.platformId = $routeParams.platformId;
+		$scope.qty = $routeParams.count;
+		$scope.currDate=DeviceData.getCurrentDate();
 
 		load = function() {
 			$scope.deviceFamily = [];
@@ -231,9 +233,24 @@
 				});
 			});
 			console.log("Products::" + $scope.replacableProducts);
+			
 		}
 
+		
+		questions = function(){
+			$scope.questions = [];
+			$http.get('questions.json').success(function(data) {
+				angular.forEach(data.questions, function(question) {
+					if(question.family ==$scope.platformId){
+						$scope.questions.push(question);
+					}
+				});
+			});
+		}
+		
 		load();
+		questions();
+		
 	});
 
 	as.controller('ProductCtrl', function($scope, $http, $routeParams, i18n, $location) {
