@@ -16,7 +16,8 @@
 								</tr>
 								<tr ng-repeat="option in item.options">
 									<td style="border-top-width: 0px;">
-									<label><input type="{{item.type}}" name="{{item.name}}" ng-click="questionSelected(item.name,option)" ng-value="true"> &nbsp;{{option}}</input>
+									<label><input type="{{item.type}}" name="{{item.name}}" 
+									ng-click="questionSelected(item.name,option.value,item.type)" ng-value="'true'" ng-model="option.isUserAnswer"> &nbsp;{{option.value}}</input>
 									</input>
 									</label>
 								</tr>

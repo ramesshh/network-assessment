@@ -7,7 +7,15 @@
          "deviceType":"ROUTER",
          "rank":"10",
          "question":"Do you need Redundant power supply ?",
-         "options":["Yes","No"],
+         "options":[
+        	{
+        	"value":"Yes",
+        	"isUserAnswer":"false"
+        	},
+        	{
+        	"value":"No",
+        	"isUserAnswer":"false"
+        	}],
          "type":"radio"
       },
        {  
@@ -16,8 +24,16 @@
          "deviceType":"ROUTER",
          "rank":"10",
          "question":"Do you need integrated switch ?",
-         "options":["24","48"],
-         "type":"radio"
+          "options":[
+        	{
+        	"value":"24",
+        	"isUserAnswer":"false"
+        	},
+        	{
+        	"value":"48",
+        	"isUserAnswer":"false"
+        	}],
+         "type":"checkbox"
       },
        {  
          "name":"hostApplication",
@@ -25,7 +41,15 @@
          "deviceType":"ROUTER",
          "rank":"10",
          "question":"Do you need host applications ?",
-        "options":["Yes","No"],
+         "options":[
+        	{
+        	"value":"Yes",
+        	"isUserAnswer":"false"
+        	},
+        	{
+        	"value":"No",
+        	"isUserAnswer":"false"
+        	}],
          "type":"radio"
       }, 
        {  
@@ -34,7 +58,15 @@
          "deviceType":"ROUTER",
          "rank":"10",
          "question":"Do you need to Secure WAN ?",
-         "options":["Yes","No"],
+          "options":[
+        	{
+        	"value":"Yes",
+        	"isUserAnswer":"false"
+        	},
+        	{
+        	"value":"No",
+        	"isUserAnswer":"false"
+        	}],
          "type":"radio"
       },
         {  
@@ -43,7 +75,15 @@
          "deviceType":"ROUTER",
          "rank":"10",
          "question":"Are you planning to deploy intelligent WAN solutions ?",
-        "options":["Yes","No"],
+        "options":[
+        	{
+        	"value":"Yes",
+        	"isUserAnswer":"false"
+        	},
+        	{
+        	"value":"No",
+        	"isUserAnswer":"false"
+        	}],
          "type":"radio"
       },
        {  
@@ -52,7 +92,15 @@
          "deviceType":"ROUTER",
          "rank":"10",
          "question":"Are you going to enable Cisco Unified Communications Solutions ?",
-         "options":["Yes","No"],
+          "options":[
+        	{
+        	"value":"Yes",
+        	"isUserAnswer":"false"
+        	},
+        	{
+        	"value":"No",
+        	"isUserAnswer":"false"
+        	}],
          "type":"radio"
       }
    ]

@@ -215,7 +215,7 @@
 			$scope.deviceConfig = [];
 			$scope.productCatalog = [];
 			$scope.replacableProducts = [];
-			$scope.allProducts =[];
+			$scope.allProducts = [];
 			$http.get('device-family-mapping.json').success(function(data) {
 				$scope.deviceFamily = data.deviceFamilyMapping;
 				$http.get('device-config-mapping.json').success(function(data) {
@@ -256,11 +256,58 @@
 			});
 		}
 
-		$scope.questionSelected = function(type, value) {
-			$scope.replacableProducts =[];
-			console.log("value is " + type + value);
+		$scope.questionSelected = function(type, value, inputType) {
+			if (inputType == "radio") {
+				angular.forEach($scope.questions, function(question) {
+					if (question.name == type) {
+						angular.forEach(question.options, function(option) {
+							if (option.value != value) {
+								option.isUserAnswer = "false";
+							}
+						});
+					}
+				});
+			}
+
+			filterTheProducts();
+		}
+
+		filterTheProducts = function() {
+			$scope.pushProduct = 0;
+			$scope.replacableProducts = [];
 			angular.forEach($scope.allProducts, function(product) {
-				if (product[type].toLowerCase() == value.toLowerCase()) {
+				angular.forEach($scope.questions, function(question) {
+
+					if (question.type != "checkbox") {
+						angular.forEach(question.options, function(option) {
+							if ((option.isUserAnswer == true || option.isUserAnswer == "true") && 0 <= $scope.pushProduct) {
+								if (product[question.name].toLowerCase() != option.value.toLowerCase()) {
+									$scope.pushProduct = -1;
+								} else {
+									$scope.pushProduct = 1;
+								}
+							}
+						});
+					} else {
+						$scope.checkboxGroup = [];
+						angular.forEach(question.options, function(option) {
+							if (option.isUserAnswer == true || option.isUserAnswer == "true") {
+								if (product[question.name].toLowerCase() != option.value.toLowerCase()) {
+									$scope.checkboxGroup.push(0);
+								} else {
+									$scope.checkboxGroup.push(1);
+								}
+							}
+						});
+
+						angular.forEach($scope.checkboxGroup, function(group) {
+							if (group == 1) {
+								$scope.pushProduct = 1;
+							}
+						});
+					}
+				});
+				if ($scope.pushProduct == 1) {
 					$scope.replacableProducts.push(product);
 				}
 			});
@@ -268,6 +315,7 @@
 
 		load();
 		questions();
+		filterTheProducts();
 
 	});
 
