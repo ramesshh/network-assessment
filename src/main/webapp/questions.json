@@ -2,57 +2,57 @@
    "questions":[  
      
       {  
-         "number":"1",
+         "name":"redundantPowerSupply",
          "family":"ASR1002",
          "deviceType":"ROUTER",
          "rank":"10",
          "question":"Do you need Redundant power supply ?",
-         "options":["Yes","No","N/A"],
+         "options":["Yes","No"],
          "type":"radio"
       },
        {  
-         "number":"2",
+         "name":"ports",
          "family":"ASR1002",
          "deviceType":"ROUTER",
          "rank":"10",
          "question":"Do you need integrated switch ?",
          "options":["24","48"],
-         "type":"checkbox"
+         "type":"radio"
       },
        {  
-         "number":"3",
+         "name":"hostApplication",
          "family":"ASR1002",
          "deviceType":"ROUTER",
          "rank":"10",
          "question":"Do you need host applications ?",
-         "options":["Y","N"],
+        "options":["Yes","No"],
          "type":"radio"
       }, 
        {  
-         "number":"4",
+         "name":"secureWAN",
          "family":"ASR1002",
          "deviceType":"ROUTER",
          "rank":"10",
          "question":"Do you need to Secure WAN ?",
-         "options":["Y","N"],
+         "options":["Yes","No"],
          "type":"radio"
       },
         {  
-         "number":"5",
+         "name":"intelligantWAN",
          "family":"ASR1002",
          "deviceType":"ROUTER",
          "rank":"10",
-         "question":"Are you planning to deploy intellignet WAN solutions ?",
-         "options":["Y","N"],
+         "question":"Are you planning to deploy intelligent WAN solutions ?",
+        "options":["Yes","No"],
          "type":"radio"
       },
        {  
-         "number":"6",
+         "name":"ciscoUnifiedCommns",
          "family":"ASR1002",
          "deviceType":"ROUTER",
          "rank":"10",
          "question":"Are you going to enable Cisco Unified Communications Solutions ?",
-         "options":["Y","N"],
+         "options":["Yes","No"],
          "type":"radio"
       }
    ]

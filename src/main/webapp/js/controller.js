@@ -36,7 +36,7 @@
 
 	});
 
-	as.controller('LoginController', function($scope, $rootScope, $http, base64, $location,$window) {
+	as.controller('LoginController', function($scope, $rootScope, $http, base64, $location, $window) {
 
 		$scope.login = function() {
 			console.log('username:password @' + $scope.username + ',' + $scope.password);
@@ -48,10 +48,9 @@
 	as.controller('ApicEMLoginController', function($scope, $rootScope, $http, base64, $location, DeviceData) {
 
 		$scope.selectedApicem = '';
-		$scope.apicUsername='';
-		$scope.apicPassword='';
-		$scope.version='';
-		
+		$scope.apicUsername = '';
+		$scope.apicPassword = '';
+		$scope.version = '';
 
 		$scope.allApicEms = [];
 		$http.get('apic-ems.json').success(function(data) {
@@ -64,7 +63,7 @@
 			angular.forEach($scope.allApicEms, function(apicEm) {
 				if (apicEm.apicemIp == $scope.selectedApicem) {
 					DeviceData.setApicemVersion(apicEm.version);
-					$scope.version=apicEm.version;
+					$scope.version = apicEm.version;
 				}
 			});
 
@@ -75,8 +74,8 @@
 				"apicemIP" : $scope.selectedApicem,
 				"version" : $scope.version
 			};
-			
-			$http.post(actionURL,data).success(function(data) {
+
+			$http.post(actionURL, data).success(function(data) {
 				console.log("Success Data is " + data);
 				DeviceData.setToken(data);
 				$location.url("/discovery");
@@ -96,11 +95,19 @@
 		var groupType = $scope.groupBy;
 		var actionUrl = 'api/discovery/search';
 		load = function() {
-			$http.get(actionUrl + "?q=" + $scope.q).success(function(data) {
+			$http.get(actionUrl).success(function(data) {
 				console.log("Data is " + data);
-				$scope.originalData = data;
-				DeviceData.setDeviceData(data);
-				$scope.devices = groupByData(data, groupType);
+				if (data) {
+					$http.get('device.json').success(function(response) {
+						$scope.originalData = response.devices;
+						DeviceData.setDeviceData(response.devices);
+						$scope.devices = groupByData(response.devices, groupType);
+					});
+				} else {
+					$scope.originalData = data;
+					DeviceData.setDeviceData(data);
+					$scope.devices = groupByData(data, groupType);
+				}
 			});
 		}
 		load();
@@ -198,16 +205,17 @@
 
 	});
 
-	as.controller('QuestionCtrl', function($scope, $http, $routeParams, i18n, $location,DeviceData) {
+	as.controller('QuestionCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData) {
 		$scope.platformId = $routeParams.platformId;
 		$scope.qty = $routeParams.count;
-		$scope.currDate=DeviceData.getCurrentDate();
+		$scope.currDate = DeviceData.getCurrentDate();
 
 		load = function() {
 			$scope.deviceFamily = [];
 			$scope.deviceConfig = [];
 			$scope.productCatalog = [];
 			$scope.replacableProducts = [];
+			$scope.allProducts =[];
 			$http.get('device-family-mapping.json').success(function(data) {
 				$scope.deviceFamily = data.deviceFamilyMapping;
 				$http.get('device-config-mapping.json').success(function(data) {
@@ -222,6 +230,7 @@
 											angular.forEach($scope.productCatalog, function(prodCatalog) {
 												if (prodCatalog.productId == prod.productId) {
 													$scope.replacableProducts.push(prodCatalog);
+													$scope.allProducts.push(prodCatalog);
 												}
 											});
 										});
@@ -233,24 +242,33 @@
 				});
 			});
 			console.log("Products::" + $scope.replacableProducts);
-			
+
 		}
 
-		
-		questions = function(){
+		questions = function() {
 			$scope.questions = [];
 			$http.get('questions.json').success(function(data) {
 				angular.forEach(data.questions, function(question) {
-					if(question.family ==$scope.platformId){
+					if (question.family == $scope.platformId) {
 						$scope.questions.push(question);
 					}
 				});
 			});
 		}
-		
+
+		$scope.questionSelected = function(type, value) {
+			$scope.replacableProducts =[];
+			console.log("value is " + type + value);
+			angular.forEach($scope.allProducts, function(product) {
+				if (product[type].toLowerCase() == value.toLowerCase()) {
+					$scope.replacableProducts.push(product);
+				}
+			});
+		}
+
 		load();
 		questions();
-		
+
 	});
 
 	as.controller('ProductCtrl', function($scope, $http, $routeParams, i18n, $location) {

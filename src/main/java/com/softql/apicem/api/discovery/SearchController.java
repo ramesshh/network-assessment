@@ -1,5 +1,6 @@
 package com.softql.apicem.api.discovery;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +51,14 @@ public class SearchController {
 
 		}
 
-		List<DiscoveryDevices> discoveryDevices = searchService.getDevices();
+		List<DiscoveryDevices> discoveryDevices = new ArrayList<DiscoveryDevices>();
+
+		try {
+			// discoveryDevices = searchService.getDevices();
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		if (log.isDebugEnabled()) {
 			log.debug("get posts size @" + discoveryDevices.size());
