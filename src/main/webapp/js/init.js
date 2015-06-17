@@ -26,7 +26,10 @@
             		 templateUrl: 'partials/em/apicem-login.html'})
                  .when('/discovery/:platformId/replace',
                         {controller: 'ReplaceCtrl',
-                		 templateUrl: 'partials/em/replace.html'})       
+                		 templateUrl: 'partials/em/replace.html'})   
+                 .when('/discovery/:productId/bom/:qty',
+                        {controller: 'BomCtrl',
+                		 templateUrl: 'partials/em/bom.html'})   
                 .when('/discovery/:platformId/questionare/:count',
                         {controller: 'QuestionCtrl',
                 		 templateUrl: 'partials/em/questionare.html'})

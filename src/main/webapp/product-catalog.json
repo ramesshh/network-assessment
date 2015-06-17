@@ -3,6 +3,7 @@
       {  
          "productId":"NIM-4FXO",
          "family":"ASR1002",
+         "ciscoId":"12345",
          "redundantPowerSupply":"Yes",
          "ports":"48",
          "integratedSwitch":"Yes",
@@ -17,6 +18,7 @@
       {  
          "productId":"NIM-2FXO",
          "family":"ASR1002",
+         "ciscoId":"12345",
          "redundantPowerSupply":"Yes",
          "ports":"24",
          "integratedSwitch":"Yes",
@@ -31,6 +33,7 @@
       {  
          "productId":"NIM-2BRI-NT/TE",
          "family":"ASR1002",
+         "ciscoId":"12345",
          "redundantPowerSupply":"Yes",
          "ports":"24",
          "integratedSwitch":"Yes",

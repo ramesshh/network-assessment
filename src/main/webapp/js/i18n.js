@@ -26,6 +26,7 @@
 		var selectedApicEm;
 		var token;
 		var apicemVersion;
+		var billProducts;
 
 		function setDeviceData(deviceData) {
 			savedData = deviceData;
@@ -76,6 +77,14 @@
 			apicemVersion = apicemVersion;
 		}
 
+		function getBillProducts() {
+			return billProducts;
+		}
+
+		function setBillProducts(billProducts) {
+			billProducts = billProducts;
+		}
+
 		return {
 			setDeviceData : setDeviceData,
 			getDeviceData : getDeviceData,
@@ -88,7 +97,9 @@
 			getToken : getToken,
 			setToken : setToken,
 			getApicemVersion : getApicemVersion,
-			setApicemVersion : setApicemVersion
+			setApicemVersion : setApicemVersion,
+			setBillProducts : setBillProducts,
+			getBillProducts : getBillProducts
 		}
 	});
 
