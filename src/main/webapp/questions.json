@@ -33,7 +33,7 @@
         	"value":"48",
         	"isUserAnswer":"false"
         	}],
-         "type":"checkbox"
+         "type":"radio"
       },
        {  
          "name":"hostApplication",

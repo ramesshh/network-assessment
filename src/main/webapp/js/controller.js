@@ -97,17 +97,17 @@
 		load = function() {
 			$http.get(actionUrl).success(function(data) {
 				console.log("Data is " + data);
-				if (data) {
+				/*if (data) {
 					$http.get('device.json').success(function(response) {
 						$scope.originalData = response.devices;
 						DeviceData.setDeviceData(response.devices);
 						$scope.devices = groupByData(response.devices, groupType);
 					});
-				} else {
-					$scope.originalData = data;
-					DeviceData.setDeviceData(data);
-					$scope.devices = groupByData(data, groupType);
-				}
+				} else {*/
+				$scope.originalData = data;
+				DeviceData.setDeviceData(data);
+				$scope.devices = groupByData(data, groupType);
+				//}
 			});
 		}
 		load();
@@ -278,17 +278,17 @@
 			angular.forEach($scope.allProducts, function(product) {
 				angular.forEach($scope.questions, function(question) {
 
-					if (question.type != "checkbox") {
-						angular.forEach(question.options, function(option) {
-							if ((option.isUserAnswer == true || option.isUserAnswer == "true") && 0 <= $scope.pushProduct) {
-								if (product[question.name].toLowerCase() != option.value.toLowerCase()) {
-									$scope.pushProduct = -1;
-								} else {
-									$scope.pushProduct = 1;
-								}
+					//if (question.type != "checkbox") {
+					angular.forEach(question.options, function(option) {
+						if ((option.isUserAnswer == true || option.isUserAnswer == "true") && 0 <= $scope.pushProduct) {
+							if (product[question.name].toLowerCase() != option.value.toLowerCase()) {
+								$scope.pushProduct = -1;
+							} else {
+								$scope.pushProduct = 1;
 							}
-						});
-					} else {
+						}
+					});
+					/*} else {
 						$scope.checkboxGroup = [];
 						angular.forEach(question.options, function(option) {
 							if (option.isUserAnswer == true || option.isUserAnswer == "true") {
@@ -305,7 +305,7 @@
 								$scope.pushProduct = 1;
 							}
 						});
-					}
+					}*/
 				});
 				if ($scope.pushProduct == 1) {
 					$scope.replacableProducts.push(product);
@@ -316,6 +316,19 @@
 		load();
 		questions();
 		filterTheProducts();
+
+		$scope.tags = [ {
+			text : 'just'
+		}, {
+			text : 'some'
+		}, {
+			text : 'cool'
+		}, {
+			text : 'tags'
+		} ];
+		$scope.loadTags = function(query) {
+			return $http.get('/tags?query=' + query);
+		};
 
 	});
 

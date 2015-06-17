@@ -1,5 +1,7 @@
 <div class="page-header">
-	<h1>Questionaire</h1>
+	<h1>Questionaire  </h1>
+	<tags-input ng-model="tags"> <auto-complete
+					source="loadTags($query)"></auto-complete> </tags-input> 
 </div>
 <div id="page-wrapper">
 	<div class="row">
@@ -15,11 +17,11 @@
 									<th>{{item.question}}</th>
 								</tr>
 								<tr ng-repeat="option in item.options">
-									<td style="border-top-width: 0px;">
-									<label><input type="{{item.type}}" name="{{item.name}}" 
-									ng-click="questionSelected(item.name,option.value,item.type)" ng-value="'true'" ng-model="option.isUserAnswer"> &nbsp;{{option.value}}</input>
-									</input>
-									</label>
+									<td style="border-top-width: 0px;"><label><input
+											type="{{item.type}}" name="{{item.name}}"
+											ng-click="questionSelected(item.name,option.value,item.type)"
+											ng-value="'true'" ng-model="option.isUserAnswer">
+											&nbsp;{{option.value}}</input> </input> </label>
 								</tr>
 							</tbody>
 						</table>
@@ -32,7 +34,7 @@
 		<!--   Quantity: {{qty}} Date {{currDate}}-->
 		<div class="col-md-9">
 			<div class="panel panel-default">
-				<div class="panel-heading">Recommended Products </div>
+				<div class="panel-heading">Recommended Products</div>
 				<!-- /.panel-heading -->
 				<div class="panel-body">
 					<div class="table-responsive">

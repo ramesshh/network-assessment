@@ -54,7 +54,7 @@ public class SearchController {
 		List<DiscoveryDevices> discoveryDevices = new ArrayList<DiscoveryDevices>();
 
 		try {
-			// discoveryDevices = searchService.getDevices();
+			discoveryDevices = searchService.getDevices();
 		} catch (Throwable e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
