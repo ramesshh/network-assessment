@@ -2,7 +2,8 @@
    "questions":[  
      
       {  
-         "name":"redundantPowerSupply",
+         "name":"Redundant Power Supply",
+         "id":"redundantPowerSupply",
          "family":"ASR1002",
          "deviceType":"ROUTER",
          "rank":"10",
@@ -19,7 +20,8 @@
          "type":"radio"
       },
        {  
-         "name":"ports",
+         "name":"Integrated Switch",
+         "id":"ports",
          "family":"ASR1002",
          "deviceType":"ROUTER",
          "rank":"10",
@@ -36,7 +38,8 @@
          "type":"radio"
       },
        {  
-         "name":"hostApplication",
+          "name":"Host Application",
+         "id":"hostApplication",
          "family":"ASR1002",
          "deviceType":"ROUTER",
          "rank":"10",
@@ -53,7 +56,8 @@
          "type":"radio"
       }, 
        {  
-         "name":"secureWAN",
+          "name":"Secure WAN",
+         "id":"secureWAN",
          "family":"ASR1002",
          "deviceType":"ROUTER",
          "rank":"10",
@@ -70,7 +74,8 @@
          "type":"radio"
       },
         {  
-         "name":"intelligantWAN",
+         "name":"Intelligent WAN",
+         "id":"intelligantWAN",
          "family":"ASR1002",
          "deviceType":"ROUTER",
          "rank":"10",
@@ -87,7 +92,8 @@
          "type":"radio"
       },
        {  
-         "name":"ciscoUnifiedCommns",
+         "name":"Cisco Unified Communication",
+         "id":"ciscoUnifiedCommns",
          "family":"ASR1002",
          "deviceType":"ROUTER",
          "rank":"10",

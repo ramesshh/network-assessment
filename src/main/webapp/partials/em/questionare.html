@@ -1,7 +1,19 @@
 <div class="page-header">
 	<h1>Questionaire  </h1>
-	<!-- <tags-input ng-model="tags"> <auto-complete
-					source="loadTags($query)"></auto-complete> </tags-input>  -->
+	<tags-input ng-model="tags" display-property="name" placeholder="Add a question" replace-spaces-with-dashes="false">
+      <auto-complete source="loadQuestions($query)"
+                     min-length="0"
+                     load-on-focus="true"
+                     load-on-empty="true"
+                     max-results-to-show="32"
+                     template="my-custom-template"></auto-complete>
+    </tags-input>
+    
+    <script type="text/ng-template" id="my-custom-template">
+      <div>
+        <span ng-bind-html="$highlight($getDisplayText())"></span>
+      </div>
+    </script>
 </div>
 <div id="page-wrapper">
 	<div class="row">
@@ -24,6 +36,11 @@
 											&nbsp;{{option.value}}</input> </input> </label>
 								</tr>
 							</tbody>
+							<tfoot>
+								 <tr>
+                                    <td align="center"><button class="btn btn-primary btn-md btn-block" ng-click="clearQuestions()">Clear</button></td>
+                                  </tr>
+							</tfoot>
 						</table>
 					</div>
 				</div>

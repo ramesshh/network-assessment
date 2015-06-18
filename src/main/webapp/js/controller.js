@@ -378,7 +378,7 @@
 		$scope.questionSelected = function(type, value, inputType) {
 			if (inputType == "radio") {
 				angular.forEach($scope.questions, function(question) {
-					if (question.name == type) {
+					if (question.id == type) {
 						angular.forEach(question.options, function(option) {
 							if (option.value != value) {
 								option.isUserAnswer = "false";
@@ -390,7 +390,21 @@
 
 			filterTheProducts();
 		}
+		
+		// Clear all questions
+		$scope.clearQuestions = function(){
+			angular.forEach($scope.questions, function(question) {
+					angular.forEach(question.options, function(option) {
+							option.isUserAnswer = "false";
+					});
+			});
+			
+			$scope.tags =[];
+			
+			filterTheProducts();
+		}
 
+		// Filter the products based on the current question set
 		filterTheProducts = function() {
 			$scope.pushProduct = 0;
 			$scope.replacableProducts = [];
@@ -400,7 +414,7 @@
 					// if (question.type != "checkbox") {
 					angular.forEach(question.options, function(option) {
 						if ((option.isUserAnswer == true || option.isUserAnswer == "true") && 0 <= $scope.pushProduct) {
-							if (product[question.name].toLowerCase() != option.value.toLowerCase()) {
+							if (product[question.id].toLowerCase() != option.value.toLowerCase()) {
 								$scope.pushProduct = -1;
 							} else {
 								$scope.pushProduct = 1;
@@ -411,7 +425,7 @@
 					 * } else { $scope.checkboxGroup = [];
 					 * angular.forEach(question.options, function(option) { if
 					 * (option.isUserAnswer == true || option.isUserAnswer ==
-					 * "true") { if (product[question.name].toLowerCase() !=
+					 * "true") { if (product[question.id].toLowerCase() !=
 					 * option.value.toLowerCase()) {
 					 * $scope.checkboxGroup.push(0); } else {
 					 * $scope.checkboxGroup.push(1); } } });
@@ -426,6 +440,7 @@
 			});
 		}
 
+		// Navigate to BOM page after clicking the product
 		$scope.selectedProduct = function(product) {
 			$scope.billProducts = [];
 			$scope.billProducts.push(product);
@@ -437,18 +452,14 @@
 		questions();
 		filterTheProducts();
 
-		$scope.tags = [ {
-			text : 'just'
-		}, {
-			text : 'some'
-		}, {
-			text : 'cool'
-		}, {
-			text : 'tags'
-		} ];
-		$scope.loadTags = function(query) {
-			return $http.get('/tags?query=' + query);
-		};
+		$scope.loadQuestions = function($query) {
+		    return $http.get('questions.json', { cache: true}).then(function(response) {
+		      var questions = response.data.questions;
+		      return questions.filter(function(question) {
+		        return question.name.toLowerCase().indexOf($query.toLowerCase()) != -1;
+		      });
+		    });
+		  };
 
 	});
 
