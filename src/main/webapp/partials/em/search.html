@@ -1,21 +1,25 @@
 <div class="page-header">
-	<h1><msg key="deviceInventoryDetails"/></h1>
+	<h1>
+		<msg key="deviceInventoryDetails" />
+	</h1>
 </div>
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<div class="pull-right">
-			<Strong><msg key="date"/></Strong>:  {{currentDate | date:'medium'}}
+			<Strong><msg key="date" /></Strong>: {{currentDate | date:'medium'}}
 		</div>
-		<msg key="deviceInventoryDetails"/>
+		<msg key="deviceInventoryDetails" />
 	</div>
 	<form class="form form-inline">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="row">
 					<div class="col-md-4">
-						<label><msg key="selectDevices"/> : </label> <select class="form-control"
-							style="width: 60%; display: inline;" ng-model="deviceCategory" ng-change="deviceCategroryChange()">
-							<option value="all">All Devices (Including Unknown Devices)</option>
+						<label><msg key="selectDevices" /> : </label> <select
+							class="form-control" style="width: 60%; display: inline;"
+							ng-model="deviceCategory" ng-change="deviceCategroryChange()">
+							<option value="all">All Devices (Including Unknown
+								Devices)</option>
 							<option value="Cisco">Cisco Devices</option>
 							<option value="ROUTER">-Routers</option>
 							<option value="SWITCH">-Switches</option>
@@ -23,49 +27,57 @@
 						</select>
 					</div>
 					<div class="col-md-4">
-						<label><msg key="groupBy"/> : </label> <select class="form-control"
-							style="width: 60%; display: inline;" ng-model="groupBy" ng-change="groupByChange()">
+						<label><msg key="groupBy" /> : </label> <select
+							class="form-control" style="width: 60%; display: inline;"
+							ng-model="groupBy" ng-change="groupByChange()">
 							<option value="groupBy_deviceType">Device Type</option>
 							<option value="groupBy_family">Family</option>
 							<option value="groupBy_reachable">Reachability Status</option>
 						</select>
 					</div>
+
+					<div class="col-md-4" style="">
+						<label><msg key="itemsPerPage" /> : </label> <select
+							class="form-control" style="width: 20%; display: inline;"
+							ng-model="itemsPerPage">
+							<option value="5">5</option>
+							<option value="10">10</option>
+							<option value="20">20</option>
+							<option value="30">30</option>
+							<option value="50">50</option>
+							<option value="100">100</option>
+							<option value="devices.length">All</option>
+						</select>
+					</div>
 				</div>
 
 				<div class="table-responsive">
-					<table class="table table-striped table-hover" st-table="devices">
+					<table class="table table-striped table-hover">
 						<thead>
-								<th><msg key="platformId"/></th>
-								<th><msg key="desc"/></th>
-								<th><msg key="qty"/></th>
-								<th><msg key="version"/></th>
-								<th><msg key="location"/></th>
-								<th><msg key="action"/></th>
+							<th><msg key="platformId" /></th>
+							<th><msg key="desc" /></th>
+							<th><msg key="qty" /></th>
+							<th><msg key="version" /></th>
+							<th><msg key="location" /></th>
+							<th><msg key="action" /></th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="device in devices">
+							<tr dir-paginate="device in devices | itemsPerPage: itemsPerPage">
 								<td>{{device.platformId}}</td>
 								<td>{{device.description}}</td>
 								<td>{{device.qty}}</td>
 								<td>{{device.softwareVersion}}</td>
 								<td>{{device.locationName}}</td>
-								<td>
-									<a class="btn btn-primary btn-xs"
-									ng-href='#/discovery/{{device.platformId}}/replace'><msg key="replace"/>
-								</a> 
-								</td>
-							</tr>
-							<tr ng-if="devices && devices.length === 0">
-								<td colspan="7" align="center"><msg key="noDeviceFound"/>.</td>
+								<td><a class="btn btn-primary btn-xs"
+									ng-href='#/discovery/{{device.platformId}}/replace'><msg
+											key="replace" /> </a></td>
 							</tr>
 						</tbody>
 						<tfoot>
 							<tr>
-								<td colspan="7" class="text-center">
-								<div st-pagination="" st-items-by-page="itemsByPage"
-									st-displayed-pages="7"></div>
-								</td>
+								<td colspan="7" class="text-center"><dir-pagination-controls
+										class="ng-isolate-scope" /></td>
 							</tr>
 						</tfoot>
 					</table>

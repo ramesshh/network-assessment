@@ -1,5 +1,5 @@
 (function() {
-	var as = angular.module('apicemApp.controllers', [ 'smart-table' ]);
+	var as = angular.module('apicemApp.controllers', [ 'smart-table', 'ui.utils' ]);
 
 	as.controller('MainController', function($q, $scope, $rootScope, $http, i18n, $location) {
 		var load = function() {
@@ -91,6 +91,7 @@
 		DeviceData.setCurrentDate($scope.currentDate);
 		$scope.originalData = '';
 		$scope.deviceCategory = 'all';
+		$scope.itemsPerPage = "10";
 		$scope.groupBy = 'groupBy_deviceType';
 		var groupType = $scope.groupBy;
 		var actionUrl = 'api/discovery/search';
@@ -148,6 +149,7 @@
 	});
 
 	as.controller('ReplaceCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData, $filter) {
+		$scope.itemsPerPage = "10";
 		$scope.platformId = $routeParams.platformId;
 		$scope.allDevices = DeviceData.getDeviceData();
 		$scope.selectedCount = 0;
@@ -205,7 +207,7 @@
 
 	});
 
-	as.controller('BomCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData,$window) {
+	as.controller('BomCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData, $window) {
 		$scope.productId = $routeParams.productId;
 		$scope.qty = $routeParams.qty;
 		$scope.products = [];
@@ -233,7 +235,7 @@
 		}
 
 		$scope.generateBOM = function() {
-			$scope.data=[];
+			$scope.data = [];
 			angular.forEach($scope.products, function(product) {
 				$scope.data = [ {
 					"Product" : product.productId,
@@ -325,6 +327,7 @@
 	});
 
 	as.controller('QuestionCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData) {
+		$scope.itemsPerPage = "10";
 		$scope.platformId = $routeParams.platformId;
 		$scope.qty = $routeParams.count;
 		$scope.currDate = DeviceData.getCurrentDate();
@@ -390,17 +393,17 @@
 
 			filterTheProducts();
 		}
-		
+
 		// Clear all questions
-		$scope.clearQuestions = function(){
+		$scope.clearQuestions = function() {
 			angular.forEach($scope.questions, function(question) {
-					angular.forEach(question.options, function(option) {
-							option.isUserAnswer = "false";
-					});
+				angular.forEach(question.options, function(option) {
+					option.isUserAnswer = "false";
+				});
 			});
-			
-			$scope.tags =[];
-			
+
+			$scope.tags = [];
+
 			filterTheProducts();
 		}
 
@@ -453,13 +456,15 @@
 		filterTheProducts();
 
 		$scope.loadQuestions = function($query) {
-		    return $http.get('questions.json', { cache: true}).then(function(response) {
-		      var questions = response.data.questions;
-		      return questions.filter(function(question) {
-		        return question.name.toLowerCase().indexOf($query.toLowerCase()) != -1;
-		      });
-		    });
-		  };
+			return $http.get('questions.json', {
+				cache : true
+			}).then(function(response) {
+				var questions = response.data.questions;
+				return questions.filter(function(question) {
+					return question.name.toLowerCase().indexOf($query.toLowerCase()) != -1;
+				});
+			});
+		};
 
 	});
 
