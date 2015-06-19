@@ -29,7 +29,6 @@ public class IPAddressUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return false;
 	}
 

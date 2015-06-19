@@ -28,7 +28,7 @@
 								<tr ng-repeat="option in item.options">
 									<td style="border-top-width: 0px;"><label><input
 											type="{{item.type}}" name="{{item.name}}"
-											ng-click="questionSelected(item.name,option.value,item.type)"
+											ng-click="questionSelected(item.id,option.value,item.type)"
 											ng-value="'true'" ng-model="option.isUserAnswer">
 											&nbsp;{{option.value}}</input> </input> </label>
 								</tr>
@@ -37,7 +37,7 @@
 								<tr>
 									<td align="center"><button
 											class="btn btn-primary btn-md btn-block"
-											ng-click="clearQuestions()">Clear</button></td>
+											ng-click="clearQuestions()">Clear All</button></td>
 								</tr>
 							</tfoot>
 						</table>
@@ -55,22 +55,8 @@
 				<!-- /.panel-heading -->
 				<div class="panel-body">
 					<div class="table-responsive">
-						<!-- <div class="col-md-4">
-							<label><msg key="itemsPerPage" /> : </label> <select
-								class="form-control" style="width: 20%; display: inline;"
-								ng-model="itemsPerPage">
-								<option value="5">5</option>
-								<option value="10">10</option>
-								<option value="20">20</option>
-								<option value="30">30</option>
-								<option value="50">50</option>
-								<option value="100">100</option>
-								<option value="devices.length">All</option>
-							</select>
-						</div> -->
 						<table class="table table1">
-							<tbody
-								dir-paginate="product in replacableProducts  | itemsPerPage: itemsPerPage">
+							<tbody ng-repeat="product in replacableProducts">
 								<tr>
 									<td width="27%" rowspan="3"><img
 										src="img/cisco-switch.jpg" alt="" /></td>
@@ -93,10 +79,14 @@
 									<td colspan="3"><hr /></td>
 								</tr>
 							</tbody>
+							<tbody ng-if="replacableProducts.length === 0">
+								<tr>
+									<td colspan="5" align="center" style="color:RED"><b><msg key="noDeviceFound"/>.</b></td>
+								</tr>
+							</tbody>
 							<tfoot>
 								<tr>
-									<td colspan="5" class="text-center"><dir-pagination-controls
-											class="ng-isolate-scope" /></td>
+									<td colspan="5" class="text-center"></td>
 								</tr>
 							</tfoot>
 						</table>

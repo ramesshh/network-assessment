@@ -21,9 +21,9 @@
 							<option value="all">All Devices (Including Unknown
 								Devices)</option>
 							<option value="Cisco">Cisco Devices</option>
-							<option value="ROUTER">-Routers</option>
-							<option value="SWITCH">-Switches</option>
-							<option value="WIFI">-Wifi</option>
+							<option value="ROUTER">Routers</option>
+							<option value="SWITCH">Switches</option>
+							<option value="WIFI">Wireless</option>
 						</select>
 					</div>
 					<div class="col-md-4">
@@ -72,6 +72,9 @@
 								<td><a class="btn btn-primary btn-xs"
 									ng-href='#/discovery/{{device.platformId}}/replace'><msg
 											key="replace" /> </a></td>
+							</tr>
+							<tr ng-if="devices && devices.length === 0">
+								<td colspan="7" align="center" style="color:RED"><b><msg key="noDeviceFound"/>.</b></td>
 							</tr>
 						</tbody>
 						<tfoot>

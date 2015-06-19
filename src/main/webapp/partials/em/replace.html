@@ -48,6 +48,9 @@
 									<td>{{device.locationName}}</td>
 									<td>{{device.family}}</td>
 								</tr>
+								<tr ng-if="devices && devices.length === 0">
+									<td colspan="11" align="center" style="color:RED"><b><msg key="noDeviceFound"/>.</b></td>
+								</tr>
 								<tr class="gradeU">
 									<td colspan="11" align="center"><button
 											class="btn btn-primary btn-lg" ng-click="replaceDevices()">

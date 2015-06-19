@@ -41,28 +41,16 @@ public class SearchController {
 			@RequestParam(value = "from", required = false) String fromIP,
 			@RequestParam(value = "q", required = false) String keyword) {
 
-		String from = null;
-		String to = null;
-
-		if (StringUtils.isNotBlank(keyword) && !StringUtils.equalsIgnoreCase("undefined", keyword)) {
-			String[] strings = StringUtils.split(keyword, "-");
-			from = strings[0];
-			to = strings[1];
-
-		}
-
 		List<DiscoveryDevices> discoveryDevices = new ArrayList<DiscoveryDevices>();
 
 		try {
 			discoveryDevices = searchService.getDevices();
 		} catch (Throwable e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return new ResponseEntity<>(discoveryDevices, HttpStatus.OK);
 		}
 
-		if (log.isDebugEnabled()) {
-			log.debug("get posts size @" + discoveryDevices.size());
-		}
+		log.debug("get posts size {}", discoveryDevices.size());
 
 		return new ResponseEntity<>(discoveryDevices, HttpStatus.OK);
 	}

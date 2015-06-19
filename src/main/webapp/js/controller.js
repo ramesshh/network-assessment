@@ -231,7 +231,7 @@
 
 		$scope.sendForApproval = function() {
 			$scope.generateBOM();
-			$window.open('https://apps.cisco.com/ccw/cpc/concept/268437899', '_blank');
+			$window.open('https://www.cisco.com/go/commerceworkspace', '_blank');
 		}
 
 		$scope.generateBOM = function() {
@@ -403,8 +403,11 @@
 			});
 
 			$scope.tags = [];
-
-			filterTheProducts();
+			
+			$scope.replacableProducts = [];
+			angular.forEach($scope.allProducts, function(product) {
+				$scope.replacableProducts.push(product);
+			});
 		}
 
 		// Filter the products based on the current question set
