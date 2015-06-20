@@ -23,15 +23,15 @@
 						<table width="100%" class="table table1">
 							<tbody ng-repeat="item in questions">
 								<tr>
-									<th>{{item.question}}</th>
+									<th><input type="checkbox" /> {{item.question}}</th>
 								</tr>
-								<tr ng-repeat="option in item.options">
+								<!--<tr ng-repeat="option in item.options">
 									<td style="border-top-width: 0px;"><label><input
 											type="{{item.type}}" name="{{item.name}}"
 											ng-click="questionSelected(item.id,option.value,item.type)"
 											ng-value="'true'" ng-model="option.isUserAnswer">
-											&nbsp;{{option.value}}</input> </input> </label>
-								</tr>
+											&nbsp;{{option.value}}</input></label>
+								</tr>  -->
 							</tbody>
 							<tfoot>
 								<tr>

@@ -1,32 +1,57 @@
-  <div class="container" ng-controller="LoginController">
-        <div class="row"> 
-            <div class="col-md-4 col-md-offset-4">
-            	<div class="login-panel">
-                	 <div align="center"><img src="img/cisco-apic.png" alt="logo"/></div>
-                     <div class="clearfix">&nbsp;</div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><msg key="ciscoAppLogin"></h3>
-                    </div>
-                    <div class="panel-body">
-                        <form role="form" class="form form-horizontal" ng-submit="login()">
-                            <fieldset>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="CCO User ID" name="email" type="text" ng-model="username" autofocus required="required">
-                                </div>
-                                <div class="form-group">
-                                    <input class="form-control" ng-model="password" placeholder="CCO Password" name="password" type="password" value="" required="required">
-                                </div>
-                                <button type="submit" ng-click="login()" class="btn btn-lg btn-success btn-block">
+  <div id="page-wrapper">
+        	<div class="container">
+            	<div class="row">
+                <div class="col-lg-12">
+                    <h1 class="pagetitle">Log In</h1>
+                    <div class="row">
+                    	<div class="col-md-12 language">
+                    	<label>Language :</label>
+                        <select class="select_box form-control">
+                        	<option><a ng-class="(language() == 'en')?'btn-primary':''"
+							ng-click="setLanguage('en')">English</a></option>
+							<option><a ng-class="(language() == 'ja')?'btn-primary':''"
+							ng-click="setLanguage('ja')">???</a></option>
+                        </select>
+                       </div>
+                   </div>
+                </div>
+               
+            </div>
+             <!-- /language section -->
+            
+            <div class="row" ng-controller="LoginController">
+            	<div class="col-md-8">
+                	<div id="login" class="box-padded">
+                    	<h3><msg key="ciscoAppLogin"></h3>
+                     	<form role="form" ng-submit="login()">
+                          <div class="form-group">
+                            <label for="recipient-name" class="control-label">User Name:</label>
+                            <input class="form-control" placeholder="CCO User ID" name="email" type="text" ng-model="username" autofocus required="required">
+                         </div>
+                          <div class="form-group">
+                            <label for="message-text" class="control-label">Password:</label>
+                             <input class="form-control" ng-model="password" placeholder="CCO Password" name="password" type="password" value="" required="required">
+                          </div>
+                          <button type="submit" ng-click="login()" class="button-cta">
 								<msg key="login"></msg>
 								</button>
-                            </fieldset>
-                        </form>
+                       </form>
+                       <div class="clearfix">&nbsp;</div>
+                       <a href="#">Forgot your user ID and/or Password?</a>
                     </div>
                 </div>
+                <div class="col-md-4">
+                	<aside id="register">
+                        <div class="box-padded">
+                          <h3>Create A New Account</h3>
+                          <p>There are various levels of access depending on your relationship with Cisco. Review the <a href="#">benefits of registration</a> and find the level that is most appropriate for you.</p>
+                          <div>
+                            <a href="#" class="button-cta">Register Now</a>
+                          </div>
+                        </div>
+                      </aside>
                 </div>
             </div>
+            
+            </div>
         </div>
-    </div>
-
-
