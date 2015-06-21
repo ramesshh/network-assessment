@@ -5,10 +5,13 @@
  */
 package com.softql.apicem.api.user;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -24,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.softql.apicem.Constants;
-import com.softql.apicem.domain.User;
 import com.softql.apicem.exception.InvalidRequestException;
 import com.softql.apicem.model.ApicEmLoginForm;
 import com.softql.apicem.model.SignupForm;
@@ -86,16 +88,48 @@ public class SignupController {
 			throw new InvalidRequestException(errors);
 		}
 
-		User currentUser = SecurityUtil.currentUser();
-		currentUser.setApicIp(form.getApicemIP());
-		currentUser.setApicPassword(form.getPassword());
-		currentUser.setApicUserName(form.getUsername());
-		currentUser.setVersion(form.getVersion());
-
 		String url = URLUtil
 				.constructUrl(form.getApicemIP(), null, form.getVersion(), ServiceURLS.TICKET.value(), null);
-		String token = apicEmService.getToken(form, url);
+		String token = "";
+		boolean hasErrors = false;
+		try {
+			token = apicEmService.getToken(form, url);
+		} catch (Exception e) {
+			hasErrors = true;
+			e.printStackTrace();
+		}
+
+		if (!StringUtils.containsAny(url, "sandbox") && StringUtils.isBlank(token) || hasErrors) {
+			return new ResponseEntity<>(token, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 
 		return new ResponseEntity<>(token, HttpStatus.CREATED);
+	}
+
+	@RequestMapping(value = { "/apicem" }, method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<String> onboardApicEm(@RequestBody ApicEmLoginForm form, BindingResult errors,
+			HttpServletRequest req) {
+
+		if (errors.hasErrors()) {
+			throw new InvalidRequestException(errors);
+		}
+
+		String userName = SecurityUtil.currentUser().getUsername();
+		form.setUserId(userName);
+
+		apicEmService.onBoardApicem(form);
+
+		return new ResponseEntity<>("Success", HttpStatus.CREATED);
+	}
+
+	@RequestMapping(value = { "/apicem" }, method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<List<ApicEmLoginForm>> getAllApicEMs(HttpServletRequest req) {
+
+		String userName = SecurityUtil.currentUser().getUsername();
+		List<ApicEmLoginForm> apicEMList = apicEmService.getApicEms(userName);
+
+		return new ResponseEntity<>(apicEMList, HttpStatus.OK);
 	}
 }

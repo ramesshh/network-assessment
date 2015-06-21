@@ -8,6 +8,7 @@ package com.softql.apicem.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.net.ssl.SSLContext;
 
 import org.apache.http.auth.AuthScope;
@@ -21,6 +22,9 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -44,6 +48,9 @@ public class ApicEmService {
 	private static final Logger log = LoggerFactory.getLogger(ApicEmService.class);
 
 	private RestTemplate restTemplate;
+
+	@Inject
+	private MongoOperations mongoTemplate;
 
 	private void getRestTemplate(String username, String password) {
 		try {
@@ -72,15 +79,9 @@ public class ApicEmService {
 		ticketForm.setUsername(form.getUsername());
 		ticketForm.setPassword(form.getPassword());
 		Ticket ticket = new Ticket();
-		String token = "";
-		try {
-			getRestTemplate(form.getUsername(), form.getPassword());
-			ticket = restTemplate.postForObject(url, ticketForm, Ticket.class);
-			token = ticket.getResponse().getServiceTicket();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return token;
+		getRestTemplate(form.getUsername(), form.getPassword());
+		ticket = restTemplate.postForObject(url, ticketForm, Ticket.class);
+		return ticket.getResponse().getServiceTicket();
 	}
 
 	public List<DiscoveryDevices> getDevices(String url) {
@@ -89,5 +90,22 @@ public class ApicEmService {
 		List<DiscoveryDevices> arrayToList = CollectionUtils.arrayToList(deviceDetails.getResponse());
 		deviceList.addAll(arrayToList);
 		return deviceList;
+	}
+
+	public void onBoardApicem(ApicEmLoginForm form) {
+		mongoTemplate.save(form, "apicems");
+		System.out.println("apicem onboarded");
+
+	}
+
+	public List<ApicEmLoginForm> getApicEms(String userName) {
+		// find
+		List<ApicEmLoginForm> apicems = mongoTemplate.find(new Query(Criteria.where("userId").is(userName)),
+				ApicEmLoginForm.class, "apicems");
+
+		if (CollectionUtils.isEmpty(apicems)) {
+			apicems = new ArrayList<ApicEmLoginForm>();
+		}
+		return apicems;
 	}
 }

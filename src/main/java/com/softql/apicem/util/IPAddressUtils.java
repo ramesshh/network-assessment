@@ -32,7 +32,7 @@ public class IPAddressUtils {
 		return false;
 	}
 
-	public static void main(String[] args) throws UnknownHostException {
+	public void main(String[] args) throws UnknownHostException {
 		long ipLo = ipToLong(InetAddress.getByName("192.200.0.0"));
 		long ipHi = ipToLong(InetAddress.getByName("192.255.0.0"));
 		long ipToTest = ipToLong(InetAddress.getByName("192.200.3.0"));

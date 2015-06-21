@@ -6,6 +6,8 @@ public class ApicEmLoginForm implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private String userId;
+
 	private String username;
 
 	private String password;
@@ -13,6 +15,16 @@ public class ApicEmLoginForm implements Serializable {
 	private String apicemIP;
 
 	private String version;
+
+	private String location;
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
 
 	public String getUsername() {
 		return username;
@@ -40,6 +52,14 @@ public class ApicEmLoginForm implements Serializable {
 
 	public String getVersion() {
 		return version;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public void setVersion(String version) {

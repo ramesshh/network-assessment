@@ -21,7 +21,7 @@ import org.springframework.web.client.RestTemplate;
 
 public class CertTest {
 
-	public static void main(String[] args) {
+	public void main(String[] args) {
 
 		try {
 

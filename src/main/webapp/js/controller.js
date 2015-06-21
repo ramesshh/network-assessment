@@ -45,28 +45,37 @@
 		};
 	});
 
-	as.controller('ApicEMLoginController', function($scope, $rootScope, $http, base64, $location, DeviceData,$window) {
+	as.controller('ApicEMLoginController', function($scope, $rootScope, $http, base64, $location, DeviceData, $window) {
 
 		$scope.selectedApicem = '';
 		$scope.apicUsername = '';
 		$scope.apicPassword = '';
 		$scope.version = '';
 
-	/*	$scope.allApicEms = [];
-		$http.get('apic-ems.json').success(function(data) {
-			$scope.allApicEms = data.apicems;
-			$scope.selectedApicem = $scope.allApicEms[0].apicemIp;
-		});*/
-		
+		load = function() {
+
+			$scope.allApicEms = [];
+			$http.get('api/apicem').success(function(data) {
+				angular.forEach(data, function(apicEm) {
+					$scope.allApicEms.push(apicEm);
+					$scope.selectedApicem = apicEm.apicemIP;
+				});
+
+			});
+		}
+
+		load();
+
 		$scope.apicemLogin = function() {
 
 			DeviceData.setSelectedApicEm($scope.selectedApicem);
-			/*angular.forEach($scope.allApicEms, function(apicEm) {
+
+			angular.forEach($scope.allApicEms, function(apicEm) {
 				if (apicEm.apicemIp == $scope.selectedApicem) {
 					DeviceData.setApicemVersion(apicEm.version);
 					$scope.version = apicEm.version;
 				}
-			});*/
+			});
 
 			var actionURL = "api/token";
 			var data = {
@@ -79,23 +88,59 @@
 			$http.post(actionURL, data).success(function(data) {
 				console.log("Success Data is " + data);
 				DeviceData.setToken(data);
-				$window.sessionStorage.setItem('token',data);
-				$window.sessionStorage.setItem('username',$scope.apicUsername);
-				$window.sessionStorage.setItem('password',$scope.apicPassword);
-				$window.sessionStorage.setItem('version',$scope.version);
-				$window.sessionStorage.setItem('apicem',$scope.selectedApicem);
+				$window.sessionStorage.setItem('token', data);
+				$window.sessionStorage.setItem('username', $scope.apicUsername);
+				$window.sessionStorage.setItem('password', $scope.apicPassword);
+				$window.sessionStorage.setItem('version', $scope.version);
+				$window.sessionStorage.setItem('apicem', $scope.selectedApicem);
 				$http.defaults.headers.common['X-Access-Token'] = data;
-				$http.defaults.headers.common['apicem']= $scope.selectedApicem;
-				$http.defaults.headers.common['version']= $scope.version;
+				$http.defaults.headers.common['apicem'] = $scope.selectedApicem;
+				$http.defaults.headers.common['version'] = $scope.version;
 				$location.url("/discovery");
 			}).error(function(data) {
 				console.log("Failure data Data is " + data);
+				alert("Server unavailable.. Please check your IP address and try again.");
 			});
-
 		};
+
+		$scope.onboardApicEm = function() {
+
+			save = function() {
+				var data = {
+					"apicemIP" : $scope.newApicIP,
+					"version" : $scope.newApicVersion,
+					"location" : $scope.location
+				};
+				var actionURL = "api/apicem";
+				$http.post(actionURL, data).success(function(data) {
+					console.log("Success Data is " + data);
+					$scope.newApicIP = "";
+					$scope.newApicVersion = "";
+					$scope.location = "";
+					alert("APIC EM Onboarded successfully");
+					load();
+				});
+			}
+
+			validateIp = function(ip) {
+				var pattern = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]).){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/g;
+				/* use  javascript's test() function to execute the regular expression and then store the result - which is either true or false */
+				var bValidIP = pattern.test(ip);
+				if (!bValidIP) {
+					alert("You have entered an invalid IP address!");
+				} if($scope.newApicVersion=="" || $scope.newApicVersion=="undefined" || $scope.newApicVersion==undefined){
+					alert("Please select APIC EM Version");
+				}
+				else {
+					save();
+				}
+			}
+			validateIp($scope.newApicIP);
+		}
+
 	});
 
-	as.controller('SearchController', function($scope, $http, i18n, $location, DeviceData,$window) {
+	as.controller('SearchController', function($scope, $http, i18n, $location, DeviceData, $window) {
 		$scope.currentDate = Date.now();
 		DeviceData.setCurrentDate($scope.currentDate);
 		$scope.originalData = '';
@@ -103,10 +148,10 @@
 		$scope.itemsPerPage = "10";
 		$scope.groupBy = 'groupBy_deviceType';
 		var groupType = $scope.groupBy;
-		
+
 		$http.defaults.headers.common['X-Access-Token'] = $window.sessionStorage.getItem('token');
-		$http.defaults.headers.common['apicem']= $window.sessionStorage.getItem('apicem');
-		$http.defaults.headers.common['version']= $window.sessionStorage.getItem('version');
+		$http.defaults.headers.common['apicem'] = $window.sessionStorage.getItem('apicem');
+		$http.defaults.headers.common['version'] = $window.sessionStorage.getItem('version');
 		var actionUrl = 'api/discovery/search';
 		load = function() {
 			$http.get(actionUrl).success(function(data) {
@@ -120,7 +165,7 @@
 				 */
 				$scope.originalData = data;
 				DeviceData.setDeviceData(data);
-				$window.sessionStorage.setItem('devices',data);
+				$window.sessionStorage.setItem('devices', data);
 				$scope.devices = groupByData(data, groupType);
 				// }
 			});
@@ -160,27 +205,25 @@
 				$scope.devices = groupByData($scope.filterDevices, groupType);
 			}
 		}
-		
-		
-		 	$scope.order = '+platformId';
 
-	        $scope.orderBy = function (property) {
-	            $scope.order = ($scope.order[0] === '+' ? '-' : '+') + property;
-	        };
+		$scope.order = '+platformId';
 
-	        $scope.orderIcon = function (property) {
-	            return property === $scope.order.substring(1) ? $scope.order[0] === '+' ? 'glyphicon glyphicon-chevron-up' : 'glyphicon glyphicon-chevron-down' : '';
-	        };
-		
-		
+		$scope.orderBy = function(property) {
+			$scope.order = ($scope.order[0] === '+' ? '-' : '+') + property;
+		};
+
+		$scope.orderIcon = function(property) {
+			return property === $scope.order.substring(1) ? $scope.order[0] === '+' ? 'glyphicon glyphicon-chevron-up' : 'glyphicon glyphicon-chevron-down' : '';
+		};
+
 	});
 
-	as.controller('ReplaceCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData, $filter,$window) {
-		
+	as.controller('ReplaceCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData, $filter, $window) {
+
 		$scope.path = '/' + $routeParams.platformId;
-		
+
 		$scope.itemsPerPage = "10";
-		$scope.platformId =decodeURIComponent( $routeParams.platformId);
+		$scope.platformId = decodeURIComponent($routeParams.platformId);
 		$scope.allDevices = DeviceData.getDeviceData();
 		$scope.selectedCount = 0;
 		DeviceData.setPlatformId($routeParams.platformId);
@@ -231,19 +274,19 @@
 			if ($scope.selectedCount == 0) {
 				alert("Please select atleast one device to replace");
 			} else {
-				$location.url('/products/'+ $scope.selectedCount+'/product/'+encodeURIComponent($scope.platformId));
+				$location.url('/products/' + $scope.selectedCount + '/product/' + encodeURIComponent($scope.platformId));
 			}
 		}
-		
+
 		$scope.order = '+platformId';
 
-        $scope.orderBy = function (property) {
-            $scope.order = ($scope.order[0] === '+' ? '-' : '+') + property;
-        };
+		$scope.orderBy = function(property) {
+			$scope.order = ($scope.order[0] === '+' ? '-' : '+') + property;
+		};
 
-        $scope.orderIcon = function (property) {
-            return property === $scope.order.substring(1) ? $scope.order[0] === '+' ? 'glyphicon glyphicon-chevron-up' : 'glyphicon glyphicon-chevron-down' : '';
-        };
+		$scope.orderIcon = function(property) {
+			return property === $scope.order.substring(1) ? $scope.order[0] === '+' ? 'glyphicon glyphicon-chevron-up' : 'glyphicon glyphicon-chevron-down' : '';
+		};
 
 	});
 
@@ -467,12 +510,12 @@
 				$scope.pushProduct = 0;
 				angular.forEach($scope.questions, function(question) {
 					if (question.checked && $scope.pushProduct >= 0) {
-						if (product[question.id].toLowerCase() == "Y".toLowerCase() ( question.selectedOtion =="" || question.selectedOtion.toLowerCase() == product.addlParams.toLowerCase())) {
+						if (product[question.id].toLowerCase() == "Y".toLowerCase()(question.selectedOtion == "" || question.selectedOtion.toLowerCase() == product.addlParams.toLowerCase())) {
 							$scope.pushProduct = 1;
 						} else {
 							$scope.pushProduct = -1;
 						}
-					} 
+					}
 				});
 				if ($scope.pushProduct == 1) {
 					$scope.replacableProducts.push(product);
