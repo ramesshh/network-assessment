@@ -4,12 +4,14 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,137 +21,185 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Table(name = "users")
 public class User implements UserDetails, Serializable {
 
-    /**
+	/**
      *
      */
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @Id()
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+	@Id()
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;
 
-    @Column(name = "username")
-    private String username;
+	@Column(name = "username")
+	private String username;
 
-    @Column(name = "password")
-    private String password;
+	@Column(name = "password")
+	private String password;
 
-    @Column(name = "name")
-    private String name;
+	@Column(name = "name")
+	private String name;
 
-    @Column(name = "email")
-    private String email;
+	@Column(name = "email")
+	private String email;
 
-    @Column(name = "role")
-    private String role;
+	@Column(name = "role")
+	private String role;
 
-    @Column(name = "created_date")
-    @CreatedDate
-    private Date createdDate;
+	@Column(name = "created_date")
+	@CreatedDate
+	private Date createdDate;
 
-    public User() {
-    }
+	private String apicUserName;
 
-    public User(String username, String password, String name,
-            String role) {
-        this.username = username;
-        this.password = password;
-        this.name = name;
-        this.role = role;
-    }
+	private String apicPassword;
 
-    public Date getCreatedDate() {
-        return createdDate;
-    }
+	private String apicIp;
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
+	private String version;
 
-    public Long getId() {
-        return id;
-    }
+	private String token;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public User() {
+	}
 
-    public String getName() {
-        if (this.name == null || this.name.trim().length() == 0) {
-            return this.username;
-        }
-        return name;
-    }
+	public User(String username, String password, String name, String role) {
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.role = role;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public Date getCreatedDate() {
+		return createdDate;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public String getRole() {
-        return role;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setRole(String role) {
-        this.role = role;
-    }
+	public String getName() {
+		if (this.name == null || this.name.trim().length() == 0) {
+			return this.username;
+		}
+		return name;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("ROLE_" + this.role));
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
+	public String getRole() {
+		return role;
+	}
 
-    @Override
-    public String getUsername() {
-        return this.username;
-    }
+	public void setRole(String role) {
+		this.role = role;
+	}
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return Arrays.asList(new SimpleGrantedAuthority("ROLE_" + this.role));
+	}
 
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+	@Override
+	public String getPassword() {
+		return this.password;
+	}
 
-    @Override
-    public String toString() {
-        return "User [id=" + id + ", username=" + username + ", password="
-                + password + ", name=" + name + ", role=" + role
-                + "]";
-    }
+	@Override
+	public String getUsername() {
+		return this.username;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+
+	public String getApicUserName() {
+		return apicUserName;
+	}
+
+	public void setApicUserName(String apicUserName) {
+		this.apicUserName = apicUserName;
+	}
+
+	public String getApicPassword() {
+		return apicPassword;
+	}
+
+	public void setApicPassword(String apicPassword) {
+		this.apicPassword = apicPassword;
+	}
+
+	public String getApicIp() {
+		return apicIp;
+	}
+
+	public void setApicIp(String apicIp) {
+		this.apicIp = apicIp;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", name=" + name + ", role="
+				+ role + "]";
+	}
 
 }

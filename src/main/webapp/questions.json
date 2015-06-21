@@ -6,108 +6,66 @@
          "id":"redundantPowerSupply",
          "family":"ASR1002",
          "deviceType":"ROUTER",
-         "rank":"10",
-         "question":"Do you need Redundant power supply ?",
-         "options":[
-        	{
-        	"value":"Yes",
-        	"isUserAnswer":"false"
-        	},
-        	{
-        	"value":"No",
-        	"isUserAnswer":"false"
-        	}],
-         "type":"radio"
+         "checked":"false",
+         "question":"Redundant power supply",
+         "options":[],
+         "selectedOtion":"",
+         "type":"checkbox"
       },
        {  
          "name":"Integrated Switch",
          "id":"ports",
          "family":"ASR1002",
          "deviceType":"ROUTER",
-         "rank":"10",
-         "question":"Do you need integrated switch ?",
-          "options":[
-        	{
-        	"value":"24",
-        	"isUserAnswer":"false"
-        	},
-        	{
-        	"value":"48",
-        	"isUserAnswer":"false"
-        	}],
-         "type":"radio"
+          "checked":false,
+         "question":"Integrated switch",
+         "options":["24","48"],
+         "selectedOtion":"",
+         "type":"checkbox"
       },
        {  
           "name":"Host Application",
          "id":"hostApplication",
          "family":"ASR1002",
          "deviceType":"ROUTER",
-         "rank":"10",
-         "question":"Do you need host applications ?",
+         "checked":false,
+         "question":"Host applications",
          "options":[
-        	{
-        	"value":"Yes",
-        	"isUserAnswer":"false"
-        	},
-        	{
-        	"value":"No",
-        	"isUserAnswer":"false"
-        	}],
-         "type":"radio"
+          "NHX-100","NHX-101","NHX-106"],
+          "selectedOtion":"",
+         "type":"checkbox"
       }, 
        {  
           "name":"Secure WAN",
          "id":"secureWAN",
          "family":"ASR1002",
          "deviceType":"ROUTER",
-         "rank":"10",
-         "question":"Do you need to Secure WAN ?",
-          "options":[
-        	{
-        	"value":"Yes",
-        	"isUserAnswer":"false"
-        	},
-        	{
-        	"value":"No",
-        	"isUserAnswer":"false"
-        	}],
-         "type":"radio"
+          "checked":false,
+         "question":"Secure WAN",
+          "options":[],
+          "selectedOtion":"",
+         "type":"checkbox"
       },
         {  
          "name":"Intelligent WAN",
          "id":"intelligantWAN",
          "family":"ASR1002",
          "deviceType":"ROUTER",
-         "rank":"10",
-         "question":"Are you planning to deploy intelligent WAN solutions ?",
-        "options":[
-        	{
-        	"value":"Yes",
-        	"isUserAnswer":"false"
-        	},
-        	{
-        	"value":"No",
-        	"isUserAnswer":"false"
-        	}],
-         "type":"radio"
+        "checked":false,
+         "question":"Intelligent WAN solutions ?",
+       "options":[],
+       "selectedOtion":"",
+         "type":"checkbox"
       },
        {  
          "name":"Cisco Unified Communication",
          "id":"ciscoUnifiedCommns",
          "family":"ASR1002",
          "deviceType":"ROUTER",
-         "rank":"10",
-         "question":"Are you going to enable Cisco Unified Communications Solutions ?",
-          "options":[
-        	{
-        	"value":"Yes",
-        	"isUserAnswer":"false"
-        	},
-        	{
-        	"value":"No",
-        	"isUserAnswer":"false"
-        	}],
-         "type":"radio"
+         "checked":false,
+         "question":"Cisco Unified Communications Solutions",
+         "selectedOtion":"",
+         "type":"checkbox"
       }
    ]
 }

@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,10 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.softql.apicem.Constants;
+import com.softql.apicem.domain.User;
 import com.softql.apicem.exception.InvalidRequestException;
 import com.softql.apicem.model.ApicEmLoginForm;
 import com.softql.apicem.model.SignupForm;
 import com.softql.apicem.model.UserDetails;
+import com.softql.apicem.security.SecurityUtil;
 import com.softql.apicem.service.ApicEmService;
 import com.softql.apicem.service.UserService;
 import com.softql.apicem.util.ServiceURLS;
@@ -44,6 +47,9 @@ public class SignupController {
 
 	@Inject
 	private UserService userService;
+
+	@Inject
+	private AuthenticationManager authenticationManager;
 
 	@Inject
 	private ApicEmService apicEmService;
@@ -80,8 +86,15 @@ public class SignupController {
 			throw new InvalidRequestException(errors);
 		}
 
+		User currentUser = SecurityUtil.currentUser();
+		currentUser.setApicIp(form.getApicemIP());
+		currentUser.setApicPassword(form.getPassword());
+		currentUser.setApicUserName(form.getUsername());
+		currentUser.setVersion(form.getVersion());
+
 		String url = URLUtil.constructUrl(form.getApicemIP(), null, form.getVersion(), ServiceURLS.TICKET.value());
 		String token = apicEmService.getToken(form, url);
+
 		return new ResponseEntity<>(token, HttpStatus.CREATED);
 	}
 }

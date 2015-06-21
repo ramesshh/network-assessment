@@ -367,29 +367,40 @@
 
 		}
 
+		$scope.allTags = [];
 		questions = function() {
 			$scope.questions = [];
 			$http.get('questions.json').success(function(data) {
 				angular.forEach(data.questions, function(question) {
 					if (question.family == $scope.platformId) {
 						$scope.questions.push(question);
+						$scope.allTags.push(question.name);
 					}
 				});
 			});
 		}
 
-		$scope.questionSelected = function(type, value, inputType) {
-			if (inputType == "radio") {
-				angular.forEach($scope.questions, function(question) {
-					if (question.id == type) {
-						angular.forEach(question.options, function(option) {
-							if (option.value != value) {
-								option.isUserAnswer = "false";
-							}
-						});
-					}
-				});
-			}
+		$scope.questionSelected = function(id) {
+			$scope.tags = [];
+			angular.forEach($scope.questions, function(question) {
+				if (question.checked) {
+					var text = {
+						"text" : question.name
+					};
+					$scope.tags.push(text);
+				}
+			});
+
+			filterTheProducts();
+		}
+
+		$scope.tagRemoved = function(tag) {
+			angular.forEach($scope.questions, function(question) {
+				if (question.name == tag.text) {
+					question.checked = false;
+					question.selected = "";
+				}
+			});
 
 			filterTheProducts();
 		}
@@ -397,13 +408,12 @@
 		// Clear all questions
 		$scope.clearQuestions = function() {
 			angular.forEach($scope.questions, function(question) {
-				angular.forEach(question.options, function(option) {
-					option.isUserAnswer = "false";
-				});
+				question.checked = false;
+				question.selected = "";
 			});
 
 			$scope.tags = [];
-			
+
 			$scope.replacableProducts = [];
 			angular.forEach($scope.allProducts, function(product) {
 				$scope.replacableProducts.push(product);
@@ -412,33 +422,17 @@
 
 		// Filter the products based on the current question set
 		filterTheProducts = function() {
-			$scope.pushProduct = 0;
 			$scope.replacableProducts = [];
 			angular.forEach($scope.allProducts, function(product) {
+				$scope.pushProduct = 0;
 				angular.forEach($scope.questions, function(question) {
-
-					// if (question.type != "checkbox") {
-					angular.forEach(question.options, function(option) {
-						if ((option.isUserAnswer == true || option.isUserAnswer == "true") && 0 <= $scope.pushProduct) {
-							if (product[question.id].toLowerCase() != option.value.toLowerCase()) {
-								$scope.pushProduct = -1;
-							} else {
-								$scope.pushProduct = 1;
-							}
+					if (question.checked && $scope.pushProduct >= 0) {
+						if (product[question.id].toLowerCase() == "Y".toLowerCase() ( question.selectedOtion =="" || question.selectedOtion.toLowerCase() == product.addlParams.toLowerCase())) {
+							$scope.pushProduct = 1;
+						} else {
+							$scope.pushProduct = -1;
 						}
-					});
-					/*
-					 * } else { $scope.checkboxGroup = [];
-					 * angular.forEach(question.options, function(option) { if
-					 * (option.isUserAnswer == true || option.isUserAnswer ==
-					 * "true") { if (product[question.id].toLowerCase() !=
-					 * option.value.toLowerCase()) {
-					 * $scope.checkboxGroup.push(0); } else {
-					 * $scope.checkboxGroup.push(1); } } });
-					 * 
-					 * angular.forEach($scope.checkboxGroup, function(group) {
-					 * if (group == 1) { $scope.pushProduct = 1; } }); }
-					 */
+					} 
 				});
 				if ($scope.pushProduct == 1) {
 					$scope.replacableProducts.push(product);

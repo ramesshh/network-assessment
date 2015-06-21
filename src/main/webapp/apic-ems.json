@@ -7,6 +7,10 @@
       {  
          "apicemIp":"64.103.26.55",
          "version":"v0"
+      },
+       {  
+         "apicemIp":"91.222.6.228",
+         "version":"v1"
       }
    ]
 }
