@@ -14,8 +14,20 @@
 						<label class="control-label col-md-3" for="apicemIp"><msg
 								key="apicemIP"></msg></label>
 						<div class="col-md-6">
-							<select class="form-control" ng-model="selectedApicem" id= "apicemIp"
+							<!-- <select class="form-control" ng-model="selectedApicem" id= "apicemIp"
 								ng-options="item.apicemIp as item.apicemIp for item in allApicEms">
+							</select> -->
+							<input class="form-control" ng-model="selectedApicem" placeholder="APIC EM IP"/>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-md-3" for="Version"><msg
+								key="version"></msg></label>
+						<div class="col-md-6">
+							<select class="form-control" id="version" ng-model="version" placeholder="APIC EM Version" required="required" >
+							<option value="v0">V0</option>
+							<option value="v1">V1</option>
 							</select>
 						</div>
 					</div>

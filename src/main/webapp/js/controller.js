@@ -45,27 +45,28 @@
 		};
 	});
 
-	as.controller('ApicEMLoginController', function($scope, $rootScope, $http, base64, $location, DeviceData) {
+	as.controller('ApicEMLoginController', function($scope, $rootScope, $http, base64, $location, DeviceData,$window) {
 
 		$scope.selectedApicem = '';
 		$scope.apicUsername = '';
 		$scope.apicPassword = '';
 		$scope.version = '';
 
-		$scope.allApicEms = [];
+	/*	$scope.allApicEms = [];
 		$http.get('apic-ems.json').success(function(data) {
 			$scope.allApicEms = data.apicems;
 			$scope.selectedApicem = $scope.allApicEms[0].apicemIp;
-		});
+		});*/
+		
 		$scope.apicemLogin = function() {
 
 			DeviceData.setSelectedApicEm($scope.selectedApicem);
-			angular.forEach($scope.allApicEms, function(apicEm) {
+			/*angular.forEach($scope.allApicEms, function(apicEm) {
 				if (apicEm.apicemIp == $scope.selectedApicem) {
 					DeviceData.setApicemVersion(apicEm.version);
 					$scope.version = apicEm.version;
 				}
-			});
+			});*/
 
 			var actionURL = "api/token";
 			var data = {
@@ -78,6 +79,14 @@
 			$http.post(actionURL, data).success(function(data) {
 				console.log("Success Data is " + data);
 				DeviceData.setToken(data);
+				$window.sessionStorage.setItem('token',data);
+				$window.sessionStorage.setItem('username',$scope.apicUsername);
+				$window.sessionStorage.setItem('password',$scope.apicPassword);
+				$window.sessionStorage.setItem('version',$scope.version);
+				$window.sessionStorage.setItem('apicem',$scope.selectedApicem);
+				$http.defaults.headers.common['X-Access-Token'] = data;
+				$http.defaults.headers.common['apicem']= $scope.selectedApicem;
+				$http.defaults.headers.common['version']= $scope.version;
 				$location.url("/discovery");
 			}).error(function(data) {
 				console.log("Failure data Data is " + data);
@@ -86,7 +95,7 @@
 		};
 	});
 
-	as.controller('SearchController', function($scope, $http, i18n, $location, DeviceData) {
+	as.controller('SearchController', function($scope, $http, i18n, $location, DeviceData,$window) {
 		$scope.currentDate = Date.now();
 		DeviceData.setCurrentDate($scope.currentDate);
 		$scope.originalData = '';
@@ -94,6 +103,10 @@
 		$scope.itemsPerPage = "10";
 		$scope.groupBy = 'groupBy_deviceType';
 		var groupType = $scope.groupBy;
+		
+		$http.defaults.headers.common['X-Access-Token'] = $window.sessionStorage.getItem('token');
+		$http.defaults.headers.common['apicem']= $window.sessionStorage.getItem('apicem');
+		$http.defaults.headers.common['version']= $window.sessionStorage.getItem('version');
 		var actionUrl = 'api/discovery/search';
 		load = function() {
 			$http.get(actionUrl).success(function(data) {
@@ -107,6 +120,7 @@
 				 */
 				$scope.originalData = data;
 				DeviceData.setDeviceData(data);
+				$window.sessionStorage.setItem('devices',data);
 				$scope.devices = groupByData(data, groupType);
 				// }
 			});
@@ -148,7 +162,7 @@
 		}
 	});
 
-	as.controller('ReplaceCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData, $filter) {
+	as.controller('ReplaceCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData, $filter,$window) {
 		$scope.itemsPerPage = "10";
 		$scope.platformId = $routeParams.platformId;
 		$scope.allDevices = DeviceData.getDeviceData();

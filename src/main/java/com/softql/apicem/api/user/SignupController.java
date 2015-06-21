@@ -92,7 +92,8 @@ public class SignupController {
 		currentUser.setApicUserName(form.getUsername());
 		currentUser.setVersion(form.getVersion());
 
-		String url = URLUtil.constructUrl(form.getApicemIP(), null, form.getVersion(), ServiceURLS.TICKET.value());
+		String url = URLUtil
+				.constructUrl(form.getApicemIP(), null, form.getVersion(), ServiceURLS.TICKET.value(), null);
 		String token = apicEmService.getToken(form, url);
 
 		return new ResponseEntity<>(token, HttpStatus.CREATED);
