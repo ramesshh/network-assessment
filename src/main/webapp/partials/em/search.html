@@ -26,7 +26,7 @@
 							<option value="WIRELESS">Wireless</option>
 						</select>
 					</div>
-				<!-- 	<div class="col-md-4">
+					<!-- 	<div class="col-md-4">
 						<label><msg key="groupBy" /> : </label> <select
 							class="form-control" style="width: 70%; display: inline;"
 							ng-model="groupBy" ng-change="groupByChange()">
@@ -46,7 +46,7 @@
 							<option value="30">30</option>
 							<option value="50">50</option>
 							<option value="100">100</option>
-							<option value="devices.length"><msg key="all"/></option>
+							<option value="devices.length"><msg key="all" /></option>
 						</select>
 					</div>
 				</div>
@@ -55,32 +55,38 @@
 				<div class="table-responsive">
 					<table class="table table-striped table-hover">
 						<thead>
-							<th><msg key="platformId" /></th>
-							<th><msg key="desc" /></th>
-							<th><msg key="qty" /></th>
-							<th><msg key="version" /></th>
-							<th><msg key="location" /></th>
+							<th ng-click="orderBy('platformId')"><msg key="platformId" /><span
+								ng-class="orderIcon('platformId')" /></th>
+							<!-- 	<th><msg key="desc" /></th> -->
+							<th ng-click="orderBy('qty')"><msg key="qty" /><span
+								ng-class="orderIcon('qty')" /></th>
+							<th ng-click="orderBy('softwareVersion')"><msg key="version" /><span
+								ng-class="orderIcon('softwareVersion')" /></th>
+							<th ng-click="orderBy('locationName')"><msg key="location" /><span
+								ng-class="orderIcon('locationName')" /></th>
 							<th><msg key="action" /></th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr dir-paginate="device in devices | itemsPerPage: itemsPerPage">
+							<tr
+								dir-paginate="device in devices | itemsPerPage: itemsPerPage | orderBy:order">
 								<td>{{device.platformId}}</td>
-								<td>{{device.description}}</td>
+								<!-- <td>{{device.description}}</td> -->
 								<td>{{device.qty}}</td>
 								<td>{{device.softwareVersion}}</td>
 								<td>{{device.locationName}}</td>
-								<td><a class="btn btn-primary btn-md"
-									ng-href='#/discovery/{{device.platformId}}/replace'><msg
+								<td><a class="btn btn-primary btn-md" ng-show="device.type=='ROUTER'"
+									ng-href='#/discovery/{{device.platformId | urlEncode }}'><msg
 											key="replace" /> </a></td>
 							</tr>
 							<tr ng-if="devices && devices.length === 0">
-								<td colspan="7" align="center" style="color:RED"><b><msg key="noDeviceFound"/>.</b></td>
+								<td colspan="6" align="center" style="color: RED"><b><msg
+											key="noDeviceFound" />.</b></td>
 							</tr>
 						</tbody>
 						<tfoot>
 							<tr>
-								<td colspan="7" class="text-center"><dir-pagination-controls
+								<td colspan="6" class="text-center"><dir-pagination-controls
 										class="ng-isolate-scope" /></td>
 							</tr>
 						</tfoot>

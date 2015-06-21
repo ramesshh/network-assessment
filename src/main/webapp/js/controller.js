@@ -160,11 +160,27 @@
 				$scope.devices = groupByData($scope.filterDevices, groupType);
 			}
 		}
+		
+		
+		 	$scope.order = '+platformId';
+
+	        $scope.orderBy = function (property) {
+	            $scope.order = ($scope.order[0] === '+' ? '-' : '+') + property;
+	        };
+
+	        $scope.orderIcon = function (property) {
+	            return property === $scope.order.substring(1) ? $scope.order[0] === '+' ? 'glyphicon glyphicon-chevron-up' : 'glyphicon glyphicon-chevron-down' : '';
+	        };
+		
+		
 	});
 
 	as.controller('ReplaceCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData, $filter,$window) {
+		
+		$scope.path = '/' + $routeParams.platformId;
+		
 		$scope.itemsPerPage = "10";
-		$scope.platformId = $routeParams.platformId;
+		$scope.platformId =decodeURIComponent( $routeParams.platformId);
 		$scope.allDevices = DeviceData.getDeviceData();
 		$scope.selectedCount = 0;
 		DeviceData.setPlatformId($routeParams.platformId);
@@ -215,9 +231,19 @@
 			if ($scope.selectedCount == 0) {
 				alert("Please select atleast one device to replace");
 			} else {
-				$location.url('/discovery/' + $scope.platformId + '/questionare/' + $scope.selectedCount);
+				$location.url('/products/'+ $scope.selectedCount+'/product/'+encodeURIComponent($scope.platformId));
 			}
 		}
+		
+		$scope.order = '+platformId';
+
+        $scope.orderBy = function (property) {
+            $scope.order = ($scope.order[0] === '+' ? '-' : '+') + property;
+        };
+
+        $scope.orderIcon = function (property) {
+            return property === $scope.order.substring(1) ? $scope.order[0] === '+' ? 'glyphicon glyphicon-chevron-up' : 'glyphicon glyphicon-chevron-down' : '';
+        };
 
 	});
 
@@ -342,7 +368,7 @@
 
 	as.controller('QuestionCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData) {
 		$scope.itemsPerPage = "10";
-		$scope.platformId = $routeParams.platformId;
+		$scope.platformId = decodeURIComponent($routeParams.platformId);
 		$scope.qty = $routeParams.count;
 		$scope.currDate = DeviceData.getCurrentDate();
 
