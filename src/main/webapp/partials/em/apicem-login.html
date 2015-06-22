@@ -14,10 +14,20 @@
 						<label class="control-label col-md-3" for="apicemIp"><msg
 								key="apicemIP"></msg></label>
 						<div class="col-md-6">
-							 <select class="form-control" ng-model="selectedApicem" id= "apicemIp" required="required" name="apicemIp"
-								ng-options="item.apicemIP as item.apicemIP for item in allApicEms" required>
+							 <select class="form-control" ng-model="selectedApicem" id= "apicemIp" name="apicemIp"
+								ng-options="item.apicemIP as item.apicemIP for item in allApicEms">
 							</select> 
-							<!-- <span class="error" ng-show="onboardForm.apicemIp.$dirty && onboardForm.apicemIp.$invalid">Select APIC EM</span> -->
+							
+							<!-- <ui-select ng-model="selectedApicem" theme="select2" ng-disabled="disabled" style="min-width: 300px;">
+						    <ui-select-match placeholder="Select a APIC EM...">{{$select.selected.apicemIP}}</ui-select-match>
+						    <ui-select-choices repeat="item in allApicEms | propsFilter: {apicemIP: $select.search, location: $select.search}">
+						      <div ng-bind-html="item.apicemIP | highlight: $select.search"></div>
+						      <small>
+						        IP: {{item.apicemIP}}
+						        Location: {{item.location}}
+						      </small>
+						    </ui-select-choices>
+						  </ui-select> -->
 						</div>
 					</div>
 					

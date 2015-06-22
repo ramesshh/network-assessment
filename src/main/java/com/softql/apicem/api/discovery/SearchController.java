@@ -50,7 +50,7 @@ public class SearchController {
 			discoveryDevices = apicEmService.getDevices(url);
 		} catch (Throwable e) {
 			e.printStackTrace();
-			return new ResponseEntity<>(discoveryDevices, HttpStatus.OK);
+			return new ResponseEntity<>(discoveryDevices, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 		log.debug("get posts size {}", discoveryDevices.size());

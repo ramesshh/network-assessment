@@ -1,5 +1,5 @@
 (function() {
-	var as = angular.module('apicemApp.controllers', [ 'smart-table', 'ui.utils' ]);
+	var as = angular.module('apicemApp.controllers', [ 'smart-table', 'ui.utils' ,'ui.select']);
 
 	as.controller('MainController', function($q, $scope, $rootScope, $http, i18n, $location) {
 		var load = function() {
@@ -155,18 +155,13 @@
 		load = function() {
 			$http.get(actionUrl).success(function(data) {
 				console.log("Data is " + data);
-				/*
-				 * if (data) {
-				 * $http.get('device.json').success(function(response) {
-				 * $scope.originalData = response.devices;
-				 * DeviceData.setDeviceData(response.devices); $scope.devices =
-				 * groupByData(response.devices, groupType); }); } else {
-				 */
 				$scope.originalData = data;
 				DeviceData.setDeviceData(data);
 				$window.sessionStorage.setItem('devices', data);
 				$scope.devices = groupByData(data, groupType);
 				// }
+			}).error(function(data){
+				alert("Internal server error.Please try again.");
 			});
 		}
 		load();
