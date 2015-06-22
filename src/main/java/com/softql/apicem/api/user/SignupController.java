@@ -101,7 +101,8 @@ public class SignupController {
 		}
 
 		if (StringUtils.isBlank(token) || hasErrors) {
-			if (!StringUtils.equalsIgnoreCase(form.getApicemIP(), "sandboxapic.cisco.com")) {
+			if (!StringUtils.equalsIgnoreCase(form.getApicemIP(), "sandboxapic.cisco.com")
+					&& !StringUtils.equalsIgnoreCase(form.getApicemIP(), "64.103.26.55")) {
 				return new ResponseEntity<>(token, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		}
