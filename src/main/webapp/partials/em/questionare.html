@@ -31,7 +31,7 @@
 								<tr ng-if="item.checked && item.options.length >0">
 									<td style="border-top-width: 0px;"><select
 										class="form-control" ng-model="item.selectedOtion"
-										ng-change="questionOptionSelected(item.id,item.selectedOtion)"
+										ng-change="questionSelected(item.id)"
 										ng-options="option as option for option in item.options" /></td>
 										<!-- 	<label>
 									<input
@@ -66,15 +66,14 @@
 						<table class="table table1">
 							<tbody ng-repeat="product in replacableProducts">
 								<tr>
-									<td width="27%" rowspan="3"><img
-										src="img/cisco-switch.jpg" alt="" /></td>
-									<td width="61%">{{product.productId}}</td>
+									<td width="27%" rowspan="3"><img ng-src="img/{{product.imageURL}}" alt="{{product.description}}" style="width:200px; height 100px;"/></td>
+									<td width="61%"><b>{{product.productId}}</b></td>
 									<td width="12%" colspan="3">&nbsp;</td>
 								</tr>
 								<tr>
 									<td>{{product.description}}</td>
 									<td colspan="3" align="center" valign="middle"><strong>Price
-											:</strong> ${{product.price}}</td>
+											:</strong>${{product.price}}</td>
 								</tr>
 								<tr>
 									<td><a href="#">Data sheet Link</a></td>
@@ -82,9 +81,6 @@
 											class="btn btn-primary" ng-click="selectedProduct(product)">
 											<msg key="replace" />
 										</button></td>
-								</tr>
-								<tr>
-									<td colspan="3"><hr /></td>
 								</tr>
 							</tbody>
 							<tbody ng-if="replacableProducts.length === 0">

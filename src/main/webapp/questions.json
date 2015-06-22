@@ -4,7 +4,6 @@
       {  
          "name":"Redundant Power Supply",
          "id":"redundantPowerSupply",
-         "family":"ASR1002",
          "deviceType":"ROUTER",
          "checked":"false",
          "question":"Redundant power supply",
@@ -15,7 +14,6 @@
        {  
          "name":"Integrated Switch",
          "id":"ports",
-         "family":"ASR1002",
          "deviceType":"ROUTER",
           "checked":false,
          "question":"Integrated switch",
@@ -26,19 +24,16 @@
        {  
           "name":"Host Application",
          "id":"hostApplication",
-         "family":"ASR1002",
          "deviceType":"ROUTER",
          "checked":false,
          "question":"Host applications",
-         "options":[
-          "NHX-100","NHX-101","NHX-106"],
+         "options":["UCS-E180D-M2","UCS-E160D-M2/K9","UCS-E140S-M2/k9"],
           "selectedOtion":"",
          "type":"checkbox"
       }, 
        {  
           "name":"Secure WAN",
          "id":"secureWAN",
-         "family":"ASR1002",
          "deviceType":"ROUTER",
           "checked":false,
          "question":"Secure WAN",
@@ -49,7 +44,6 @@
         {  
          "name":"Intelligent WAN",
          "id":"intelligantWAN",
-         "family":"ASR1002",
          "deviceType":"ROUTER",
         "checked":false,
          "question":"Intelligent WAN solutions ?",
@@ -60,7 +54,6 @@
        {  
          "name":"Cisco Unified Communication",
          "id":"ciscoUnifiedCommns",
-         "family":"ASR1002",
          "deviceType":"ROUTER",
          "checked":false,
          "question":"Cisco Unified Communications Solutions",

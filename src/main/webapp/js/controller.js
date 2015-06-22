@@ -1,5 +1,5 @@
 (function() {
-	var as = angular.module('apicemApp.controllers', [ 'smart-table', 'ui.utils' ,'ui.select']);
+	var as = angular.module('apicemApp.controllers', [ 'smart-table', 'ui.utils', 'ui.select' ]);
 
 	as.controller('MainController', function($q, $scope, $rootScope, $http, i18n, $location) {
 		var load = function() {
@@ -95,7 +95,7 @@
 				$http.defaults.headers.common['X-Access-Token'] = data;
 				$http.defaults.headers.common['apicem'] = $scope.selectedApicem;
 				$http.defaults.headers.common['version'] = $scope.version;
-				$location.url("/discovery");
+				$location.url("/devices");
 			}).error(function(data) {
 				console.log("Failure data Data is " + data);
 				alert("Server unavailable.. Please check your IP address and try again.");
@@ -106,32 +106,35 @@
 
 			validateIp = function(ip) {
 				var pattern = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]).){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/g;
-				/* use  javascript's test() function to execute the regular expression and then store the result - which is either true or false */
+				/*
+				 * use javascript's test() function to execute the regular
+				 * expression and then store the result - which is either true
+				 * or false
+				 */
 				var bValidIP = pattern.test(ip);
 				if (!bValidIP) {
 					alert("You have entered an invalid IP address!");
 					return;
-				}else if($scope.newApicVersion=="" || $scope.newApicVersion=="undefined" || $scope.newApicVersion==undefined){
+				} else if ($scope.newApicVersion == "" || $scope.newApicVersion == "undefined" || $scope.newApicVersion == undefined) {
 					alert("Please select APIC EM Version");
 					return;
-				}else {
+				} else {
 					var data = {
-							"apicemIP" : $scope.newApicIP,
-							"version" : $scope.newApicVersion,
-							"location" : $scope.location
-						};
-						var actionURL = "api/apicem";
-						$http.post(actionURL, data).success(function(data) {
-							console.log("Success Data is " + data);
-							$scope.newApicIP = "";
-							$scope.newApicVersion = "";
-							$scope.location = "";
-							alert("APIC EM Onboarded successfully");
-							load();
-						})
-						.error(function(data) {
-							alert("You have entered an invalid IP address!");
-						});
+						"apicemIP" : $scope.newApicIP,
+						"version" : $scope.newApicVersion,
+						"location" : $scope.location
+					};
+					var actionURL = "api/apicem";
+					$http.post(actionURL, data).success(function(data) {
+						console.log("Success Data is " + data);
+						$scope.newApicIP = "";
+						$scope.newApicVersion = "";
+						$scope.location = "";
+						alert("APIC EM Onboarded successfully");
+						load();
+					}).error(function(data) {
+						alert("You have entered an invalid IP address!");
+					});
 				}
 			}
 			validateIp($scope.newApicIP);
@@ -160,7 +163,7 @@
 				$window.sessionStorage.setItem('devices', data);
 				$scope.devices = groupByData(data, groupType);
 				// }
-			}).error(function(data){
+			}).error(function(data) {
 				alert("Internal server error.Please try again.");
 			});
 		}
@@ -220,7 +223,9 @@
 		$scope.platformId = decodeURIComponent($routeParams.platformId);
 		$scope.allDevices = DeviceData.getDeviceData();
 		$scope.selectedCount = 0;
+		$scope.type = '';
 		DeviceData.setPlatformId($routeParams.platformId);
+		$scope.deviceType = $routeParams.type;
 		load = function() {
 			var replaceItemData = [];
 			angular.forEach($scope.allDevices, function(device) {
@@ -268,7 +273,7 @@
 			if ($scope.selectedCount == 0) {
 				alert("Please select atleast one device to replace");
 			} else {
-				$location.url('/products/' + $scope.selectedCount + '/product/' + encodeURIComponent($scope.platformId));
+				$location.url('/products/' + $scope.selectedCount + '/' + $scope.deviceType + '/' + encodeURIComponent($scope.platformId));
 			}
 		}
 
@@ -280,6 +285,151 @@
 
 		$scope.orderIcon = function(property) {
 			return property === $scope.order.substring(1) ? $scope.order[0] === '+' ? 'glyphicon glyphicon-chevron-up' : 'glyphicon glyphicon-chevron-down' : '';
+		};
+
+	});
+
+	as.controller('QuestionCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData) {
+		$scope.itemsPerPage = "10";
+		$scope.platformId = decodeURIComponent($routeParams.platformId);
+		$scope.qty = $routeParams.count;
+		$scope.currDate = DeviceData.getCurrentDate();
+		$scope.deviceType = $routeParams.type;
+		load = function() {
+			$scope.productCatalog = [];
+			$scope.replacableProducts = [];
+			$scope.allProducts = [];
+			$http.get('product-catalog.json').success(function(data) {
+				$scope.productCatalog = data.products;
+				angular.forEach(data.products, function(prodCatalog) {
+					if (prodCatalog.type == $scope.deviceType) {
+						$scope.replacableProducts.push(prodCatalog);
+						$scope.allProducts.push(prodCatalog);
+					}
+				});
+			});
+			console.log("Products::" + $scope.replacableProducts);
+		}
+
+		$scope.allTags = [];
+		questions = function() {
+			$scope.questions = [];
+			$http.get('questions.json').success(function(data) {
+				angular.forEach(data.questions, function(question) {
+					if (question.deviceType == $scope.deviceType) {
+						$scope.questions.push(question);
+						$scope.allTags.push(question.name);
+					}
+				});
+			});
+		}
+
+		$scope.questionSelected = function(id) {
+			$scope.tags = [];
+			angular.forEach($scope.questions, function(question) {
+				if (question.checked) {
+					var text = {
+						"text" : question.name
+					};
+					$scope.tags.push(text);
+				}else{
+					question.selectedOtion = "";
+				}
+			});
+
+			filterTheProducts();
+		}
+
+		$scope.tagRemoved = function(tag) {
+			angular.forEach($scope.questions, function(question) {
+				if (question.name == tag.text) {
+					question.checked = false;
+					question.selectedOtion = "";
+				}
+			});
+
+			filterTheProducts();
+		}
+
+		// Clear all questions
+		$scope.clearQuestions = function() {
+			angular.forEach($scope.questions, function(question) {
+				question.checked = false;
+				question.selectedOtion = "";
+			});
+
+			$scope.tags = [];
+
+			$scope.replacableProducts = [];
+			angular.forEach($scope.allProducts, function(product) {
+				$scope.replacableProducts.push(product);
+			});
+		}
+
+		questionSelected = function() {
+			var selected = false;
+			angular.forEach($scope.questions, function(question) {
+				if (question.checked) {
+					selected = true;
+				}
+			});
+			return selected;
+		}
+
+		contains = function(array, str) {
+			var hasValue = false;
+			angular.forEach(array, function(item) {
+				if (item == str) {
+					hasValue = true;
+				}
+			});
+			return hasValue;
+		}
+
+		// Filter the products based on the current question set
+		filterTheProducts = function() {
+			$scope.replacableProducts = [];
+			var selected = questionSelected();
+			angular.forEach($scope.allProducts, function(product) {
+				$scope.pushProduct = 0;
+				if (selected) {
+					angular.forEach($scope.questions, function(question) {
+						if (question.checked && $scope.pushProduct >= 0) {
+							if (product[question.id].toLowerCase() == "Y".toLowerCase() && (question.selectedOtion == "" || contains(product.addlParams, question.selectedOtion))) {
+								$scope.pushProduct = 1;
+							} else {
+								$scope.pushProduct = -1;
+							}
+						}
+					});
+				}
+				if ($scope.pushProduct == 1 || !selected) {
+					$scope.replacableProducts.push(product);
+				}
+			});
+		}
+
+		// Navigate to BOM page after clicking the product
+		$scope.selectedProduct = function(product) {
+			$scope.billProducts = [];
+			$scope.billProducts.push(product);
+			DeviceData.setBillProducts($scope.billProducts);
+			$location.url('/discovery/' + product.productId + '/bom/' + $scope.qty);
+		}
+
+		load();
+		questions();
+		filterTheProducts();
+
+		$scope.loadQuestions = function($query) {
+			return $http.get('questions.json', {
+				cache : true
+			}).then(function(response) {
+				var questions = response.data.questions;
+				return questions.filter(function(question) {
+					return question.name.toLowerCase().indexOf($query.toLowerCase()) != -1;
+				});
+			});
 		};
 
 	});
@@ -400,145 +550,6 @@
 			link.click();
 			document.body.removeChild(link);
 		}
-
-	});
-
-	as.controller('QuestionCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData) {
-		$scope.itemsPerPage = "10";
-		$scope.platformId = decodeURIComponent($routeParams.platformId);
-		$scope.qty = $routeParams.count;
-		$scope.currDate = DeviceData.getCurrentDate();
-
-		load = function() {
-			$scope.deviceFamily = [];
-			$scope.deviceConfig = [];
-			$scope.productCatalog = [];
-			$scope.replacableProducts = [];
-			$scope.allProducts = [];
-			$http.get('device-family-mapping.json').success(function(data) {
-				$scope.deviceFamily = data.deviceFamilyMapping;
-				$http.get('device-config-mapping.json').success(function(data) {
-					$scope.deviceConfig = data.deviceConfigMapping;
-					$http.get('product-catalog.json').success(function(data) {
-						$scope.productCatalog = data.products;
-						angular.forEach($scope.deviceFamily, function(device) {
-							if (device.family == $scope.platformId) {
-								angular.forEach($scope.deviceConfig, function(config) {
-									if (device.family == config.family) {
-										angular.forEach(config.products, function(prod) {
-											angular.forEach($scope.productCatalog, function(prodCatalog) {
-												if (prodCatalog.productId == prod.productId) {
-													$scope.replacableProducts.push(prodCatalog);
-													$scope.allProducts.push(prodCatalog);
-												}
-											});
-										});
-									}
-								});
-							}
-						});
-					});
-				});
-			});
-			console.log("Products::" + $scope.replacableProducts);
-
-		}
-
-		$scope.allTags = [];
-		questions = function() {
-			$scope.questions = [];
-			$http.get('questions.json').success(function(data) {
-				angular.forEach(data.questions, function(question) {
-					if (question.family == $scope.platformId) {
-						$scope.questions.push(question);
-						$scope.allTags.push(question.name);
-					}
-				});
-			});
-		}
-
-		$scope.questionSelected = function(id) {
-			$scope.tags = [];
-			angular.forEach($scope.questions, function(question) {
-				if (question.checked) {
-					var text = {
-						"text" : question.name
-					};
-					$scope.tags.push(text);
-				}
-			});
-
-			filterTheProducts();
-		}
-
-		$scope.tagRemoved = function(tag) {
-			angular.forEach($scope.questions, function(question) {
-				if (question.name == tag.text) {
-					question.checked = false;
-					question.selected = "";
-				}
-			});
-
-			filterTheProducts();
-		}
-
-		// Clear all questions
-		$scope.clearQuestions = function() {
-			angular.forEach($scope.questions, function(question) {
-				question.checked = false;
-				question.selected = "";
-			});
-
-			$scope.tags = [];
-
-			$scope.replacableProducts = [];
-			angular.forEach($scope.allProducts, function(product) {
-				$scope.replacableProducts.push(product);
-			});
-		}
-
-		// Filter the products based on the current question set
-		filterTheProducts = function() {
-			$scope.replacableProducts = [];
-			angular.forEach($scope.allProducts, function(product) {
-				$scope.pushProduct = 0;
-				angular.forEach($scope.questions, function(question) {
-					if (question.checked && $scope.pushProduct >= 0) {
-						if (product[question.id].toLowerCase() == "Y".toLowerCase()(question.selectedOtion == "" || question.selectedOtion.toLowerCase() == product.addlParams.toLowerCase())) {
-							$scope.pushProduct = 1;
-						} else {
-							$scope.pushProduct = -1;
-						}
-					}
-				});
-				if ($scope.pushProduct == 1) {
-					$scope.replacableProducts.push(product);
-				}
-			});
-		}
-
-		// Navigate to BOM page after clicking the product
-		$scope.selectedProduct = function(product) {
-			$scope.billProducts = [];
-			$scope.billProducts.push(product);
-			DeviceData.setBillProducts($scope.billProducts);
-			$location.url('/discovery/' + product.productId + '/bom/' + $scope.qty);
-		}
-
-		load();
-		questions();
-		filterTheProducts();
-
-		$scope.loadQuestions = function($query) {
-			return $http.get('questions.json', {
-				cache : true
-			}).then(function(response) {
-				var questions = response.data.questions;
-				return questions.filter(function(question) {
-					return question.name.toLowerCase().indexOf($query.toLowerCase()) != -1;
-				});
-			});
-		};
 
 	});
 

@@ -24,16 +24,16 @@
                  .when('/apicemlogin',
                 		 {controller: 'ApicEMLoginController',
             		 templateUrl: 'partials/em/apicem-login.html'})
-                 .when('/discovery/:platformId*',
+                 .when('/device/:type/:platformId*',
                         {controller: 'ReplaceCtrl',
                 		 templateUrl: 'partials/em/replace.html'})   
                  .when('/discovery/:productId/bom/:qty',
                         {controller: 'BomCtrl',
                 		 templateUrl: 'partials/em/bom.html'})   
-                .when('/products/:count/product/:platformId*',
+                .when('/products/:count/:type/:platformId*',
                         {controller: 'QuestionCtrl',
                 		 templateUrl: 'partials/em/questionare.html'})
-                .when('/discovery',
+                .when('/devices',
                 		{controller: 'SearchController',
                 			templateUrl: 'partials/em/search.html'});    
 
