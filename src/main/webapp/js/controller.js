@@ -51,10 +51,9 @@
 		$scope.apicUsername = '';
 		$scope.apicPassword = '';
 		$scope.version = '';
+		$scope.allApicEms = [];
 
 		load = function() {
-
-			$scope.allApicEms = [];
 			$http.get('api/apicem').success(function(data) {
 				angular.forEach(data, function(apicEm) {
 					$scope.allApicEms.push(apicEm);
@@ -69,9 +68,9 @@
 		$scope.apicemLogin = function() {
 
 			DeviceData.setSelectedApicEm($scope.selectedApicem);
-
+			$scope.version = '';
 			angular.forEach($scope.allApicEms, function(apicEm) {
-				if (apicEm.apicemIp == $scope.selectedApicem) {
+				if (apicEm.apicemIP == $scope.selectedApicem) {
 					DeviceData.setApicemVersion(apicEm.version);
 					$scope.version = apicEm.version;
 				}
@@ -105,34 +104,34 @@
 
 		$scope.onboardApicEm = function() {
 
-			save = function() {
-				var data = {
-					"apicemIP" : $scope.newApicIP,
-					"version" : $scope.newApicVersion,
-					"location" : $scope.location
-				};
-				var actionURL = "api/apicem";
-				$http.post(actionURL, data).success(function(data) {
-					console.log("Success Data is " + data);
-					$scope.newApicIP = "";
-					$scope.newApicVersion = "";
-					$scope.location = "";
-					alert("APIC EM Onboarded successfully");
-					load();
-				});
-			}
-
 			validateIp = function(ip) {
 				var pattern = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]).){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/g;
 				/* use  javascript's test() function to execute the regular expression and then store the result - which is either true or false */
 				var bValidIP = pattern.test(ip);
 				if (!bValidIP) {
 					alert("You have entered an invalid IP address!");
-				} if($scope.newApicVersion=="" || $scope.newApicVersion=="undefined" || $scope.newApicVersion==undefined){
+					return;
+				}else if($scope.newApicVersion=="" || $scope.newApicVersion=="undefined" || $scope.newApicVersion==undefined){
 					alert("Please select APIC EM Version");
-				}
-				else {
-					save();
+					return;
+				}else {
+					var data = {
+							"apicemIP" : $scope.newApicIP,
+							"version" : $scope.newApicVersion,
+							"location" : $scope.location
+						};
+						var actionURL = "api/apicem";
+						$http.post(actionURL, data).success(function(data) {
+							console.log("Success Data is " + data);
+							$scope.newApicIP = "";
+							$scope.newApicVersion = "";
+							$scope.location = "";
+							alert("APIC EM Onboarded successfully");
+							load();
+						})
+						.error(function(data) {
+							alert("You have entered an invalid IP address!");
+						});
 				}
 			}
 			validateIp($scope.newApicIP);

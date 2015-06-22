@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.InetAddressValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -99,8 +100,10 @@ public class SignupController {
 			e.printStackTrace();
 		}
 
-		if (!StringUtils.containsAny(url, "sandbox") && StringUtils.isBlank(token) || hasErrors) {
-			return new ResponseEntity<>(token, HttpStatus.INTERNAL_SERVER_ERROR);
+		if (StringUtils.isBlank(token) || hasErrors) {
+			if (!StringUtils.equalsIgnoreCase(form.getApicemIP(), "sandboxapic.cisco.com")) {
+				return new ResponseEntity<>(token, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 		}
 
 		return new ResponseEntity<>(token, HttpStatus.CREATED);
@@ -115,10 +118,13 @@ public class SignupController {
 			throw new InvalidRequestException(errors);
 		}
 
-		String userName = SecurityUtil.currentUser().getUsername();
-		form.setUserId(userName);
-
-		apicEmService.onBoardApicem(form);
+		if (InetAddressValidator.getInstance().isValidInet4Address(form.getApicemIP())) {
+			String userName = SecurityUtil.currentUser().getUsername();
+			form.setUserId(userName);
+			apicEmService.onBoardApicem(form);
+		} else {
+			return new ResponseEntity<>("Invalid IP address", HttpStatus.BAD_REQUEST);
+		}
 
 		return new ResponseEntity<>("Success", HttpStatus.CREATED);
 	}
