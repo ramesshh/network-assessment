@@ -27,7 +27,7 @@
                  .when('/device/:type/:platformId*',
                         {controller: 'ReplaceCtrl',
                 		 templateUrl: 'partials/em/replace.html'})   
-                 .when('/discovery/:productId/bom/:qty',
+                 .when('/product/:qty/bom/:productId',
                         {controller: 'BomCtrl',
                 		 templateUrl: 'partials/em/bom.html'})   
                 .when('/products/:count/:type/:platformId*',

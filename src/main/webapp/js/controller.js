@@ -414,7 +414,7 @@
 			$scope.billProducts = [];
 			$scope.billProducts.push(product);
 			DeviceData.setBillProducts($scope.billProducts);
-			$location.url('/discovery/' + product.productId + '/bom/' + $scope.qty);
+			$location.url('/product/' + $scope.qty+'/bom/'+ encodeURIComponent(product.productId));
 		}
 
 		load();
@@ -435,7 +435,7 @@
 	});
 
 	as.controller('BomCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData, $window) {
-		$scope.productId = $routeParams.productId;
+		$scope.productId = decodeURIComponent($routeParams.productId);
 		$scope.qty = $routeParams.qty;
 		$scope.products = [];
 		$http.get('product-catalog.json').success(function(data) {
