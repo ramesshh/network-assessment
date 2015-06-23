@@ -4,6 +4,55 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h3 class="panel-title">
+					<msg key=onborardApicem></msg>
+				</h3>
+			</div>
+			<div class="panel-body">
+				<form class="form form-horizontal" ng-submit="onboardApicEm()" name="onboardForm" id="onboardForm">
+
+					<div class="form-group">
+						<label class="control-label col-md-3" for="apicemIp"><msg
+								key="apicemIP"></msg></label>
+						<div class="col-md-6">
+								<input class="form-control" ng-model="newApicIP" placeholder="APIC EM IP" required="required" />
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-md-3" for="Version"><msg
+								key="version"></msg></label>
+						<div class="col-md-6">
+							<select class="form-control" id="version"  name="version"  ng-model="newApicVersion" placeholder="APIC EM Version" required >
+							<option value="v0">V0</option>
+							<option value="v1">V1</option>
+							</select>
+						<!-- 	<span class="error" ng-show="onboardForm.version.$dirty && onboardForm.version.$invalid">Select Version</span> -->
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-md-3" for="location"><msg
+								key="location"></msg></label>
+						<div class="col-md-6">
+							<input class="form-control" id="location" ng-model="location" placeholder="APIC EM Location" required="required" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-offset-3 col-md-6">
+							<button type="submit" class="button-cta">
+								<msg key="onborard"></msg>
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">
 					<msg key="connectToApicem"></msg>
 				</h3>
 			</div>
@@ -58,54 +107,44 @@
 			</div>
 		</div>
 	</div>
-	
-	<div class="col-md-6">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title">
-					<msg key=onborardApicem></msg>
-				</h3>
-			</div>
-			<div class="panel-body">
-				<form class="form form-horizontal" ng-submit="onboardApicEm()" name="onboardForm" id="onboardForm">
+</div>
 
-					<div class="form-group">
-						<label class="control-label col-md-3" for="apicemIp"><msg
-								key="apicemIP"></msg></label>
-						<div class="col-md-6">
-								<input class="form-control" ng-model="newApicIP" placeholder="APIC EM IP" required="required" />
-						</div>
-					</div>
-					
-					<div class="form-group">
-						<label class="control-label col-md-3" for="Version"><msg
-								key="version"></msg></label>
-						<div class="col-md-6">
-							<select class="form-control" id="version"  name="version"  ng-model="newApicVersion" placeholder="APIC EM Version" required >
-							<option value="v0">V0</option>
-							<option value="v1">V1</option>
-							</select>
-						<!-- 	<span class="error" ng-show="onboardForm.version.$dirty && onboardForm.version.$invalid">Select Version</span> -->
-						</div>
-					</div>
 
-					<div class="form-group">
-						<label class="control-label col-md-3" for="location"><msg
-								key="location"></msg></label>
-						<div class="col-md-6">
-							<input class="form-control" id="location" ng-model="location" placeholder="APIC EM Location" required="required" />
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-md-offset-3 col-md-6">
-							<button type="submit" class="button-cta">
-								<msg key="onborard"></msg>
-							</button>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
+<div class="row">
+
+	<div class="table-responsive container dataTables_wrapper">
+	<h4>Previously Onboarded APIC-EM</h4>
+		<table class="table table-condensed" id="dataTables-example">
+			<thead>
+			<tr>
+				<th>IP Address</th>
+				<th>Version</th>
+				<th>Location</th>
+			</tr>	
+			</thead>
+			<tbody>
+			<tr>
+			<td>192.168.1.1</td>
+			<td>1.4.4</td>
+			<td>NJ</td>
+			</tr>
+			<tr>
+			<td>192.168.1.4</td>
+			<td>4.1.1</td>
+			<td>NY</td>
+			</tr>
+		</table>
 	</div>
 </div>
 
+<script src="js/jquery.dataTables.min.js"></script>
+	<script src="js/dataTables.bootstrap.js"></script>
+	<link rel="stylesheet" href="css/dataTables.bootstrap.css">
+
+	<script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+                responsive: true
+        });
+    });
+    </script>

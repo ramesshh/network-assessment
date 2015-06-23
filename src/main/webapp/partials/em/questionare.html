@@ -1,7 +1,18 @@
+<div>
+	 <ul class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Inventory</a></li>
+        <li><a href="#">Replaceable Device</a></li>
+        <li class="active">Products</li>
+    </ul>
+</div>
 <div class="page-header">
-	<h1>Questionaire</h1>
-	<tags-input ng-model="tags" display-property="text"  on-tag-removed="tagRemoved($tag)"
-		placeholder="Tags	" replace-spaces-with-dashes="false">
+	<h1>Products List</h1>
+	
+	<div class="row">
+		<div class="col-md-11">
+		<tags-input ng-model="tags" display-property="text"  on-tag-removed="tagRemoved($tag)"
+		placeholder="Tags" replace-spaces-with-dashes="false">
 <!-- 	<auto-complete source="loadQuestions($query)" min-length="0"
 		load-on-focus="true" load-on-empty="true" max-results-to-show="32"
 		template="my-custom-template"></auto-complete>  --></tags-input>
@@ -11,25 +22,30 @@
         <span ng-bind-html="$highlight($getDisplayText())"></span>
       </div>
     </script>
+	</div>
+	<div class="col-md-1" style="line-height:2.8em;"><a ng-click="clearQuestions()"><strong>Clear All</strong></a></div>
+	</div>
+	
+	
 </div>
 <div id="page-wrapper">
 	<div class="row">
 		<div class="col-md-3">
-			<div class="panel panel-default">
-				<div class="panel-heading">Questionaire Form</div>
+			<div>
+				<div class="panel-heading" style="background-color:#f5f5f5; border-right:1px solid #f5f5f5;">Filter Results by</div>
 				<!-- /.panel-heading -->
-				<div class="panel-body">
+				<div class="panel-body" style="border-right:1px solid #ddd; height:780px;">
 					<div>
-						<table width="100%" class="table table1">
+						<table width="100%" border="0" class="table1 table filter_fonts noborder">
 							<tbody ng-repeat="item in questions">
 								<tr>
-									<th><input type="{{item.type}}"
+									<th class="noborder"><input type="{{item.type}}"
 										ng-click="questionSelected(item.id)"
-										ng-model="item.checked" ng-value="'true'" />
-										{{item.question}}</th>
+										ng-model="item.checked" ng-value="'true'" /></th>
+									<th>{{item.question}}</th>
 								</tr>
 								<tr ng-if="item.checked && item.options.length >0">
-									<td style="border-top-width: 0px;"><select
+									<td colspan="2" class="noborder"><select
 										class="form-control" ng-model="item.selectedOtion"
 										ng-change="questionSelected(item.id)"
 										ng-options="option as option for option in item.options" /></td>
@@ -41,13 +57,7 @@
 											&nbsp;{{option.value}}</input></label> -->
 								</tr>
 							</tbody>
-							<tfoot>
-								<tr>
-									<td align="center"><button
-											class="btn btn-primary btn-md btn-block"
-											ng-click="clearQuestions()">Clear All</button></td>
-								</tr>
-							</tfoot>
+							
 						</table>
 					</div>
 				</div>
@@ -67,13 +77,12 @@
 							<tbody ng-repeat="product in replacableProducts">
 								<tr>
 									<td width="27%" rowspan="3"><img ng-src="img/{{product.imageURL}}" alt="{{product.description}}" style="width:200px; height 100px;"/></td>
-									<td width="61%"><b>{{product.productId}}</b></td>
+									<td width="61%" class="ques_heading">{{product.productId}}</td>
 									<td width="12%" colspan="3">&nbsp;</td>
 								</tr>
 								<tr>
 									<td>{{product.description}}</td>
-									<td colspan="3" align="center" valign="middle"><strong>Price
-											:</strong>${{product.price}}</td>
+									<td colspan="3" align="left" valign="middle"><strong style="font-size:12px;">Price : </strong><font style="font-size:22px;">${{product.price}}</font></td>
 								</tr>
 								<tr>
 									<td><a href="#">Data sheet Link</a></td>

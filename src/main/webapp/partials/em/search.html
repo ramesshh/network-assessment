@@ -1,3 +1,9 @@
+<div>
+	 <ul class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li class="active">Inventory</li>
+    </ul>
+</div>
 <div class="page-header">
 	<h1>
 		<msg key="deviceInventoryDetails" />
@@ -36,7 +42,7 @@
 						</select>
 					</div> -->
 
-					<div class="col-md-3" style="">
+					<div class="col-md-3 pull-right">
 						<label><msg key="itemsPerPage" /> : </label> <select
 							class="form-control" style="width: 40%; display: inline;"
 							ng-model="itemsPerPage">
@@ -50,21 +56,21 @@
 						</select>
 					</div>
 				</div>
-				<div class="clearfix">&nbsp;</div>
+				<div class="clearfix" style="margin-bottom:20px;">&nbsp;</div>
 
 				<div class="table-responsive">
 					<table class="table table-striped table-hover">
 						<thead>
-							<th ng-click="orderBy('platformId')"><msg key="platformId" /><span
+							<th ng-click="orderBy('platformId')" width="40%"><msg key="platformId" /><span
 								ng-class="orderIcon('platformId')" /></th>
 							<!-- 	<th><msg key="desc" /></th> -->
-							<th ng-click="orderBy('qty')"><msg key="qty" /><span
+							<th ng-click="orderBy('qty')" width="10%"><msg key="qty" /><span
 								ng-class="orderIcon('qty')" /></th>
-							<th ng-click="orderBy('softwareVersion')"><msg key="version" /><span
+							<th ng-click="orderBy('softwareVersion')" width="20%"><msg key="version" /><span
 								ng-class="orderIcon('softwareVersion')" /></th>
-							<th ng-click="orderBy('locationName')"><msg key="location" /><span
+							<th ng-click="orderBy('locationName')" width="20%"><msg key="location" /><span
 								ng-class="orderIcon('locationName')" /></th>
-							<th><msg key="action" /></th>
+							<th width="10%"><msg key="action" /></th>
 							</tr>
 						</thead>
 						<tbody>
