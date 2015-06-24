@@ -46,7 +46,7 @@
          "id":"intelligantWAN",
          "deviceType":"ROUTER",
         "checked":false,
-         "question":"Intelligent WAN solutions ?",
+         "question":"Intelligent WAN solutions",
        "options":[],
        "selectedOtion":"",
          "type":"checkbox"

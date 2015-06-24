@@ -139,7 +139,22 @@
 			}
 			validateIp($scope.newApicIP);
 		}
+		
+		$scope.order = '+location';
 
+		$scope.orderBy = function(property) {
+			$scope.order = ($scope.order[0] === '+' ? '-' : '+') + property;
+		};
+
+		$scope.orderIcon = function(property) {
+			return property === $scope.order.substring(1) ? $scope.order[0] === '+' ? 'glyphicon glyphicon-chevron-up' : 'glyphicon glyphicon-chevron-down' : '';
+		};
+		
+		$scope.setSelectedApicEm = function(apicem){
+			angular.element('#apicemIp').focus();
+			$scope.selectedApicem = apicem;
+		}
+		
 	});
 
 	as.controller('SearchController', function($scope, $http, i18n, $location, DeviceData, $window) {

@@ -38,7 +38,8 @@
 
 <style>
 body {
-	padding: 15px;
+	padding: 0;
+	margin:0;
 }
 
 .select2>.select2-choice.ui-select-match {
@@ -57,12 +58,12 @@ body {
 	<header>
 		<div class="container">
 			<div class="row">
-				<div class="col-md-2">
-					<img src="img/logo.png" alt="" />
+				<div class="col-md-7 logo">
+					<h1><img src="img/logo.png" alt="" /> &nbsp; <span>APIC-EM Network Assesment Application (Beta)</span></h1>
 				</div>
-				<div class="col-md-10 guest-actions">
+				<div class="col-md-5 guest-actions">
 					<ul class="nav navbar-nav navbar-right">
-						<!--  <li><a href="index.html">Account</a></li> -->
+						<li><a href="#"><strong>Welcome User</strong></a></li>
 						<li><a ng-click="logout()"><msg key="logout"></msg></a></li>
 					</ul>
 				</div>
@@ -82,25 +83,13 @@ body {
 	<div class="container">
 		<div class="row">
 			<footer>
-
-				<a target="_blank"
-					href="http://www.cisco.com/web/siteassets/contacts/index.html">
-					Contacts</a> <a target="_blank"
-					href="http://tools.cisco.com/cdc/feedbk/public/FeedbackAction.cdcfdb"><div
-						class="feedbackImageCss"></div>Feedback</a> <a target="_blank"
-					href="http://www.cisco.com/web/help/index.html"> Help</a> <a
-					target="_blank"
-					href="http://www.cisco.com/web/siteassets/sitemap/index.html">
-					Site Map</a> <a target="_blank"
-					href="http://www.cisco.com/web/siteassets/legal/terms_condition.html">
-					Terms &amp; Conditions</a> <a target="_blank"
-					href="http://www.cisco.com/web/siteassets/legal/privacy.html">
-					Privacy Statement</a> <a target="_blank"
-					href="http://www.cisco.com/web/siteassets/legal/privacy.html#cookies">
-					Cookie Policy </a> <a target="_blank"
-					href="http://www.cisco.com/web/siteassets/legal/trademark.html">
-					Trademarks</a>
-
+				   <a target="_blank" href="http://www.cisco.com/web/siteassets/contacts/index.html">Support</a>
+					<a target="_blank" href="mailto:mail@yourdomain.com"><div class="feedbackImageCss"></div>Beta Version Feedback</a>
+					<a target="_blank" href="http://www.cisco.com/web/help/index.html">User Guide</a>
+					<a target="_blank" href="http://www.cisco.com/web/siteassets/legal/terms_condition.html">Terms &amp; Conditions</a>
+					<a target="_blank" href="http://www.cisco.com/web/siteassets/legal/privacy.html">Privacy Statement</a>
+					<a target="_blank" href="http://www.cisco.com/web/siteassets/legal/privacy.html#cookies">Cookie Policy </a> 
+					<a target="_blank" href="http://www.cisco.com/web/siteassets/legal/trademark.html">Trademarks</a>
 			</footer>
 		</div>
 	</div>
@@ -144,6 +133,7 @@ body {
 	<script type="text/javascript" src="js/base64.js"></script>
 	<script type="text/javascript" src="js/init.js"></script>
 	<script src="js/select.js"></script>
+	
 </body>
 
 </html>
