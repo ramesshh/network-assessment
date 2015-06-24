@@ -1,10 +1,10 @@
-<div>
-	 <ul class="breadcrumb">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Inventory</a></li>
-        <li><a href="#">Replaceable Device</a></li>
-        <li class="active">Products</li>
-    </ul>
+<div class="breadcrumb_box">
+	<div class="btn-group btn-breadcrumb">
+       <span class="btn btn-primary" style="cursor:default;"><i class="glyphicon glyphicon-home"></i></span>
+       <a href="#" class="btn btn-primary">Inventory</a>
+       <a href="#" class="btn btn-primary">Replaceable Device</a>
+       <a href="#" class="btn btn-info">Products</a>
+    </div>
 </div>
 <div class="page-header">
 	<h1>Products List</h1>
@@ -32,9 +32,9 @@
 	<div class="row">
 		<div class="col-md-3">
 			<div>
-				<div class="panel-heading" style="background-color:#f5f5f5; border-right:1px solid #f5f5f5;">Filter Results by</div>
+				<div class="panel-heading" style="background-color:#f5f5f5; border-right:1px solid #ddd;">Filter Results by</div>
 				<!-- /.panel-heading -->
-				<div class="panel-body" style="border-right:1px solid #ddd; height:780px;">
+				<div style="border-right:1px solid #ddd; height:780px;">
 					<div>
 						<table width="100%" border="0" class="table1 table filter_fonts noborder">
 							<tbody ng-repeat="item in questions">

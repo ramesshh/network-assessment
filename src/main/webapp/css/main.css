@@ -152,7 +152,7 @@ footer a:visited{text-decoration:none;}
 }
 .table1>tbody>tr>td, .table1>tbody>tr>th, .table1>tfoot>tr>td, .table1>tfoot>tr>th, .table1>thead>tr>td, .table1>thead>tr>th{border:0;}
 .table1>thead>tr>th, .table1>tbody>tr>th, .table1>tfoot>tr>th, .table1>thead>tr>td, .table1>tbody>tr>td, .table1>tfoot>tr>td{border-top:0px solid #fff;;}
-
+.table>tbody+tbody{border-top:1px solid #ddd}
 
 .table>thead{background-color:#e3e3e3;}
 
@@ -165,6 +165,99 @@ tags-input input::-moz-placeholder{
 tags-input input::-webkit-input-placeholder{
   color: #fff;
 }
+
 .noborder{border:0;}
 .page-header{margin:20px 0 20px;}
 .breadcrumb{margin-top:20px; margin-bottom:0; border-radius:0px; background-color:#E3E3E3;}
+
+
+
+/** The Magic **/
+.breadcrumb_box{margin-top:20px;}
+.breadcrumb_box .btn-breadcrumb .btn:not(:last-child):after {
+  content: " ";
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 17px solid transparent;
+  border-bottom: 17px solid transparent;
+  border-left: 10px solid white;
+  position: absolute;
+  top: 50%;
+  margin-top: -17px;
+  left: 100%;
+  z-index: 3;
+}
+.breadcrumb_box .btn-breadcrumb .btn:not(:last-child):before {
+  content: " ";
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 17px solid transparent;
+  border-bottom: 17px solid transparent;
+  border-left: 10px solid rgb(173, 173, 173);
+  position: absolute;
+  top: 50%;
+  margin-top: -17px;
+  margin-left: 1px;
+  left: 100%;
+  z-index: 3;
+}
+
+/** The Spacing **/
+.breadcrumb_box .btn-breadcrumb .btn {
+  padding:6px 12px 6px 24px;
+}
+.breadcrumb_box .btn-breadcrumb .btn:first-child {
+  padding:6px 6px 6px 10px;
+}
+.breadcrumb_box .btn-breadcrumb .btn:last-child {
+  padding:6px 18px 6px 24px;
+}
+
+/** Primary button **/
+.btn-breadcrumb .btn.btn-primary:not(:last-child):after {
+  border-left: 10px solid #337ab7;
+}
+.btn-breadcrumb .btn.btn-primary:not(:last-child):before {
+  border-left: 10px solid #2e6da4;
+}
+.btn-breadcrumb .btn.btn-primary:hover:not(:last-child):after {
+  border-left: 10px solid #004080;
+}
+.btn-breadcrumb .btn.btn-primary:hover:not(:last-child):before {
+  border-left: 10px solid #286090;
+}
+.btn.btn-primary:hover{background-color:#004080}
+
+/** Info button **/
+.breadcrumb_box .btn-breadcrumb .btn.btn-info:not(:last-child):after {
+  border-left: 10px solid #5bc0de;
+}
+.breadcrumb_box .btn-breadcrumb .btn.btn-info:not(:last-child):before {
+  border-left: 10px solid #46b8da;
+}
+.breadcrumb_box .btn-breadcrumb .btn.btn-info:hover:not(:last-child):after {
+  border-left: 10px solid #39b3d7;
+}
+.breadcrumb_box .btn-breadcrumb .btn.btn-info:hover:not(:last-child):before {
+  border-left: 10px solid #269abc;
+}
+
+/** Success button **/
+.btn-breadcrumb .btn.btn-success:not(:last-child):after {
+  border-left: 10px solid #5cb85c;
+}
+.btn-breadcrumb .btn.btn-success:not(:last-child):before {
+  border-left: 10px solid #4cae4c;
+}
+.btn-breadcrumb .btn.btn-success:hover:not(:last-child):after {
+  border-left: 10px solid #47a447;
+}
+.btn-breadcrumb .btn.btn-success:hover:not(:last-child):before {
+  border-left: 10px solid #398439;
+}
+
+.panel-default>.panel-heading1{  color: #FFF;
+  background-color: #4575A8;
+  border-color: #ddd;}
