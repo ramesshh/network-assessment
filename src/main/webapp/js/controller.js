@@ -289,7 +289,7 @@
 
 	});
 
-	as.controller('QuestionCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData) {
+	as.controller('QuestionCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData, $filter, $window) {
 		$scope.itemsPerPage = "10";
 		$scope.platformId = decodeURIComponent($routeParams.platformId);
 		$scope.qty = $routeParams.count;
@@ -434,7 +434,7 @@
 
 	});
 
-	as.controller('BomCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData, $window) {
+	as.controller('BomCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData, $filter, $window) {
 		$scope.productId = decodeURIComponent($routeParams.productId);
 		$scope.qty = $routeParams.qty;
 		$scope.products = [];
@@ -442,13 +442,14 @@
 			$scope.productCatalog = data.products;
 			angular.forEach($scope.productCatalog, function(prodCatalog) {
 				if (prodCatalog.productId == $scope.productId) {
+					prodCatalog.qty=$scope.qty;
 					$scope.products.push(prodCatalog);
 				}
 			});
 		});
 
 		$scope.placeOrder = function() {
-			$window.open('https://apps.cisco.com/ccw/cpc/concept/268437899', '_blank');
+			$window.open('https://www.cisco.com/go/commerceworkspace', '_blank');
 			$scope.generateBOM();
 		}
 
@@ -466,7 +467,7 @@
 			angular.forEach($scope.products, function(product) {
 				$scope.data = [ {
 					"Product" : product.productId,
-					"Description" : product.description,
+					"Description" : product.description.replace(/,/g,' '),
 					"Qty" : $scope.qty,
 				} ];
 			});

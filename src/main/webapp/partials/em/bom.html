@@ -22,7 +22,9 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-default">
+
 						<div class="panel-heading">Bill of Materials</div>
+
 						<!-- /.panel-heading -->
 						<div class="panel-body">
 							<div class="dataTable_wrapper">
@@ -34,7 +36,8 @@
 											<th>Product Id</th>
 											<th>Description</th>
 											<th>Qty</th>
-											<th>Price</th>
+											<th>Unit Price</th>
+											<th>Total Price</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -42,12 +45,15 @@
 											<td>{{indext +1}}</td>
 											<td>{{product.productId}}</td>
 											<td style="word-wrap: break-word;min-width: 220px;max-width: 220px;">{{product.description}}</td>
-											<td class="center">{{qty}}</td>
-											<td class="center">{{product.price}}</td>
+											<td class="center"><input type="text" class="form-control input-xs ng-pristine ng-untouched ng-valid" ng-model="product.qty" style="
+    											width: 50.81818175315857px;"></td>
+											<td class="center"><span id="currency-default">{{product.price | currency}}</span></td>
+											<td class="center"><span id="currency-default">{{product.price * product.qty | currency}}</span></td>
 										</tr>
 										<tr class="gradeU">
-											<td colspan="5" align="center">
-												<button type="button" class="btn btn-default btn-primary" ng-click="save()">Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
+											<td colspan="6" align="center">
+												<!-- <button type="button" class="btn btn-default btn-primary" ng-click="save()">Save</button>&nbsp;&nbsp;&nbsp;&nbsp; -->
+												<a class="btn btn-default btn-info" ng-href="#/devices"> Back to Devices</a>
 												<button type="button" class="btn btn-default btn-primary" ng-click="placeOrder()">Place
 													Order</button>&nbsp;&nbsp;&nbsp;&nbsp;
 												<!-- <button type="button" class="btn btn-default btn-primary" ng-click="sendForApproval()">Send

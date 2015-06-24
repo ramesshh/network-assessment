@@ -82,7 +82,9 @@
 								</tr>
 								<tr>
 									<td>{{product.description}}</td>
-									<td colspan="3" align="left" valign="middle"><strong style="font-size:12px;">Price : </strong><font style="font-size:22px;">${{product.price}}</font></td>
+
+									<td colspan="3" align="left" valign="middle"><strong style="font-size:12px;">Price : </strong><font style="font-size:22px;"><span id="currency-default">{{product.price | currency}}</span></font></td>
+
 								</tr>
 								<tr>
 									<td><a href="#">Data sheet Link</a></td>
