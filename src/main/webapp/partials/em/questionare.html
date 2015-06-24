@@ -7,7 +7,7 @@
     </div>
 </div>
 <div class="page-header">
-	<h1>Products List</h1>
+	<h1><msg key="productsList"></h1>
 	
 	<div class="row">
 		<div class="col-md-11">
@@ -32,7 +32,7 @@
 	<div class="row">
 		<div class="col-md-3">
 			<div>
-				<div class="panel-heading" style="background-color:#f5f5f5; border-right:1px solid #ddd;">Filter Results by</div>
+				<div class="panel-heading" style="background-color:#f5f5f5; border-right:1px solid #ddd;"><msg key="filter"></div>
 				<!-- /.panel-heading -->
 				<div style="border-right:1px solid #ddd; height:780px;">
 					<div>
@@ -69,14 +69,14 @@
 
 		<div class="col-md-9">
 			<div class="panel panel-default">
-				<div class="panel-heading">Recommended Products</div>
+				<div class="panel-heading"><msg key="recommendedProducts"></div>
 				<!-- /.panel-heading -->
 				<div class="panel-body">
 					<div class="table-responsive">
 						<table class="table table1">
 							<tbody ng-repeat="product in replacableProducts">
 								<tr>
-									<td width="27%" rowspan="3"><img ng-src="img/{{product.imageURL}}" alt="{{product.description}}" style="width:200px; height 100px;"/></td>
+									<td width="27%" rowspan="3"><img ng-src="img/{{product.imageURL}}" alt="{{product.description}}" style="width:200px; height: 100px;"/></td>
 									<td width="61%" class="ques_heading">{{product.productId}}</td>
 									<td width="12%" colspan="3">&nbsp;</td>
 								</tr>
