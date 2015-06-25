@@ -1,8 +1,8 @@
 <div class="breadcrumb_box">
 	<div class="btn-group btn-breadcrumb">
        <span class="btn btn-primary" style="cursor:default;"><i class="glyphicon glyphicon-home"></i></span>
-       <a href="#" class="btn btn-primary">Inventory</a>
-       <a href="#" class="btn btn-info">Replaceable Device</a>
+       <a ng-href="#/devices" class="btn btn-primary">Inventory</a>
+       <a ng-href="#/device/{{deviceType}}/{{platformId | urlEncode}}" class="btn btn-info">Replaceable Device</a>
     </div>
 </div>
 

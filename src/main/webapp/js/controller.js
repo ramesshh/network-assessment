@@ -140,7 +140,7 @@
 			}
 			validateIp($scope.newApicIP);
 		}
-		
+
 		$scope.order = '+location';
 
 		$scope.orderBy = function(property) {
@@ -150,17 +150,17 @@
 		$scope.orderIcon = function(property) {
 			return property === $scope.order.substring(1) ? $scope.order[0] === '+' ? 'glyphicon glyphicon-chevron-up' : 'glyphicon glyphicon-chevron-down' : '';
 		};
-		
-	/*	$scope.setSelectedApicEm = function(apicem){
-			angular.element('#apicemIp').focus();
-			//angular.element('#apicemIp').val(apicem);
-			$scope.selectedApicem = apicem;
-			
-		}*/
-		
+
+		/*	$scope.setSelectedApicEm = function(apicem){
+				angular.element('#apicemIp').focus();
+				//angular.element('#apicemIp').val(apicem);
+				$scope.selectedApicem = apicem;
+				
+			}*/
+
 	});
 
-	as.controller('SearchController', function($scope, $http, i18n, $location, DeviceData, $window) {
+	as.controller('SearchController', function($scope, $http, i18n, $location, DeviceData, $window, $filter) {
 		$scope.currentDate = Date.now();
 		DeviceData.setCurrentDate($scope.currentDate);
 		$scope.originalData = '';
@@ -178,7 +178,7 @@
 				console.log("Data is " + data);
 				$scope.originalData = data;
 				DeviceData.setDeviceData(data);
-				$window.sessionStorage['devices']= JSON.stringify(data);
+				$window.sessionStorage['devices'] = JSON.stringify(data);
 				$scope.devices = groupByData(data, groupType);
 				// }
 			}).error(function(data) {
@@ -231,6 +231,64 @@
 			return property === $scope.order.substring(1) ? $scope.order[0] === '+' ? 'glyphicon glyphicon-chevron-up' : 'glyphicon glyphicon-chevron-down' : '';
 		};
 
+		$scope.exportToExcel = function() {
+			var date = $filter('date')(new Date(), 'shortDate');
+			var fileName = "NetworkDevices_" + date + ".xlsx";
+
+			//JSONToCSVConvertor(JSON.parse($window.sessionStorage["devices"]), 'NetworkDevices_'+ date, false);
+			/* var blob = new Blob([document.getElementById('deviceTable').innerHTML], {
+			    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+			});
+			saveAs(blob, fileName);*/
+			$scope.printItems = [];
+			angular.forEach(DeviceData.getDeviceData(), function(device) {
+				var data = {
+					"Platform ID" : device.platformId,
+					"Device Type" : device.type,
+					"Software Version" : device.softwareVersion,
+					"Location" : device.locationName,
+					"Tags" : device.tags,
+					"Family" : device.family,
+					"Vendor" : device.vendor,
+					"Host Name" : device.hostname,
+					"Serial Number" : device.serialNumber,
+					"IP Address" : device.managementIpAddress,
+					"MAC Address" : device.macAddress,
+					"Reachability Status" : device.reachabilityStatus,
+					"Reachability Reason" : device.reachabilityFailureReason
+				};
+				$scope.printItems.push(data);
+			});
+
+			var mystyle = {
+				sheetid : 'Network Devices',
+				headers : true,
+				caption : {
+					title : 'Network Devices',
+					style : 'font-size: 50px; color:blue;' // Sorry, styles do not works
+				},
+				style : 'background:#00FF00',
+				column : {
+					style : 'font-size:30px'
+				},
+				row : {
+					style : function(sheet, row, rowidx) {
+						return 'background:' + (rowidx % 2 ? 'red' : 'yellow');
+					}
+				},
+				rows : {
+					1 : {
+						cell : {
+							style : 'background:blue'
+						}
+					}
+				}
+			};
+			var query = 'SELECT * INTO XLSX("' + fileName + '",?) FROM ?';
+			alasql(query, [ mystyle, $scope.printItems ]);
+
+		};
+
 	});
 
 	as.controller('ReplaceCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData, $filter, $window) {
@@ -239,6 +297,7 @@
 
 		$scope.itemsPerPage = "10";
 		$scope.platformId = decodeURIComponent($routeParams.platformId);
+		$window.sessionStorage.setItem('selectedItem',$scope.platformId);
 		$scope.allDevices = JSON.parse($window.sessionStorage["devices"]);
 		$scope.type = '';
 		DeviceData.setPlatformId($routeParams.platformId);
@@ -277,14 +336,14 @@
 		$scope.checkDevice = function(device) {
 			if (device.selected == false) {
 				$scope.selectedAll = false;
-			} 
+			}
 		}
 
 		$scope.replaceDevices = function() {
 			$scope.selectedCount = 0;
 			angular.forEach($scope.devices, function(item) {
-				if(item.selected==true){
-					$scope.selectedCount =$scope.selectedCount +1;
+				if (item.selected == true) {
+					$scope.selectedCount = $scope.selectedCount + 1;
 				}
 			});
 			if ($scope.selectedCount == 0) {
@@ -349,7 +408,7 @@
 						"text" : question.name
 					};
 					$scope.tags.push(text);
-				}else{
+				} else {
 					question.selectedOtion = "";
 				}
 			});
@@ -431,7 +490,7 @@
 			$scope.billProducts = [];
 			$scope.billProducts.push(product);
 			DeviceData.setBillProducts($scope.billProducts);
-			$location.url('/product/' + $scope.qty+'/bom/'+ encodeURIComponent(product.productId));
+			$location.url('/product/' + $scope.qty + '/bom/' + encodeURIComponent(product.productId));
 		}
 
 		load();
@@ -454,12 +513,14 @@
 	as.controller('BomCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData, $filter, $window) {
 		$scope.productId = decodeURIComponent($routeParams.productId);
 		$scope.qty = $routeParams.qty;
+		$scope.platformId=$window.sessionStorage.getItem('selectedItem');
+		$scope.deviceType=$window.sessionStorage.getItem('deviceType');
 		$scope.products = [];
 		$http.get('product-catalog.json').success(function(data) {
 			$scope.productCatalog = data.products;
 			angular.forEach($scope.productCatalog, function(prodCatalog) {
 				if (prodCatalog.productId == $scope.productId) {
-					prodCatalog.qty=$scope.qty;
+					prodCatalog.qty = $scope.qty;
 					$scope.products.push(prodCatalog);
 				}
 			});
@@ -484,7 +545,7 @@
 			angular.forEach($scope.products, function(product) {
 				$scope.data = [ {
 					"Product" : product.productId,
-					"Description" : product.description.replace(/,/g,' '),
+					"Description" : product.description.replace(/,/g, ' '),
 					"Qty" : $scope.qty,
 				} ];
 			});
