@@ -130,8 +130,8 @@
 						$scope.newApicIP = "";
 						$scope.newApicVersion = "";
 						$scope.location = "";
-						alert("APIC EM Onboarded successfully");
 						load();
+						alert("APIC EM Onboarded successfully");
 					}).error(function(data) {
 						alert("You have entered an invalid IP address!");
 					});
@@ -139,7 +139,24 @@
 			}
 			validateIp($scope.newApicIP);
 		}
+		
+		$scope.order = '+location';
 
+		$scope.orderBy = function(property) {
+			$scope.order = ($scope.order[0] === '+' ? '-' : '+') + property;
+		};
+
+		$scope.orderIcon = function(property) {
+			return property === $scope.order.substring(1) ? $scope.order[0] === '+' ? 'glyphicon glyphicon-chevron-up' : 'glyphicon glyphicon-chevron-down' : '';
+		};
+		
+		$scope.setSelectedApicEm = function(apicem){
+			angular.element('#apicemIp').focus();
+			//angular.element('#apicemIp').val(apicem);
+			$scope.selectedApicem = apicem;
+			
+		}
+		
 	});
 
 	as.controller('SearchController', function($scope, $http, i18n, $location, DeviceData, $window) {
@@ -160,7 +177,7 @@
 				console.log("Data is " + data);
 				$scope.originalData = data;
 				DeviceData.setDeviceData(data);
-				$window.sessionStorage.setItem('devices', data);
+				$window.sessionStorage['devices']= JSON.stringify(data);
 				$scope.devices = groupByData(data, groupType);
 				// }
 			}).error(function(data) {
@@ -221,8 +238,7 @@
 
 		$scope.itemsPerPage = "10";
 		$scope.platformId = decodeURIComponent($routeParams.platformId);
-		$scope.allDevices = DeviceData.getDeviceData();
-		$scope.selectedCount = 0;
+		$scope.allDevices = JSON.parse($window.sessionStorage["devices"]);
 		$scope.type = '';
 		DeviceData.setPlatformId($routeParams.platformId);
 		$scope.deviceType = $routeParams.type;
@@ -244,7 +260,6 @@
 			angular.forEach($scope.devices, function(item) {
 				item.selected = false;
 			});
-			$scope.selectedCount = 0;
 		}
 
 		$scope.checkAll = function() {
@@ -252,24 +267,25 @@
 				$scope.selectedAll = true;
 			} else {
 				$scope.selectedAll = false;
-				$scope.selectedCount = 0;
 			}
 			angular.forEach($scope.devices, function(item) {
 				item.selected = $scope.selectedAll;
-				$scope.selectedCount = $scope.selectedCount + 1;
 			});
 		};
 
 		$scope.checkDevice = function(device) {
 			if (device.selected == false) {
 				$scope.selectedAll = false;
-				$scope.selectedCount = $scope.selectedCount - 1;
-			} else {
-				$scope.selectedCount = $scope.selectedCount + 1;
-			}
+			} 
 		}
 
 		$scope.replaceDevices = function() {
+			$scope.selectedCount = 0;
+			angular.forEach($scope.devices, function(item) {
+				if(item.selected==true){
+					$scope.selectedCount =$scope.selectedCount +1;
+				}
+			});
 			if ($scope.selectedCount == 0) {
 				alert("Please select atleast one device to replace");
 			} else {
