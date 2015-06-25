@@ -45,6 +45,8 @@
 									<th ng-click="orderBy('platformId')"><msg key="platformId" /><span
 										ng-class="orderIcon('platformId')" /></th>
 									<!-- <th><msg key="desc" /></th> -->
+									<th ng-click="orderBy('tags')"><msg key="tags" /><span
+										ng-class="orderIcon('tags')" /></th>
 									<th ng-click="orderBy('locationName')"><msg key="location" /><span
 										ng-class="orderIcon('locationName')" /></th>
 									<th ng-click="orderBy('family')"><msg key="family" /><span
@@ -53,20 +55,21 @@
 							</thead>
 							<tbody>
 								<tr
-									dir-paginate="device in devices  | itemsPerPage: itemsPerPage |orderBy:order">
+									dir-paginate="device in devices  | orderBy:order | itemsPerPage: itemsPerPage">
 									<td><input type="checkbox" ng-model="device.selected"
 										ng-click="checkDevice(device)"></td>
 									<td>{{device.platformId}}</td>
 									<!-- <td>{{device.description}}</td> -->
+									<td>{{device.tags}}</td>
 									<td>{{device.locationName}}</td>
 									<td>{{device.family}}</td>
 								</tr>
 								<tr ng-if="devices && devices.length === 0">
-									<td colspan="10" align="center" style="color: RED"><b><msg
+									<td colspan="11" align="center" style="color: RED"><b><msg
 												key="noDeviceFound" />.</b></td>
 								</tr>
 								<tr class="gradeU">
-									<td colspan="10" align="center"><button
+									<td colspan="11" align="center"><button
 											class="btn btn-primary btn-lg" ng-click="replaceDevices()">
 											<msg key="replace" />
 										</button></td>

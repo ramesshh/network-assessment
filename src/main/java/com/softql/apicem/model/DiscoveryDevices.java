@@ -63,7 +63,19 @@ public class DiscoveryDevices implements Serializable {
 
 	private String locationName;
 
+	private boolean selected;
+
 	private int qty = 1;
+
+	private String tags;
+
+	public String getTags() {
+		return tags;
+	}
+
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
 
 	public int getQty() {
 		return qty;
@@ -153,6 +165,14 @@ public class DiscoveryDevices implements Serializable {
 
 	public void setManagementIpAddress(String managementIpAddress) {
 		this.managementIpAddress = managementIpAddress;
+	}
+
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
 	}
 
 	public String getMacAddress() {

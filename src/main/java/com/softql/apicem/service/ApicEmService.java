@@ -6,7 +6,9 @@
 package com.softql.apicem.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.net.ssl.SSLContext;
@@ -34,9 +36,12 @@ import org.springframework.web.client.RestTemplate;
 
 import com.softql.apicem.model.ApicEmLoginForm;
 import com.softql.apicem.model.DeviceDetails;
+import com.softql.apicem.model.DeviceTag;
+import com.softql.apicem.model.DeviceTagResponse;
 import com.softql.apicem.model.DiscoveryDevices;
 import com.softql.apicem.model.Ticket;
 import com.softql.apicem.model.TicketForm;
+import com.softql.apicem.util.ApicemUtils;
 
 /**
  *
@@ -85,11 +90,9 @@ public class ApicEmService {
 	}
 
 	public List<DiscoveryDevices> getDevices(String url) {
-		List<DiscoveryDevices> deviceList = new ArrayList<DiscoveryDevices>();
 		DeviceDetails deviceDetails = restTemplate.getForObject(url, DeviceDetails.class);
 		List<DiscoveryDevices> arrayToList = CollectionUtils.arrayToList(deviceDetails.getResponse());
-		deviceList.addAll(arrayToList);
-		return deviceList;
+		return arrayToList;
 	}
 
 	public void onBoardApicem(ApicEmLoginForm form) {
@@ -108,4 +111,19 @@ public class ApicEmService {
 		}
 		return apicems;
 	}
+
+	public Map<String, String> getTags(String url) {
+		Map<String, String> tagsMap = new HashMap<String, String>();
+		DeviceTagResponse deviceTagRes = restTemplate.getForObject(url, DeviceTagResponse.class);
+		List<DeviceTag> arrayToList = CollectionUtils.arrayToList(deviceTagRes.getResponse());
+
+		for (DeviceTag deviceTag : arrayToList) {
+			String[] s = { deviceTag.getTag(), tagsMap.get(deviceTag.getNetworkDeviceId()) };
+			tagsMap.put(deviceTag.getNetworkDeviceId(), ApicemUtils.join(',', s));
+		}
+
+		return tagsMap;
+
+	}
+
 }

@@ -156,7 +156,7 @@
             $http.get('api/self')
                     .success(function (data) {
                         $rootScope.user = data;
-                        $window.sessionStorage.user=data;
+                        $window.sessionStorage['user']=JSON.stringify(data);
                         $rootScope.$broadcast('event:loginConfirmed');
                     })
                     .error(function (data) {
@@ -180,10 +180,10 @@
         $rootScope.$on('$routeChangeStart', function (event, nextLoc, currentLoc) {
             //console.log('fire event@$routeChangeStart');
             var closedToPublic = (-1 === routesOpenToPublic.indexOf($location.path()));
-            if (closedToPublic && !$window.sessionStorage.user	) {
+            if (closedToPublic && !$window.sessionStorage['user']) {
                 //console.log('login required...');             
                 $rootScope.$broadcast('event:loginRequired');
-            } else if (!!$window.sessionStorage.user) {
+            } else if (!!$window.sessionStorage['user']) {
                 //console.log('already logged in...'); 
                 if (!!nextLoc && nextLoc.templateUrl == 'partials/login.html') {
                     $location.path('/login');

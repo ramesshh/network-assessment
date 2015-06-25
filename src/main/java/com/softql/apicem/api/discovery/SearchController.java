@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.softql.apicem.Constants;
 import com.softql.apicem.model.DiscoveryDevices;
 import com.softql.apicem.service.ApicEmService;
+import com.softql.apicem.util.ApicemUtils;
 import com.softql.apicem.util.URLUtil;
 
 @RestController
@@ -53,6 +54,15 @@ public class SearchController {
 			return new ResponseEntity<>(discoveryDevices, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
+		String tagurl = URLUtil.constructUrl(request.getHeader("apicem"), null, request.getHeader("version"),
+				"/network-device/tag", request.getHeader("X-Access-Token"));
+
+		Map<String, String> tags = apicEmService.getTags(tagurl);
+
+		for (DiscoveryDevices d : discoveryDevices) {
+			d.setTags(tags.get(d.getId()));
+		}
+
 		log.debug("get posts size {}", discoveryDevices.size());
 
 		return new ResponseEntity<>(discoveryDevices, HttpStatus.OK);
@@ -72,6 +82,10 @@ public class SearchController {
 					DiscoveryDevices discoveryDevice = deviceMap.get(platformId);
 					int qty = discoveryDevice.getQty() + 1;
 					discoveryDevice.setQty(qty);
+					discoveryDevice.setLocationName(ApicemUtils.join(',', discoveryDevice.getLocationName(),
+							device.getLocationName()));
+					discoveryDevice.setTags(ApicemUtils.join(',', discoveryDevice.getTags(), device.getTags()));
+
 					deviceMap.put(platformId, discoveryDevice);
 				} else {
 					deviceMap.put(platformId, device);
@@ -80,5 +94,4 @@ public class SearchController {
 		}
 		return new ResponseEntity<>(deviceMap.values(), HttpStatus.OK);
 	}
-
 }

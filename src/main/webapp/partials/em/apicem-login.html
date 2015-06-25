@@ -67,12 +67,12 @@
 					<div class="form-group">
 						<label class="control-label col-md-3" for="apicemIp"><msg
 								key="apicemIP"></msg></label>
-						<div class="col-md-6">{{selectedApicem}}
+						<div class="col-md-6">
 							<select class="form-control" ng-model="selectedApicem" 
 								id="apicemIp" name="apicemIp"
 								ng-options="item.apicemIP as item.apicemIP for item in allApicEms">
 							</select>
-
+							<!--  track by item.apicemIP -->
 							<!-- <ui-select ng-model="selectedApicem" theme="select2" ng-disabled="disabled" style="min-width: 300px;">
 						    <ui-select-match placeholder="Select a APIC EM...">{{$select.selected.apicemIP}}</ui-select-match>
 						    <ui-select-choices repeat="item in allApicEms | propsFilter: {apicemIP: $select.search, location: $select.search}">
@@ -131,10 +131,16 @@
 			</thead>
 			<tbody>
 				<tr dir-paginate="item in allApicEms | itemsPerPage: 5 | orderBy:order">
-					<td><a ng-click="setSelectedApicEm(item.apicemIP)">{{item.apicemIP}} </a></td>
+					<td>
+					<!-- <a ng-click="setSelectedApicEm(item.apicemIP)"> </a> -->
+					{{item.apicemIP}}</td>
 					<td>{{item.version}}</td>
 					<td>{{item.location}}</td>
 				</tr>
+				<tr ng-if="allApicEms && allApicEms.length === 0">
+								<td colspan="6" align="center" style="color: RED"><b><msg
+											key="noapicemsfound" />.</b></td>
+							</tr>
 			</tbody>
 			<tfoot>
 				<tr>
