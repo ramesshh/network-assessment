@@ -54,6 +54,7 @@
 		$scope.allApicEms = [];
 
 		load = function() {
+			$scope.allApicEms = [];
 			$http.get('api/apicem').success(function(data) {
 				angular.forEach(data, function(apicEm) {
 					$scope.allApicEms.push(apicEm);
@@ -150,12 +151,12 @@
 			return property === $scope.order.substring(1) ? $scope.order[0] === '+' ? 'glyphicon glyphicon-chevron-up' : 'glyphicon glyphicon-chevron-down' : '';
 		};
 		
-		$scope.setSelectedApicEm = function(apicem){
+	/*	$scope.setSelectedApicEm = function(apicem){
 			angular.element('#apicemIp').focus();
 			//angular.element('#apicemIp').val(apicem);
 			$scope.selectedApicem = apicem;
 			
-		}
+		}*/
 		
 	});
 
