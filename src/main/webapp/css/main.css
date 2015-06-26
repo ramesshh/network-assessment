@@ -10,6 +10,7 @@ body {
 .page{
     min-height: 400px;
 }
+.page-header h1{color:#325D98; font-weight:600; text-transform:uppercase; font-size:25px;}
 header{
   display: block;
   min-height: 75px;
@@ -25,7 +26,7 @@ header{
   background: -ms-linear-gradient(top,#4d80af 0,#2b5593 100%);
 }
 .logo{}
-.logo h1{margin:0; padding:0; font-size:21.5px; color:#fff;}
+.logo h1{margin:0; padding:0; font-size:17px; color:#fff;}
 .logo span{vertical-align:bottom;}
 
 .guest-actions{margin-top:-20px; font-size:11px;}
@@ -261,3 +262,13 @@ tags-input input::-webkit-input-placeholder{
 .panel-default>.panel-heading1{  color: #FFF;
   background-color: #4575A8;
   border-color: #ddd;}
+  
+.divider {
+  height: 1px;
+  width:100%;
+  display:block; /* for use on default inline elements like span */
+  margin: 15px 0;
+  overflow: hidden;
+  background-color: #e5e5e5;
+}
+  
