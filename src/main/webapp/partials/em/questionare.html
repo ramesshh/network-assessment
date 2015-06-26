@@ -1,9 +1,9 @@
 <div class="breadcrumb_box">
 	<div class="btn-group btn-breadcrumb">
-       <span class="btn btn-primary" style="cursor:default;"><i class="glyphicon glyphicon-home"></i></span>
+      <a ng-href="#/apicemlogin" class="btn btn-primary" style="cursor:default;"><i class="glyphicon glyphicon-home"></i></a>
        <a ng-href="#/devices" class="btn btn-primary">Inventory</a>
-       <a ng-href="#/device/{{deviceType}}/{{platformId | urlEncode}}" class="btn btn-primary">Replaceable Device</a>
-       <a ng-href="#/products/{{qty}}/{{deviceType}}/{{platformId|urlEncode}}" class="btn btn-info">Products</a>
+       <a ng-href="#/device/{{dType}}/{{platformId | urlEncode}}" class="btn btn-primary">Replaceable Device</a>
+       <a ng-href="#/products/{{qty}}/{{dType}}/{{selectedItem | urlEncode}}" class="btn btn-info">Products</a>
     </div>
 </div>
 <div class="page-header">
@@ -31,7 +31,7 @@
 <div id="page-wrapper">
 	<div class="row">
 		<div class="col-md-3">
-			<div>
+			<div class="panel panel-info">
 				<div class="panel-heading" style="background-color:#f5f5f5; border-right:1px solid #ddd;"><msg key="filter"></div>
 				<!-- /.panel-heading -->
 				<div style="border-right:1px solid #ddd; height:780px;">

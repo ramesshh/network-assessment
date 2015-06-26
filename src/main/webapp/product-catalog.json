@@ -29,7 +29,7 @@
          "secureWAN":"Y",
          "intelligantWAN":"",
          "ciscoUnifiedCommns":"",
-         "imageURL":"imagISR4431-K9.jpg",
+         "imageURL":"ISR4431-K9.jpg",
          "description":"Cisco ISR 4431 (4GE,3NIM,8G FLASH,4G DRAM,IPB) ",
          "price":"11000",
          "qty":""

@@ -302,6 +302,7 @@
 		$scope.type = '';
 		DeviceData.setPlatformId($routeParams.platformId);
 		$scope.deviceType = $routeParams.type;
+		$window.sessionStorage.setItem('deviceType',$scope.deviceType);
 		load = function() {
 			var replaceItemData = [];
 			angular.forEach($scope.allDevices, function(device) {
@@ -368,7 +369,10 @@
 	as.controller('QuestionCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData, $filter, $window) {
 		$scope.itemsPerPage = "10";
 		$scope.platformId = decodeURIComponent($routeParams.platformId);
+		$scope.selectedItem=decodeURIComponent($window.sessionStorage.getItem('selectedItem'));
+		$scope.dType=$window.sessionStorage.getItem('deviceType');
 		$scope.qty = $routeParams.count;
+		$window.sessionStorage.setItem('qty',$scope.qty);
 		$scope.currDate = DeviceData.getCurrentDate();
 		$scope.deviceType = $routeParams.type;
 		load = function() {
@@ -514,7 +518,8 @@
 		$scope.productId = decodeURIComponent($routeParams.productId);
 		$scope.qty = $routeParams.qty;
 		$scope.platformId=$window.sessionStorage.getItem('selectedItem');
-		$scope.deviceType=$window.sessionStorage.getItem('deviceType');
+		$scope.dType=$window.sessionStorage.getItem('deviceType');
+		$scope.count=$window.sessionStorage.getItem('qty');
 		$scope.products = [];
 		$http.get('product-catalog.json').success(function(data) {
 			$scope.productCatalog = data.products;
@@ -527,8 +532,8 @@
 		});
 
 		$scope.placeOrder = function() {
-			$window.open('https://www.cisco.com/go/commerceworkspace', '_blank');
 			$scope.generateBOM();
+			$window.open('https://www.cisco.com/go/commerceworkspace', '_blank');
 		}
 
 		$scope.save = function() {

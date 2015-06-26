@@ -1,10 +1,10 @@
 <div class="breadcrumb_box">
 	<div class="btn-group btn-breadcrumb">
-       <span class="btn btn-primary" style="cursor:default;"><i class="glyphicon glyphicon-home"></i></span>
+       <a ng-href="#/apicemlogin" class="btn btn-primary" style="cursor:default;"><i class="glyphicon glyphicon-home"></i></a>
          <a ng-href="#/devices" class="btn btn-primary">Inventory</a>
-       <a ng-href="#/device/{{deviceType}}/{{platformId | urlEncode}}" class="btn btn-primary">Replaceable Device</a>
-       <a ng-href="#/products/{{qty}}/{{deviceType}}/{{platformId|urlEncode}}" class="btn btn-primary">Products</a>
-       <a href="#/product/{{qty}}/bom/{{productId|urlEncode}}" class="btn btn-info">BOM</a>
+       <a ng-href="#/device/{{dType}}/{{platformId|urlEncode}}" class="btn btn-primary">Replaceable Device</a>
+       <a ng-href="#/products/{{qty}}/{{dType}}/{{platformId|urlEncode}}" class="btn btn-primary">Products</a>
+       <a href="#/product/{{count}}/bom/{{productId|urlEncode}}" class="btn btn-info">BOM</a>
     </div>
 </div>
 

@@ -1,6 +1,6 @@
 <div class="breadcrumb_box">
 	<div class="btn-group btn-breadcrumb">
-       <span class="btn btn-primary" style="cursor:default;"><i class="glyphicon glyphicon-home"></i></span>
+      <a ng-href="#/apicemlogin" class="btn btn-primary" style="cursor:default;"><i class="glyphicon glyphicon-home"></i></a>
        <a ng-href="#/devices" class="btn btn-primary">Inventory</a>
        <a ng-href="#/device/{{deviceType}}/{{platformId | urlEncode}}" class="btn btn-info">Replaceable Device</a>
     </div>
@@ -28,7 +28,7 @@
 				<option value="30">30</option>
 				<option value="50">50</option>
 				<option value="100">100</option>
-				<option value="devices.length"><msg key="all" /></option>
+				<option value="{{devices.length}}">All</option>
 			</select>
 			<div class="clearfix">&nbsp;</div>
 		</div>
