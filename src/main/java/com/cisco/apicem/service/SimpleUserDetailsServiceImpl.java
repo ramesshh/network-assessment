@@ -1,0 +1,38 @@
+package com.cisco.apicem.service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import com.cisco.apicem.domain.User;
+import com.cisco.apicem.repository.UserRepository;
+
+public class SimpleUserDetailsServiceImpl implements UserDetailsService {
+
+	private static final Logger log = LoggerFactory.getLogger(SimpleUserDetailsServiceImpl.class);
+
+	private UserRepository userRepository;
+
+	public SimpleUserDetailsServiceImpl(UserRepository userRepository) {
+		super();
+		this.userRepository = userRepository;
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = userRepository.findByUsername(username);
+		if (user == null) {
+			throw new UsernameNotFoundException("username not found:" + username);
+		}
+
+		if (log.isDebugEnabled()) {
+			log.debug("found by username @" + username);
+		}
+
+		return user;
+
+	}
+
+}

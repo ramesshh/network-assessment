@@ -24,7 +24,9 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -53,7 +55,7 @@ public class ApicEmService {
 	private RestTemplate restTemplate;
 
 	@Autowired
-	private MongoOperations mongoTemplate;
+	private MongoTemplate mongoTemplate;
 
 	private void getRestTemplate(String username, String password) {
 		try {
@@ -100,10 +102,8 @@ public class ApicEmService {
 	}
 
 	public List<ApicEmLoginForm> getApicEms(String userName) {
-		// find
 		List<ApicEmLoginForm> apicems = null;
-		// mongoTemplate.find(new Query(Criteria.where("userId").is(userName)),
-		// ApicEmLoginForm.class, "apicems");
+		mongoTemplate.find(new Query(Criteria.where("userId").is(userName)), ApicEmLoginForm.class, "apicems");
 
 		if (CollectionUtils.isEmpty(apicems)) {
 			apicems = new ArrayList<ApicEmLoginForm>();
