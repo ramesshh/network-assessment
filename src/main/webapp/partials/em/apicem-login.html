@@ -132,7 +132,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr dir-paginate="item in allApicEms | itemsPerPage: 5 | orderBy:order">
+				<tr dir-paginate="item in allApicEms | orderBy:order|itemsPerPage: 5  ">
 					<td>
 					<!-- <a ng-click="setSelectedApicEm(item.apicemIP)"> </a> -->
 					{{item.apicemIP}}</td>
