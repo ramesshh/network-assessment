@@ -143,13 +143,13 @@
 					</div>
 					<div class="panel-body dataTables_wrapper">
 
-						<div class="col-md-12">
+						<!-- <div class="col-md-12">
 							<div class="input-group col-md-12">
 								<input type="text" class="form-control" ng-model="q"
 									placeholder="Search for apicems...">
 							</div>
 						</div>
-						<div class="clearfix" style="margin-bottom: 5px;">&nbsp;</div>
+						<div class="clearfix" style="margin-bottom: 5px;">&nbsp;</div> -->
 						<table class="table table-bordered table-hover table-condensed">
 							<thead>
 								<tr>
@@ -168,8 +168,8 @@
 									<td>
 										<!-- <a ng-click="setSelectedApicEm(item.apicemIP)"> </a> -->
 										<span editable-text="item.apicemIP" e-name="apicemIP"
-										e-form="rowform" onbeforesave="isValidIP(item.apicemIP)"
-										e-required> {{ item.apicemIP || 'empty' }} </span>
+										e-form="rowform"
+										e-required> {{ item.apicemIP }} </span>
 									</td>
 									<td><span editable-select="item.version" e-name="version"
 										e-form="rowform"
@@ -181,7 +181,7 @@
 									<td style="white-space: nowrap">
 										<!-- form -->
 										<form editable-form name="rowform"
-											onbeforesave="saveApicEMIP($data,item.apicemIP)"
+											onbeforesave="saveApicEMIP($data,item.id)"
 											ng-show="rowform.$visible" class="form-buttons form-inline"
 											shown="inserted == user">
 											<button type="submit" ng-disabled="rowform.$waiting"
@@ -192,7 +192,7 @@
 										</form>
 										<div class="buttons" ng-show="!rowform.$visible">
 											<button class="btn btn-primary" ng-click="rowform.$show()">Edit</button>
-											<button class="btn btn-danger" ng-click="deleteApicemIP(item.apicemIP)">Delete</button>
+											<button class="btn btn-danger" ng-click="deleteApicemIP(item.id,$index)">Delete</button>
 										</div>
 									</td>
 								</tr>

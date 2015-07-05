@@ -18,6 +18,8 @@ public class ApicEmLoginForm implements Serializable {
 
 	private String location;
 
+	private String id;
+
 	public String getLocation() {
 		return location;
 	}
@@ -64,6 +66,14 @@ public class ApicEmLoginForm implements Serializable {
 
 	public void setVersion(String version) {
 		this.version = version;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }

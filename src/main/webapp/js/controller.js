@@ -167,8 +167,9 @@
 				ValidateIPAddress($scope.newApicIP);
 			}
 		}
-		
-		$scope.isValidIP = function(ip){
+
+		$scope.isValidIP = function(ip) {
+
 			if (ip != null && ip != 'undefined') {
 				var actionURL = "api/apicem/validate";
 				var data = {
@@ -177,17 +178,40 @@
 				$http.post(actionURL, data).success(function(data) {
 					console.log("Success Data is " + data);
 				}).error(function(data) {
-					return "You have entered an invalid IP address!";
+					alert("You have entered an invalid IP address!");
 				});
 			}
 		}
-		
-		$scope.saveApicEMIP = function(updateApicemIP){
-			console.log('updateapicemIP'+updateApicemIP);
+
+		$scope.saveApicEMIP = function(updateApicemIP,id) {
+			console.log('updateapicemIP' + updateApicemIP);
+			var data = {
+				"apicemIP" : updateApicemIP.apicemIP,
+				"version" : updateApicemIP.version,
+				"id" : id,
+				"location" : updateApicemIP.location
+			};
+			var actionURL = "api/apicem/"+id;
+			$http.put(actionURL, data).success(function(data) {
+				console.log("Success Data is " + data);
+				load();
+				alert("APIC EM updated successfully");
+			}).error(function(data) {
+				alert("You have entered an invalid IP address!");
+				load();
+			});
 		}
-		
-		$scope.deleteApicemIP = function(deleteIP){
-			console.log('deleteIP'+deleteIP);
+
+		$scope.deleteApicemIP = function(deleteIP,index) {
+			var actionURL = "api/apicem/"+deleteIP;
+			$http.delete(actionURL).success(function(data) {
+				console.log("deleted successfully " );
+				load();
+			}).error(function(data){
+				alert("Error while deleting the APIC EM");
+			});
+			
+			
 		}
 
 		$scope.order = '+location';

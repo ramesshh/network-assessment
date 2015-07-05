@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -129,6 +130,34 @@ public class SignupController {
 		}
 
 		return new ResponseEntity<>("Success", HttpStatus.CREATED);
+	}
+
+	@RequestMapping(value = { "/apicem/{id}" }, method = RequestMethod.PUT)
+	@ResponseBody
+	public ResponseEntity<String> updateOnbaordEpicEM(@RequestBody ApicEmLoginForm form, @PathVariable("id") String id) {
+
+		if (InetAddressValidator.getInstance().isValidInet4Address(form.getApicemIP())) {
+			String userName = SecurityUtil.currentUser().getUsername();
+			form.setUserId(userName);
+			form.setVersion(form.getVersion().toLowerCase());
+			form.setId(id);
+			apicEmService.updateApicEM(form);
+		} else {
+			return new ResponseEntity<>("Invalid IP address", HttpStatus.BAD_REQUEST);
+		}
+
+		return new ResponseEntity<>("Success", HttpStatus.CREATED);
+	}
+
+	@RequestMapping(value = { "/apicem/{id}" }, method = RequestMethod.DELETE)
+	@ResponseBody
+	public ResponseEntity<String> deleteApicEM(@PathVariable("id") String id) {
+		try {
+			apicEmService.deleteApicEM(id);
+		} catch (Exception e) {
+			return new ResponseEntity<>("Delete has some issue", HttpStatus.FORBIDDEN);
+		}
+		return new ResponseEntity<>("Success", HttpStatus.OK);
 	}
 
 	@RequestMapping(value = { "/apicem/validate" }, method = RequestMethod.POST)

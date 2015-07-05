@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -96,9 +97,12 @@ public class ApicEmService {
 	}
 
 	public void onBoardApicem(ApicEmLoginForm form) {
-		mongoTemplate.save(form, "apicems");
-		System.out.println("apicem onboarded");
 
+		Query query = new Query();
+		query.addCriteria(Criteria.where("apicemIP").is(form.getApicemIP()));
+		Update update = new Update();
+		upsert(form, update, query);
+		System.out.println("apicem onboarded");
 	}
 
 	public List<ApicEmLoginForm> getApicEms(String userName) {
@@ -126,4 +130,24 @@ public class ApicEmService {
 
 	}
 
+	public void deleteApicEM(String id) {
+		mongoTemplate.remove(new Query(Criteria.where("_id").is(id)), "apicems");
+	}
+
+	public void updateApicEM(ApicEmLoginForm form) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("_id").is(form.getId()));
+		Update update = new Update();
+		update.set("_id", form.getId());
+		upsert(form, update, query);
+
+	}
+
+	private void upsert(ApicEmLoginForm form, Update update, Query query) {
+		update.set("apicemIP", form.getApicemIP());
+		update.set("version", form.getVersion());
+		update.set("location", form.getLocation());
+		update.set("userId", form.getUserId());
+		mongoTemplate.upsert(query, update, "apicems");
+	}
 }
