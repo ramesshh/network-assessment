@@ -56,15 +56,15 @@
 								<tr class="info">
 									<!-- 	<th><input type="checkbox" ng-model="selectedAll"
 										ng-click="checkAll()" />&nbsp;<msg key="all" /></th> -->
-									<th ng-click="orderBy('platformId')"><msg key="platformId" /><span
-										ng-class="orderIcon('platformId')" /></th>
+									<td ng-click="orderBy('platformId')"><msg key="platformId" /><span
+										ng-class="orderIcon('platformId')" /></td>
 									<!-- <th><msg key="desc" /></th> -->
-									<th ng-click="orderBy('tags')"><msg key="tags" /><span
-										ng-class="orderIcon('tags')" /></th>
-									<th ng-click="orderBy('locationName')"><msg key="location" /><span
-										ng-class="orderIcon('locationName')" /></th>
-									<th ng-click="orderBy('family')"><msg key="family" /><span
-										ng-class="orderIcon('family')" /></th>
+									<td ng-click="orderBy('tags')"><msg key="tags" /><span
+										ng-class="orderIcon('tags')" /></td>
+									<td ng-click="orderBy('locationName')"><msg key="location" /><span
+										ng-class="orderIcon('locationName')" /></td>
+									<td ng-click="orderBy('family')"><msg key="family" /><span
+										ng-class="orderIcon('family')" /></td>
 								</tr>
 								<tr
 									dir-paginate="device in devices  | filter:q | orderBy:order | itemsPerPage: itemsPerPage">

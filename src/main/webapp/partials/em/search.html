@@ -79,18 +79,18 @@
 					<table class="table table-striped table-condensed table-hover">
 						<tbody>
 							<tr class="info">
-								<th ng-click="orderBy('platformId')" width="20%"><msg
-										key="platformId" /><span ng-class="orderIcon('platformId')" /></th>
+								<td ng-click="orderBy('platformId')" width="20%"><msg
+										key="platformId" /><span ng-class="orderIcon('platformId')" /></td>
 								<!-- 	<th><msg key="desc" /></th> -->
-								<th ng-click="orderBy('qty')" width="10%"><msg key="qty" /><span
-									ng-class="orderIcon('qty')" /></th>
-								<th ng-click="orderBy('softwareVersion')" width="20%"><msg
-										key="version" /><span ng-class="orderIcon('softwareVersion')" /></th>
-								<th ng-click="orderBy('tags')" width="20%"><msg key="tags" /><span
-									ng-class="orderIcon('tags')" /></th>
-								<th ng-click="orderBy('locationName')" width="30%"><msg
-										key="location" /><span ng-class="orderIcon('locationName')" /></th>
-								<th width="10%"><msg key="action" /></th>
+								<td ng-click="orderBy('qty')" width="10%"><msg key="qty" /><span
+									ng-class="orderIcon('qty')" /></td>
+								<td ng-click="orderBy('softwareVersion')" width="20%"><msg
+										key="version" /><span ng-class="orderIcon('softwareVersion')" /></td>
+								<td ng-click="orderBy('tags')" width="20%"><msg key="tags" /><span
+									ng-class="orderIcon('tags')" /></td>
+								<td ng-click="orderBy('locationName')" width="30%"><msg
+										key="location" /><span ng-class="orderIcon('locationName')" /></td>
+								<td width="10%"><msg key="action" /></td>
 							</tr>
 							<tr
 								dir-paginate="device in devices | filter:q | orderBy:order | itemsPerPage: itemsPerPage ">
