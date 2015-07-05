@@ -130,6 +130,18 @@ public class SignupController {
 		return new ResponseEntity<>("Success", HttpStatus.CREATED);
 	}
 
+	@RequestMapping(value = { "/apicem/validate" }, method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<String> validateApicEM(@RequestBody ApicEmLoginForm form, BindingResult errors,
+			HttpServletRequest req) {
+
+		if (!InetAddressValidator.getInstance().isValidInet4Address(form.getApicemIP())) {
+			return new ResponseEntity<>("Invalid IP address", HttpStatus.BAD_REQUEST);
+		}
+
+		return new ResponseEntity<>("Success", HttpStatus.OK);
+	}
+
 	@RequestMapping(value = { "/apicem" }, method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<List<ApicEmLoginForm>> getAllApicEMs(HttpServletRequest req) {

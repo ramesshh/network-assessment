@@ -1,14 +1,15 @@
 <div class="breadcrumb_box">
 	<div class="btn-group btn-breadcrumb">
-      <a ng-href="#/apicemlogin" class="btn btn-primary" style="cursor:default;"><i class="glyphicon glyphicon-home"></i></a>
+       <a ng-href="#/login" class="btn btn-primary" style="cursor:default;"><i class="glyphicon glyphicon-home"></i></a>
+       <a ng-href="#/apicemlogin" class="btn btn-primary">Onbaord APIC-EM</a>
        <a ng-href="#/devices" class="btn btn-primary">Inventory</a>
-       <a ng-href="#/device/{{deviceType}}/{{platformId | urlEncode}}" class="btn btn-info">Replaceable Device</a>
+       <a ng-href="#/device/{{deviceType}}/{{platformId | urlEncode}}" class="btn btn-info">Detail Inventory</a>
     </div>
 </div>
 
 <div class="page-header">
 	<h1>
-		<msg key="replacableDeviceFor" />
+		<msg key="deviceDetailsFor" />
 		: <select class="form-control" style="width: 15%; display: inline;"
 			ng-model="platformId" ng-change="platformIdChange()"
 			ng-options="item.platformId as item.platformId for item in allDevices | unique:'platformId'">
@@ -16,7 +17,7 @@
 	</h1>
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<msg key="replacableDeviceDetails" />
+			<msg key="deviceDetailsFor" />
 		</div>
 		<div class="col-md-3 details_inventory_search pull-right">
 			<label><msg key="itemsPerPage" /> : </label> <select
@@ -68,12 +69,12 @@
 									<td colspan="11" align="center" style="color: RED"><b><msg
 												key="noDeviceFound" />.</b></td>
 								</tr>
-								<tr class="gradeU">
+								<!--  <tr class="gradeU">
 									<td colspan="11" align="center"><button
 											class="btn btn-primary btn-lg" ng-click="replaceDevices()">
 											<msg key="replace" />
 										</button></td>
-								</tr>
+								</tr>  -->
 							</tbody>
 							<tfoot>
 								<tr>

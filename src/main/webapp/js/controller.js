@@ -141,6 +141,25 @@
 			validateIp($scope.newApicIP);
 		}
 
+		$scope.changeIp = function() {
+			console.log('Chage the value');
+
+			ValidateIPAddress = function(ip) {
+				var actionURL = "api/apicem/validate";
+				var data = {
+					"apicemIP" : $scope.newApicIP,
+				};
+				$http.post(actionURL, data).success(function(data) {
+					console.log("Success Data is " + data);
+				}).error(function(data) {
+					alert("You have entered an invalid IP address!");
+				});
+			}
+			if ($scope.newApicIP != null && $scope.newApicIP != 'undefined') {
+				ValidateIPAddress($scope.newApicIP);
+			}
+		}
+
 		$scope.order = '+location';
 
 		$scope.orderBy = function(property) {
@@ -297,12 +316,12 @@
 
 		$scope.itemsPerPage = "10";
 		$scope.platformId = decodeURIComponent($routeParams.platformId);
-		$window.sessionStorage.setItem('selectedItem',$scope.platformId);
+		$window.sessionStorage.setItem('selectedItem', $scope.platformId);
 		$scope.allDevices = JSON.parse($window.sessionStorage["devices"]);
 		$scope.type = '';
 		DeviceData.setPlatformId($routeParams.platformId);
 		$scope.deviceType = $routeParams.type;
-		$window.sessionStorage.setItem('deviceType',$scope.deviceType);
+		$window.sessionStorage.setItem('deviceType', $scope.deviceType);
 		load = function() {
 			var replaceItemData = [];
 			angular.forEach($scope.allDevices, function(device) {
@@ -369,10 +388,10 @@
 	as.controller('QuestionCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData, $filter, $window) {
 		$scope.itemsPerPage = "10";
 		$scope.platformId = decodeURIComponent($routeParams.platformId);
-		$scope.selectedItem=decodeURIComponent($window.sessionStorage.getItem('selectedItem'));
-		$scope.dType=$window.sessionStorage.getItem('deviceType');
+		$scope.selectedItem = decodeURIComponent($window.sessionStorage.getItem('selectedItem'));
+		$scope.dType = $window.sessionStorage.getItem('deviceType');
 		$scope.qty = $routeParams.count;
-		$window.sessionStorage.setItem('qty',$scope.qty);
+		$window.sessionStorage.setItem('qty', $scope.qty);
 		$scope.currDate = DeviceData.getCurrentDate();
 		$scope.deviceType = $routeParams.type;
 		load = function() {
@@ -517,9 +536,9 @@
 	as.controller('BomCtrl', function($scope, $http, $routeParams, i18n, $location, DeviceData, $filter, $window) {
 		$scope.productId = decodeURIComponent($routeParams.productId);
 		$scope.qty = $routeParams.qty;
-		$scope.platformId=$window.sessionStorage.getItem('selectedItem');
-		$scope.dType=$window.sessionStorage.getItem('deviceType');
-		$scope.count=$window.sessionStorage.getItem('qty');
+		$scope.platformId = $window.sessionStorage.getItem('selectedItem');
+		$scope.dType = $window.sessionStorage.getItem('deviceType');
+		$scope.count = $window.sessionStorage.getItem('qty');
 		$scope.products = [];
 		$http.get('product-catalog.json').success(function(data) {
 			$scope.productCatalog = data.products;
@@ -552,11 +571,11 @@
 					"Product" : product.productId,
 					"Description" : product.description,
 					"Qty" : product.qty,
-					"Unit Price":product.price,
-					"Total Price":product.price * product.qty
+					"Unit Price" : product.price,
+					"Total Price" : product.price * product.qty
 				} ];
 			});
-			
+
 			var date = $filter('date')(new Date(), 'shortDate');
 			var fileName = "BOM_" + date + ".xlsx";
 
@@ -588,8 +607,6 @@
 			alasql(query, [ mystyle, $scope.data ]);
 
 		}
-
-		
 
 	});
 

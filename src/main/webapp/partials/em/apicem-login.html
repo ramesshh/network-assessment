@@ -1,3 +1,10 @@
+<div class="breadcrumb_box">
+	<div class="btn-group btn-breadcrumb">
+       <a ng-href="#/login" class="btn btn-primary" style="cursor:default;"><i class="glyphicon glyphicon-home"></i></a>
+        <a ng-href="#/apicemlogin" class="btn btn-info">Onbaord APIC-EM</a>
+     </div>
+</div>
+
 <div class="row" ng-controller="ApicEMLoginController"
 	style="margin-top: 20px;">
 	
@@ -81,7 +88,8 @@
 						<label class="control-label col-md-3" for="apicemIp"><msg
 								key="apicemIP"></msg></label>
 						<div class="col-md-6">
-								<input class="form-control" ng-model="newApicIP" placeholder="APIC EM IP" required="required" />
+								<input class="form-control" ng-model="newApicIP" placeholder="APIC EM IP" required="required" 
+								ng-blur="changeIp()"/>
 						</div>
 					</div>
 					
@@ -126,9 +134,9 @@
 			<table class="table table-condensed" id="dataTables-example">
 			<thead>
 				<tr>
-					<th ng-click="orderBy('apicemIP')">IP Address</th>
-					<th ng-click="orderBy('version')">Version</th>
-					<th ng-click="orderBy('location')">Location</th>
+					<th ng-click="orderBy('apicemIP')" ng-class="orderIcon('apicemIP')">IP Address</th>
+					<th ng-click="orderBy('version')" ng-class="orderIcon('version')"><msg key="version" /></th>
+					<th ng-click="orderBy('location')" ng-class="orderIcon('location')" >Location</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -136,7 +144,7 @@
 					<td>
 					<!-- <a ng-click="setSelectedApicEm(item.apicemIP)"> </a> -->
 					{{item.apicemIP}}</td>
-					<td>{{item.version}}</td>
+					<td>{{item.version | uppercase}}</td>
 					<td>{{item.location}}</td>
 				</tr>
 				<tr ng-if="allApicEms && allApicEms.length === 0">

@@ -1,6 +1,7 @@
 <div class="breadcrumb_box">
 	<div class="btn-group btn-breadcrumb">
-     <a ng-href="#/apicemlogin" class="btn btn-primary" style="cursor:default;"><i class="glyphicon glyphicon-home"></i></a>
+       <a ng-href="#/login" class="btn btn-primary" style="cursor:default;"><i class="glyphicon glyphicon-home"></i></a>
+        <a ng-href="#/apicemlogin" class="btn btn-primary">Onbaord APIC-EM</a>
        <a ng-href="#/devices" class="btn btn-info">Inventory</a>
      </div>
 </div>
@@ -88,7 +89,7 @@
 								<td>{{device.locationName}}</td>
 								<td><a class="btn btn-primary btn-md"
 									ng-href='#/device/{{device.type}}/{{device.platformId | urlEncode }}'><msg
-											key="replace" /> </a></td>
+											key="details" /> </a></td>
 							</tr>
 							<tr ng-if="devices && devices.length === 0">
 								<td colspan="6" align="center" style="color: RED"><b><msg
