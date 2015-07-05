@@ -1,5 +1,5 @@
 (function() {
-	var as = angular.module('apicemApp.controllers', [ 'smart-table', 'ui.utils', 'ui.select' ]);
+	var as = angular.module('apicemApp.controllers', [ 'smart-table', 'ui.utils', 'ui.select', 'xeditable' ]);
 
 	as.controller('MainController', function($q, $scope, $rootScope, $http, i18n, $location) {
 		var load = function() {
@@ -52,6 +52,14 @@
 		$scope.apicPassword = '';
 		$scope.version = '';
 		$scope.allApicEms = [];
+
+		$scope.versions = [ {
+			value : 'v0',
+			text : 'V0'
+		}, {
+			value : 'v1',
+			text : 'V1'
+		} ];
 
 		load = function() {
 			$scope.allApicEms = [];
@@ -158,6 +166,28 @@
 			if ($scope.newApicIP != null && $scope.newApicIP != 'undefined') {
 				ValidateIPAddress($scope.newApicIP);
 			}
+		}
+		
+		$scope.isValidIP = function(ip){
+			if (ip != null && ip != 'undefined') {
+				var actionURL = "api/apicem/validate";
+				var data = {
+					"apicemIP" : ip,
+				};
+				$http.post(actionURL, data).success(function(data) {
+					console.log("Success Data is " + data);
+				}).error(function(data) {
+					return "You have entered an invalid IP address!";
+				});
+			}
+		}
+		
+		$scope.saveApicEMIP = function(updateApicemIP){
+			console.log('updateapicemIP'+updateApicemIP);
+		}
+		
+		$scope.deleteApicemIP = function(deleteIP){
+			console.log('deleteIP'+deleteIP);
 		}
 
 		$scope.order = '+location';

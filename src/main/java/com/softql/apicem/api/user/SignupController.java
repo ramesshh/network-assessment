@@ -122,6 +122,7 @@ public class SignupController {
 		if (InetAddressValidator.getInstance().isValidInet4Address(form.getApicemIP())) {
 			String userName = SecurityUtil.currentUser().getUsername();
 			form.setUserId(userName);
+			form.setVersion(form.getVersion().toLowerCase());
 			apicEmService.onBoardApicem(form);
 		} else {
 			return new ResponseEntity<>("Invalid IP address", HttpStatus.BAD_REQUEST);

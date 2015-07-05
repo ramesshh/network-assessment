@@ -492,6 +492,12 @@
 			<version>2.3.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>angular-xeditable</artifactId>
+			<version>0.1.9</version>
+		</dependency>
+
 
 
 		<!--test -->

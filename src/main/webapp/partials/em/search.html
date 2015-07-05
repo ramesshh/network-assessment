@@ -1,9 +1,10 @@
 <div class="breadcrumb_box">
 	<div class="btn-group btn-breadcrumb">
-       <a ng-href="#/login" class="btn btn-primary" style="cursor:default;"><i class="glyphicon glyphicon-home"></i></a>
-        <a ng-href="#/apicemlogin" class="btn btn-primary">Onbaord APIC-EM</a>
-       <a ng-href="#/devices" class="btn btn-info">Inventory</a>
-     </div>
+		<a ng-href="#/login" class="btn btn-primary" style="cursor: default;"><i
+			class="glyphicon glyphicon-home"></i></a> <a ng-href="#/apicemlogin"
+			class="btn btn-primary">Onbaord APIC-EM</a> <a ng-href="#/devices"
+			class="btn btn-info">Inventory</a>
+	</div>
 </div>
 
 <div class="page-header">
@@ -11,13 +12,16 @@
 		<msg key="deviceInventoryDetails" />
 	</h1>
 </div>
-<div class="panel panel-default">
+<div class="panel panel-info">
 	<div class="panel-heading">
 		<!-- <div class="pull-right">
 			<Strong><msg key="date" /></Strong>: {{currentDate | date:'medium'}}
 		</div> -->
 		<msg key="deviceInventoryDetails" />
-		<div class="pull-right"><a class="btn btn-success btn-xs" ng-click="exportToExcel()"><span class="glyphicon glyphicon-file"></span> <msg key="exporttoexcel" /></a></div>
+		<div class="pull-right">
+			<a class="btn btn-success btn-xs" ng-click="exportToExcel()"><span
+				class="glyphicon glyphicon-file"></span> <msg key="exporttoexcel" /></a>
+		</div>
 	</div>
 	<form class="form form-inline">
 		<div class="row">
@@ -27,8 +31,8 @@
 						<label><msg key="selectDevices" /> : </label> <select
 							class="form-control" style="width: 70%; display: inline;"
 							ng-model="deviceCategory" ng-change="deviceCategroryChange()">
-							<option value="all">All Devices (Including Unknown
-								Devices)</option>
+							<option value="all" class="divider">All Devices
+								(Including Unknown Devices)</option>
 							<option value="Cisco">Cisco Devices</option>
 							<option value="ROUTER">Routers</option>
 							<option value="SWITCH">Switches</option>
@@ -59,37 +63,50 @@
 						</select>
 					</div>
 				</div>
-				<div class="clearfix" style="margin-bottom:20px;">&nbsp;</div>
-
+				<div class="clearfix" style="margin-bottom: 10px;">&nbsp;</div>
+				<div class="details_inventory_search">
+					<div class="col-md-12">
+						<div class="input-group col-md-12">
+							<input type="text" class="form-control" ng-model="q"
+								placeholder="Search for devices...">
+						</div>
+					</div>
+				</div>
+				<div class="clearfix" style="margin-bottom: 5px;">&nbsp;</div>
 				<div class="table-responsive" id="deviceTable">
 					<table class="table table-striped table-hover">
 						<thead>
-							<th ng-click="orderBy('platformId')" width="20%"><msg key="platformId" /><span
-								ng-class="orderIcon('platformId')" /></th>
+							<th ng-click="orderBy('platformId')" width="20%"><msg
+									key="platformId" /><span ng-class="orderIcon('platformId')" /></th>
 							<!-- 	<th><msg key="desc" /></th> -->
 							<th ng-click="orderBy('qty')" width="10%"><msg key="qty" /><span
 								ng-class="orderIcon('qty')" /></th>
-							<th ng-click="orderBy('softwareVersion')" width="20%"><msg key="version" /><span
-								ng-class="orderIcon('softwareVersion')" /></th>
+							<th ng-click="orderBy('softwareVersion')" width="20%"><msg
+									key="version" /><span ng-class="orderIcon('softwareVersion')" /></th>
 							<th ng-click="orderBy('tags')" width="20%"><msg key="tags" /><span
 								ng-class="orderIcon('tags')" /></th>
-							<th ng-click="orderBy('locationName')" width="30%"><msg key="location" /><span
-								ng-class="orderIcon('locationName')" /></th>
+							<th ng-click="orderBy('locationName')" width="30%"><msg
+									key="location" /><span ng-class="orderIcon('locationName')" /></th>
 							<th width="10%"><msg key="action" /></th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr
-								dir-paginate="device in devices | orderBy:order | itemsPerPage: itemsPerPage ">
+								dir-paginate="device in devices | filter:q | orderBy:order | itemsPerPage: itemsPerPage ">
 								<td>{{device.platformId}}</td>
 								<!-- <td>{{device.description}}</td> -->
 								<td>{{device.qty}}</td>
 								<td>{{device.softwareVersion}}</td>
-								<td>{{device.tags}}</td>
-								<td>{{device.locationName}}</td>
-								<td><a class="btn btn-primary btn-md"
+								<td title="{{device.tags}}">{{device.tags | limitTo: 20 }} {{device.tags.length < 20 ? '' : '...' }}</td>
+								<td title="{{device.locationName}}">{{device.locationName | limitTo: 20 }} {{device.locationName.length < 20 ? '' : '...'}}</td>
+								<td ng-show="{{device.qty > 1}}"><a
+									class="btn btn-primary btn-md"
 									ng-href='#/device/{{device.type}}/{{device.platformId | urlEncode }}'><msg
 											key="details" /> </a></td>
+								<td ng-show="{{device.qty <= 1}}"><button
+										class="btn btn-primary btn-md" disabled>
+										<msg key="details"  />
+									</button></td>
 							</tr>
 							<tr ng-if="devices && devices.length === 0">
 								<td colspan="6" align="center" style="color: RED"><b><msg

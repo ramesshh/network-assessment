@@ -8,7 +8,7 @@
             message,
             //Define the main module.
             //The module is accessible everywhere using "angular.module('angularspring')", therefore global variables can be avoided totally.
-            as = angular.module('apicemApp', ['ngRoute', 'ngResource','ngTagsInput', 'ngCookies', 'ui.bootstrap', 'ngMessages', 'apicemApp.i18n', 'apicemApp.services', 'apicemApp.controllers', 'apicemApp.filters','smart-table','angularUtils.directives.dirPagination','ui.select']);
+            as = angular.module('apicemApp', ['ngRoute', 'ngResource','ngTagsInput', 'ngCookies', 'ui.bootstrap', 'ngMessages', 'apicemApp.i18n', 'apicemApp.services', 'apicemApp.controllers', 'apicemApp.filters','smart-table','angularUtils.directives.dirPagination','ui.select','xeditable']);
 
     as.config(function ($routeProvider, $httpProvider) {
     	
@@ -104,6 +104,10 @@
 
 
         httpHeaders = $httpProvider.defaults.headers;
+    });
+    
+    as.run(function(editableOptions) {
+    	  editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
     });
 
 
