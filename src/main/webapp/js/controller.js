@@ -334,29 +334,40 @@
 			});
 
 			var mystyle = {
-				sheetid : 'Network Devices',
+				sheetid : 'Network Assessment Application',
 				headers : true,
-				caption : {
-					title : 'Network Devices',
-					style : 'font-size: 50px; color:blue;' // Sorry, styles do not works
-				},
-				style : 'background:#00FF00',
-				column : {
-					style : 'font-size:30px'
-				},
-				row : {
+				  caption: {
+			          title:'Network Assessment Devices',
+			          style:'font-size: 100px; color:darkgray;' // Sorry, styles do not works
+			        },
+			        style:'background:white',
+			        column: {
+			          style:'font-size:30px'
+			        },
+			        columns: [
+			          {columnid:'Platform ID',width:300},
+			          {columnid:'Device Type',width:300},
+			          {columnid:'Software Version',width:300},
+			          {columnid:'Location',width:300},
+			          {columnid:'Tags',width:300},
+			          {columnid:'Family',width:300},
+			          {columnid:'Vendor',width:300},
+			          {columnid:'Host Name',width:300},
+			          {columnid:'Serial Number',width:300},
+			          {columnid:'IP Address',width:300},
+			          {columnid:'MAC Address',width:300},
+			          {columnid:'Reachability Status',width:300},
+			          {columnid:'Reachability Reason',width:1000}
+			        ],
+			      	row : {
 					style : function(sheet, row, rowidx) {
-						return 'background:' + (rowidx % 2 ? 'red' : 'yellow');
+						return 'background:' + (rowidx % 2 ? 'white' : 'darkgray');
 					}
 				},
-				rows : {
-					1 : {
-						cell : {
-							style : 'background:blue'
-						}
-					}
-				}
-			};
+				 rows: {1:{style:{Font:{Color:"#FF0077"}}}}
+			    };
+			
+			
 			var query = 'SELECT * INTO XLSX("' + fileName + '",?) FROM ?';
 			alasql(query, [ mystyle, $scope.printItems ]);
 
