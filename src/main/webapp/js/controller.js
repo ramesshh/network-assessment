@@ -337,7 +337,7 @@
 				sheetid : 'Network Assessment Application',
 				headers : true,
 				  caption: {
-			          title:'Network Assessment Devices',
+			          title:'Network Assessment Application',
 			          style:'font-size: 100px; color:darkgray;' // Sorry, styles do not works
 			        },
 			        style:'background:white',
@@ -391,7 +391,15 @@
 			var replaceItemData = [];
 			angular.forEach($scope.allDevices, function(device) {
 				if (device.platformId == $scope.platformId) {
-					replaceItemData.push(device);
+					var pushDevice ={
+							"type":device.type,
+							"platformId":device.platformId,
+							"qty":device.qty,
+							"tags":device.tags,
+							"family":device.family,
+							"locationName":device.locationName
+					};
+					replaceItemData.push(pushDevice);
 				}
 			}, replaceItemData);
 			$scope.devices = replaceItemData;

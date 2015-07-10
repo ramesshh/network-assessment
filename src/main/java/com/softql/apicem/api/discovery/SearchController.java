@@ -78,17 +78,23 @@ public class SearchController {
 		if (!CollectionUtils.isEmpty(deviceList)) {
 			for (DiscoveryDevices device : deviceList) {
 				String platformId = device.getPlatformId();
+				DiscoveryDevices thinDevice = new DiscoveryDevices();
+				thinDevice.setPlatformId(platformId);
+				thinDevice.setQty(1);
+				thinDevice.setLocationName(device.getLocationName());
+				thinDevice.setTags(device.getTags());
+				thinDevice.setType(device.getType());
+
 				if (deviceMap.containsKey(platformId)) {
 					DiscoveryDevices discoveryDevice = deviceMap.get(platformId);
 					int qty = discoveryDevice.getQty() + 1;
-					discoveryDevice.setQty(qty);
-					discoveryDevice.setLocationName(ApicemUtils.join(',', discoveryDevice.getLocationName(),
+					thinDevice.setQty(qty);
+					thinDevice.setLocationName(ApicemUtils.join(',', discoveryDevice.getLocationName(),
 							device.getLocationName()));
-					discoveryDevice.setTags(ApicemUtils.join(',', discoveryDevice.getTags(), device.getTags()));
-
-					deviceMap.put(platformId, discoveryDevice);
+					thinDevice.setTags(ApicemUtils.join(',', discoveryDevice.getTags(), device.getTags()));
+					deviceMap.put(platformId, thinDevice);
 				} else {
-					deviceMap.put(platformId, device);
+					deviceMap.put(platformId, thinDevice);
 				}
 			}
 		}

@@ -152,7 +152,7 @@
 						<div class="clearfix" style="margin-bottom: 5px;">&nbsp;</div> -->
 						<table class="table table-bordered table-hover table-condensed">
 							<thead>
-								<tr>
+								<tr style="font-weight: bold;">
 									<th style="width: 35%" ng-click="orderBy('apicemIP')"
 										ng-class="orderIcon('apicemIP')">IP Address</th>
 									<th style="width: 20%" ng-click="orderBy('version')"
@@ -197,13 +197,13 @@
 									</td>
 								</tr>
 								<tr ng-if="allApicEms && allApicEms.length === 0">
-									<td colspan="6" align="center" style="color: RED"><b><msg
+									<td colspan="4" align="center" style="color: RED"><b><msg
 												key="noapicemsfound" />.</b></td>
 								</tr>
 							</tbody>
 							<tfoot>
 								<tr>
-									<td colspan="6" class="text-center"><dir-pagination-controls
+									<td colspan="4" class="text-center"><dir-pagination-controls
 											class="ng-isolate-scope" /></td>
 								</tr>
 							</tfoot>
