@@ -303,8 +303,17 @@
 		$scope.orderIcon = function(property) {
 			return property === $scope.order.substring(1) ? $scope.order[0] === '+' ? 'glyphicon glyphicon-chevron-up' : 'glyphicon glyphicon-chevron-down' : '';
 		};
-
+		
 		$scope.exportToExcel = function() {
+		    $http({method: 'POST', url: "api/discovery/export",
+		        responseType: "arraybuffer",data :DeviceData.getDeviceData()}).     
+		        success(function(data, status, headers, config) {  
+		        	saveAs(new Blob([data],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}), "Network_Assessment_App.xlsx");
+		        	console.log("File generated successfully....");
+		        });
+		}
+
+		$scope.exportToExcel1 = function() {
 			var date = $filter('date')(new Date(), 'shortDate');
 			var fileName = "NetworkDevices_" + date + ".xlsx";
 

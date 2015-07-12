@@ -498,6 +498,20 @@
 			<version>0.1.9</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.12</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.12</version>
+		</dependency>
+
+
+
 
 
 		<!--test -->
@@ -522,6 +536,7 @@
 				<directory>src/main/resources</directory>
 				<excludes>
 					<exclude>**/*.xls</exclude>
+					<exclude>**/*.xlsx</exclude>
 				</excludes>
 				<filtering>true</filtering>
 			</resource>
@@ -529,6 +544,7 @@
 				<directory>src/main/resources</directory>
 				<includes>
 					<include>**/*.xls</include>
+					<include>**/*.xlsx</include>
 				</includes>
 				<filtering>false</filtering>
 			</resource>

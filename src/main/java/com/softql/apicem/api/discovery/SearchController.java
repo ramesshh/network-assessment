@@ -1,5 +1,9 @@
 package com.softql.apicem.api.discovery;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -7,8 +11,14 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -99,5 +109,76 @@ public class SearchController {
 			}
 		}
 		return new ResponseEntity<>(deviceMap.values(), HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "export", method = RequestMethod.POST)
+	@ResponseBody
+	public void export(@RequestBody final List<DiscoveryDevices> deviceList, HttpServletResponse response) {
+
+		try {
+
+			InputStream resourceAsStream = this.getClass().getClassLoader()
+					.getResourceAsStream("Network_Assessment_app.xlsx");
+
+			XSSFWorkbook workbook = new XSSFWorkbook(resourceAsStream);
+			XSSFSheet sheet = workbook.getSheetAt(0);
+
+			int router = 0;
+			int switches = 0;
+			int wireless = 0;
+
+			int startRow = 6;
+			for (DiscoveryDevices devices : deviceList) {
+				XSSFRow row = sheet.createRow(startRow);
+				row.createCell(0).setCellValue(devices.getPlatformId());
+				row.createCell(1).setCellValue(devices.getType());
+				row.createCell(2).setCellValue(devices.getSoftwareVersion());
+				row.createCell(3).setCellValue(devices.getLocationName());
+				row.createCell(4).setCellValue(devices.getTags());
+				row.createCell(5).setCellValue(devices.getFamily());
+				row.createCell(6).setCellValue(devices.getVendor());
+				row.createCell(7).setCellValue(devices.getHostname());
+				row.createCell(8).setCellValue(devices.getSerialNumber());
+				row.createCell(9).setCellValue(devices.getManagementIpAddress());
+				row.createCell(10).setCellValue(devices.getMacAddress());
+				row.createCell(11).setCellValue(devices.getReachabilityStatus());
+				startRow++;
+				if (StringUtils.equalsIgnoreCase(devices.getType(), "ROUTER")) {
+					router++;
+				} else if (StringUtils.equalsIgnoreCase(devices.getType(), "SWITCH")) {
+					switches++;
+				} else if (StringUtils.equalsIgnoreCase(devices.getType(), "WIRELESS")) {
+					wireless++;
+				}
+			}
+
+			String headerValue = sheet.getRow(3).getCell(0).getStringCellValue();
+			headerValue = StringUtils.replace(headerValue, "ALL", String.valueOf(router + switches + wireless));
+			headerValue = StringUtils.replace(headerValue, "RUT", String.valueOf(router));
+			headerValue = StringUtils.replace(headerValue, "SWT", String.valueOf(switches));
+			headerValue = StringUtils.replace(headerValue, "WRL", String.valueOf(wireless));
+			sheet.getRow(3).getCell(0).setCellValue(headerValue);
+
+			// create a temp file
+			File temp = File.createTempFile("Network_Assessment_App", ".xlsx");
+			FileOutputStream fileOut = new FileOutputStream(temp.getAbsolutePath());
+			workbook.write(fileOut);
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+			workbook.write(byteArrayOutputStream);
+
+			response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			response.setHeader("Content-Disposition", "attachment; filename=Network_Assessment_App.xlsx");
+			response.setContentLength(byteArrayOutputStream.toByteArray().length);
+			ServletOutputStream out = response.getOutputStream();
+			out.write(byteArrayOutputStream.toByteArray());
+			out.flush();
+			out.close();
+
+			fileOut.close();
+			byteArrayOutputStream.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 }
