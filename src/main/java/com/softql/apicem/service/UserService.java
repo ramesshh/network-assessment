@@ -5,6 +5,17 @@
  */
 package com.softql.apicem.service;
 
+import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
 import com.softql.apicem.DTOUtils;
 import com.softql.apicem.domain.User;
 import com.softql.apicem.exception.PasswordMismatchedException;
@@ -18,166 +29,155 @@ import com.softql.apicem.model.UserForm;
 import com.softql.apicem.repository.UserRepository;
 import com.softql.apicem.repository.UserSpecifications;
 
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
-
 /**
  *
- * @author 
+ * @author
  */
 @Service
 @Transactional
 public class UserService {
 
-    private static final Logger log = LoggerFactory.getLogger(UserService.class);
+	private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
-    @Inject
-    private PasswordEncoder passwordEncoder;
+	@Inject
+	private PasswordEncoder passwordEncoder;
 
-    @Inject
-    private UserRepository userRepository;
+	@Inject
+	private UserRepository userRepository;
 
-    public Page<UserDetails> findAll(String q, String role, Pageable page) {
-        if (log.isDebugEnabled()) {
-            log.debug("findAll by keyword@" + q + ", role:" + role);
-        }
+	public Page<UserDetails> findAll(String q, String role, Pageable page) {
+		if (log.isDebugEnabled()) {
+			log.debug("findAll by keyword@" + q + ", role:" + role);
+		}
 
-        Page<User> users = userRepository.findAll(UserSpecifications.filterUsersByKeyword(q, role), page);
+		Page<User> users = userRepository.findAll(UserSpecifications.filterUsersByKeyword(q, role), page);
 
-        return DTOUtils.mapPage(users, UserDetails.class);
-    }
+		return DTOUtils.mapPage(users, UserDetails.class);
+	}
 
-    public UserDetails registerUser(SignupForm form) {
-        Assert.notNull(form, " @@ SignupForm is null");
+	public UserDetails registerUser(SignupForm form) {
+		Assert.notNull(form, " @@ SignupForm is null");
 
-        if (log.isDebugEnabled()) {
-            log.debug("saving user@" + form);
-        }
+		if (log.isDebugEnabled()) {
+			log.debug("saving user@" + form);
+		}
 
-        if (userRepository.findByUsername(form.getUsername()) != null) {
-            throw new UsernameExistedException(form.getUsername());
-        }
+		if (userRepository.findByUsername(form.getUsername()) != null) {
+			throw new UsernameExistedException(form.getUsername());
+		}
 
-        User user = DTOUtils.map(form, User.class);
-        user.setPassword(passwordEncoder.encode(form.getPassword()));
+		User user = DTOUtils.map(form, User.class);
+		user.setPassword(passwordEncoder.encode(form.getPassword()));
 
-        User saved = userRepository.save(user);
-        
-        //TODO sending an activation email.
+		User saved = userRepository.save(user);
 
-        return DTOUtils.map(saved, UserDetails.class);
-    }
+		// TODO sending an activation email.
 
-    public UserDetails saveUser(UserForm form) {
-        Assert.notNull(form, " @@ UserForm is null");
+		return DTOUtils.map(saved, UserDetails.class);
+	}
 
-        if (log.isDebugEnabled()) {
-            log.debug("saving user@" + form);
-        }
+	public UserDetails saveUser(UserForm form) {
+		Assert.notNull(form, " @@ UserForm is null");
 
-        if (userRepository.findByUsername(form.getUsername()) != null) {
-            throw new UsernameExistedException(form.getUsername());
-        }
+		if (log.isDebugEnabled()) {
+			log.debug("saving user@" + form);
+		}
 
-        User user = DTOUtils.map(form, User.class);
-        user.setPassword(passwordEncoder.encode(form.getPassword()));
+		if (userRepository.findByUsername(form.getUsername()) != null) {
+			throw new UsernameExistedException(form.getUsername());
+		}
 
-        User saved = userRepository.save(user);
+		User user = DTOUtils.map(form, User.class);
+		user.setPassword(passwordEncoder.encode(form.getPassword()));
 
-        return DTOUtils.map(saved, UserDetails.class);
-    }
+		User saved = userRepository.save(user);
 
-    public void updateUser(Long id, UserForm form) {
-        Assert.notNull(id, "user id can not be null");
+		return DTOUtils.map(saved, UserDetails.class);
+	}
 
-        if (log.isDebugEnabled()) {
-            log.debug("find user by id @" + id);
-        }
+	public void updateUser(Long id, UserForm form) {
+		Assert.notNull(id, "user id can not be null");
 
-        User user = userRepository.findOne(id);
+		if (log.isDebugEnabled()) {
+			log.debug("find user by id @" + id);
+		}
 
-        if (user == null) {
-            throw new ResourceNotFoundException(id);
-        }
+		User user = userRepository.findOne(id);
 
-        DTOUtils.mapTo(form, user);
+		if (user == null) {
+			throw new ResourceNotFoundException(id);
+		}
 
-        User userSaved = userRepository.save(user);
+		DTOUtils.mapTo(form, user);
 
-        if (log.isDebugEnabled()) {
-            log.debug("updated user @" + userSaved);
-        }
-    }
+		User userSaved = userRepository.save(user);
 
-    public void updatePassword(Long id, PasswordForm form) {
-        Assert.notNull(id, "user id can not be null");
-        if (log.isDebugEnabled()) {
-            log.debug("find user by id @" + id);
-        }
+		if (log.isDebugEnabled()) {
+			log.debug("updated user @" + userSaved);
+		}
+	}
 
-        User user = userRepository.findOne(id);
+	public void updatePassword(Long id, PasswordForm form) {
+		Assert.notNull(id, "user id can not be null");
+		if (log.isDebugEnabled()) {
+			log.debug("find user by id @" + id);
+		}
 
-        if (!passwordEncoder.matches(form.getOldPassword(), user.getPassword())) {
-            throw new PasswordMismatchedException();
-        }
+		User user = userRepository.findOne(id);
 
-        user.setPassword(passwordEncoder.encode(form.getNewPassword()));
+		if (!passwordEncoder.matches(form.getOldPassword(), user.getPassword())) {
+			throw new PasswordMismatchedException();
+		}
 
-        User saved = userRepository.save(user);
+		user.setPassword(passwordEncoder.encode(form.getNewPassword()));
 
-        if (log.isDebugEnabled()) {
-            log.debug("updated user @" + saved);
-        }
-    }
+		User saved = userRepository.save(user);
 
-    public void updateProfile(Long id, ProfileForm form) {
-        Assert.notNull(id, "user id can not be null");
+		if (log.isDebugEnabled()) {
+			log.debug("updated user @" + saved);
+		}
+	}
 
-        if (log.isDebugEnabled()) {
-            log.debug("update profile for user @" + id + ", profile form@" + form);
-        }
+	public void updateProfile(Long id, ProfileForm form) {
+		Assert.notNull(id, "user id can not be null");
 
-        User user = userRepository.findOne(id);
+		if (log.isDebugEnabled()) {
+			log.debug("update profile for user @" + id + ", profile form@" + form);
+		}
 
-        DTOUtils.mapTo(form, user);
+		User user = userRepository.findOne(id);
 
-        User saved = userRepository.save(user);
+		DTOUtils.mapTo(form, user);
 
-        if (log.isDebugEnabled()) {
-            log.debug("updated user @" + saved);
-        }
-    }
+		User saved = userRepository.save(user);
 
-    public UserDetails findUserById(Long id) {
-        Assert.notNull(id, "user id can not be null");
-        if (log.isDebugEnabled()) {
-            log.debug("find user by id @" + id);
-        }
+		if (log.isDebugEnabled()) {
+			log.debug("updated user @" + saved);
+		}
+	}
 
-        User user = userRepository.findOne(id);
+	public UserDetails findUserById(Long id) {
+		Assert.notNull(id, "user id can not be null");
+		if (log.isDebugEnabled()) {
+			log.debug("find user by id @" + id);
+		}
 
-        if (user == null) {
-            throw new ResourceNotFoundException(id);
-        }
+		User user = userRepository.findOne(id);
 
-        return DTOUtils.map(user, UserDetails.class);
-    }
+		if (user == null) {
+			throw new ResourceNotFoundException(id);
+		}
 
-    public void deleteUser(Long id) {
-        Assert.notNull(id, "user id can not be null");
-        if (log.isDebugEnabled()) {
-            log.debug("find user by id @" + id);
-        }
+		return DTOUtils.map(user, UserDetails.class);
+	}
 
-        userRepository.delete(id);
-    }
+	public void deleteUser(Long id) {
+		Assert.notNull(id, "user id can not be null");
+		if (log.isDebugEnabled()) {
+			log.debug("find user by id @" + id);
+		}
+
+		userRepository.delete(id);
+	}
 
 }

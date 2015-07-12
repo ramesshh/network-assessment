@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,9 +27,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.softql.apicem.ApiErrors;
 import com.softql.apicem.Constants;
+import com.softql.apicem.api.controller.BaseRestController;
+import com.softql.apicem.exception.InvalidIpAddressException;
 import com.softql.apicem.exception.InvalidRequestException;
 import com.softql.apicem.model.ApicEmLoginForm;
+import com.softql.apicem.model.ResponseMessage;
 import com.softql.apicem.model.SignupForm;
 import com.softql.apicem.model.UserDetails;
 import com.softql.apicem.security.SecurityUtil;
@@ -45,15 +48,12 @@ import com.softql.apicem.util.URLUtil;
  */
 @RequestMapping(value = Constants.URI_API)
 @RestController
-public class SignupController {
+public class SignupController extends BaseRestController {
 
 	private static final Logger log = LoggerFactory.getLogger(SignupController.class);
 
 	@Inject
 	private UserService userService;
-
-	@Inject
-	private AuthenticationManager authenticationManager;
 
 	@Inject
 	private ApicEmService apicEmService;
@@ -113,12 +113,11 @@ public class SignupController {
 
 	@RequestMapping(value = { "/apicem" }, method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<String> onboardApicEm(@RequestBody ApicEmLoginForm form, BindingResult errors,
+	public ResponseEntity<ResponseMessage> onboardApicEm(@RequestBody ApicEmLoginForm form, BindingResult errors,
 			HttpServletRequest req) {
 
-		if (errors.hasErrors()) {
-			throw new InvalidRequestException(errors);
-		}
+		ResponseMessage alert = new ResponseMessage(ResponseMessage.Type.success, ApiErrors.ONBOARD,
+				messageSource.getMessage(ApiErrors.ONBOARD, new String[] {}, null));
 
 		if (InetAddressValidator.getInstance().isValidInet4Address(form.getApicemIP())) {
 			String userName = SecurityUtil.currentUser().getUsername();
@@ -126,15 +125,19 @@ public class SignupController {
 			form.setVersion(form.getVersion().toLowerCase());
 			apicEmService.onBoardApicem(form);
 		} else {
-			return new ResponseEntity<>("Invalid IP address", HttpStatus.BAD_REQUEST);
+			throw new InvalidIpAddressException();
 		}
 
-		return new ResponseEntity<>("Success", HttpStatus.CREATED);
+		return new ResponseEntity<>(alert, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = { "/apicem/{id}" }, method = RequestMethod.PUT)
 	@ResponseBody
-	public ResponseEntity<String> updateOnbaordEpicEM(@RequestBody ApicEmLoginForm form, @PathVariable("id") String id) {
+	public ResponseEntity<ResponseMessage> updateOnbaordEpicEM(@RequestBody ApicEmLoginForm form,
+			@PathVariable("id") String id) {
+
+		ResponseMessage alert = new ResponseMessage(ResponseMessage.Type.success, ApiErrors.UPDATE_APIC,
+				messageSource.getMessage(ApiErrors.UPDATE_APIC, new String[] {}, null));
 
 		if (InetAddressValidator.getInstance().isValidInet4Address(form.getApicemIP())) {
 			String userName = SecurityUtil.currentUser().getUsername();
@@ -143,33 +146,31 @@ public class SignupController {
 			form.setId(id);
 			apicEmService.updateApicEM(form);
 		} else {
-			return new ResponseEntity<>("Invalid IP address", HttpStatus.BAD_REQUEST);
+			throw new InvalidIpAddressException();
 		}
 
-		return new ResponseEntity<>("Success", HttpStatus.CREATED);
+		return new ResponseEntity<>(alert, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = { "/apicem/{id}" }, method = RequestMethod.DELETE)
 	@ResponseBody
-	public ResponseEntity<String> deleteApicEM(@PathVariable("id") String id) {
-		try {
-			apicEmService.deleteApicEM(id);
-		} catch (Exception e) {
-			return new ResponseEntity<>("Delete has some issue", HttpStatus.FORBIDDEN);
-		}
-		return new ResponseEntity<>("Success", HttpStatus.OK);
+	public ResponseEntity<ResponseMessage> deleteApicEM(@PathVariable("id") String id) {
+
+		ResponseMessage alert = new ResponseMessage(ResponseMessage.Type.success, ApiErrors.DELETE_APIC,
+				messageSource.getMessage(ApiErrors.DELETE_APIC, new String[] {}, null));
+
+		apicEmService.deleteApicEM(id);
+
+		return new ResponseEntity<>(alert, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = { "/apicem/validate" }, method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<String> validateApicEM(@RequestBody ApicEmLoginForm form, BindingResult errors,
-			HttpServletRequest req) {
+	public void validateApicEM(@RequestBody ApicEmLoginForm form, BindingResult errors, HttpServletRequest req) {
 
 		if (!InetAddressValidator.getInstance().isValidInet4Address(form.getApicemIP())) {
-			return new ResponseEntity<>("Invalid IP address", HttpStatus.BAD_REQUEST);
+			throw new InvalidIpAddressException();
 		}
-
-		return new ResponseEntity<>("Success", HttpStatus.OK);
 	}
 
 	@RequestMapping(value = { "/apicem" }, method = RequestMethod.GET)

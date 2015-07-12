@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.rmi.server.ExportException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -32,15 +33,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.softql.apicem.ApiErrors;
 import com.softql.apicem.Constants;
+import com.softql.apicem.api.controller.BaseRestController;
+import com.softql.apicem.exception.SearchException;
 import com.softql.apicem.model.DiscoveryDevices;
+import com.softql.apicem.model.ResponseMessage;
 import com.softql.apicem.service.ApicEmService;
 import com.softql.apicem.util.ApicemUtils;
 import com.softql.apicem.util.URLUtil;
 
 @RestController
 @RequestMapping(value = Constants.URI_API + Constants.URI_DISCOVERY)
-public class SearchController {
+public class SearchController extends BaseRestController {
 
 	private static final Logger log = LoggerFactory.getLogger(SearchController.class);
 
@@ -51,7 +56,8 @@ public class SearchController {
 	@ResponseBody
 	public ResponseEntity<List<DiscoveryDevices>> getDevices(
 			@RequestParam(value = "from", required = false) String fromIP,
-			@RequestParam(value = "q", required = false) String keyword, HttpServletRequest request) {
+			@RequestParam(value = "q", required = false) String keyword, HttpServletRequest request)
+			throws SearchException {
 
 		List<DiscoveryDevices> discoveryDevices = new ArrayList<DiscoveryDevices>();
 
@@ -59,9 +65,9 @@ public class SearchController {
 				"/network-device/1/10000000", request.getHeader("X-Access-Token"));
 		try {
 			discoveryDevices = apicEmService.getDevices(url);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<>(discoveryDevices, HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new SearchException();
 		}
 
 		String tagurl = URLUtil.constructUrl(request.getHeader("apicem"), null, request.getHeader("version"),
@@ -113,7 +119,11 @@ public class SearchController {
 
 	@RequestMapping(value = "export", method = RequestMethod.POST)
 	@ResponseBody
-	public void export(@RequestBody final List<DiscoveryDevices> deviceList, HttpServletResponse response) {
+	public ResponseEntity<ResponseMessage> export(@RequestBody final List<DiscoveryDevices> deviceList,
+			HttpServletResponse response) throws ExportException {
+
+		ResponseMessage alert = new ResponseMessage(ResponseMessage.Type.success, ApiErrors.UPDATE_APIC,
+				messageSource.getMessage(ApiErrors.UPDATE_APIC, new String[] {}, null));
 
 		try {
 
@@ -178,7 +188,10 @@ public class SearchController {
 			byteArrayOutputStream.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new ExportException(e.getMessage());
 		}
+
+		return new ResponseEntity<ResponseMessage>(alert, HttpStatus.OK);
 
 	}
 }

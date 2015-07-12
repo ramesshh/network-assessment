@@ -28,91 +28,78 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
-import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softql.apicem.Constants;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(
-    basePackageClasses = {Constants.class},
-    useDefaultFilters = false,
-    includeFilters = {
-        @Filter(
-            type = FilterType.ANNOTATION,
-            value = {
-                Controller.class,
-                RestController.class,
-                ControllerAdvice.class
-            })
-    }
-)
+@ComponentScan(basePackageClasses = { Constants.class }, useDefaultFilters = false, includeFilters = { @Filter(type = FilterType.ANNOTATION, value = {
+		Controller.class, RestController.class, ControllerAdvice.class }) })
 public class WebConfig extends SpringDataWebConfiguration {
 
-    private static final Logger logger = LoggerFactory.getLogger(WebConfig.class);
+	private static final Logger logger = LoggerFactory.getLogger(WebConfig.class);
 
-    @Inject
-    private ObjectMapper objectMapper;
+	@Inject
+	private ObjectMapper objectMapper;
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("css/", "images/", "lib/", "swagger-ui.js")//
-            .addResourceLocations("classpath:META-INF/resources/")//
-            .setCachePeriod(0);
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("css/", "images/", "lib/", "swagger-ui.js")//
+				.addResourceLocations("classpath:META-INF/resources/")//
+				.setCachePeriod(0);
 
-        registry.addResourceHandler("webjars/**")
-            .addResourceLocations("classpath:META-INF/resources/webjars/");
-    }
+		registry.addResourceHandler("webjars/**").addResourceLocations("classpath:META-INF/resources/webjars/");
+	}
 
-    @Override
-    public void configureViewResolvers(ViewResolverRegistry registry) {
-        registry.jsp("classpath:/resources/", ".jsp");
-    }
+	@Override
+	public void configureViewResolvers(ViewResolverRegistry registry) {
+		registry.jsp("classpath:/resources/", ".jsp");
+	}
 
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
+	@Override
+	public void addViewControllers(ViewControllerRegistry registry) {
 
-    }
+	}
 
-   /* @Override
-    public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
-        exceptionResolvers.add(exceptionHandlerExceptionResolver());
-    }*/
+	@Override
+	public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
+		exceptionResolvers.add(exceptionHandlerExceptionResolver());
+	}
 
-    @Override
-    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-        configurer.enable();
-    }
+	@Override
+	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+		configurer.enable();
+	}
 
-    @Override
-    public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-        configurer.favorParameter(false);
-        configurer.favorPathExtension(false);
-    }
+	@Override
+	public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
+		configurer.favorParameter(false);
+		configurer.favorPathExtension(false);
+	}
 
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        List<HttpMessageConverter<?>> messageConverters = messageConverters();
-        converters.addAll(messageConverters);
-    }
+	@Override
+	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+		List<HttpMessageConverter<?>> messageConverters = messageConverters();
+		converters.addAll(messageConverters);
+	}
 
-    /*@Bean
-    public ExceptionHandlerExceptionResolver exceptionHandlerExceptionResolver() {
-        ExceptionHandlerExceptionResolver exceptionHandlerExceptionResolver = new ExceptionHandlerExceptionResolver();
-        exceptionHandlerExceptionResolver.setMessageConverters(messageConverters());
-        return exceptionHandlerExceptionResolver;
-    }*/
+	@Bean
+	public ExceptionHandlerExceptionResolver exceptionHandlerExceptionResolver() {
+		ExceptionHandlerExceptionResolver exceptionHandlerExceptionResolver = new ExceptionHandlerExceptionResolver();
+		exceptionHandlerExceptionResolver.setMessageConverters(messageConverters());
+		return exceptionHandlerExceptionResolver;
+	}
 
-    private List<HttpMessageConverter<?>> messageConverters() {
-        List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
+	private List<HttpMessageConverter<?>> messageConverters() {
+		List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
 
-        MappingJackson2HttpMessageConverter jackson2Converter = new MappingJackson2HttpMessageConverter();
-        jackson2Converter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON));
-        jackson2Converter.setObjectMapper(objectMapper);
+		MappingJackson2HttpMessageConverter jackson2Converter = new MappingJackson2HttpMessageConverter();
+		jackson2Converter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON));
+		jackson2Converter.setObjectMapper(objectMapper);
 
-        messageConverters.add(jackson2Converter);
-        return messageConverters;
-    }
+		messageConverters.add(jackson2Converter);
+		return messageConverters;
+	}
 
 }
