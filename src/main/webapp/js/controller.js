@@ -1,5 +1,5 @@
 (function() {
-	var as = angular.module('apicemApp.controllers', [ 'smart-table', 'ui.utils', 'ui.select', 'xeditable' ]);
+	var as = angular.module('apicemApp.controllers', [ 'smart-table', 'ui.utils', 'ui.select', 'xeditable','ngMessages' ]);
 
 	as.controller('MainController', function($q, $scope, $rootScope, $http, i18n, $location) {
 		var load = function() {
@@ -114,20 +114,6 @@
 		$scope.onboardApicEm = function() {
 
 			validateIp = function(ip) {
-				var pattern = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]).){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/g;
-				/*
-				 * use javascript's test() function to execute the regular
-				 * expression and then store the result - which is either true
-				 * or false
-				 */
-				var bValidIP = pattern.test(ip);
-				if (!bValidIP) {
-					alert("You have entered an invalid IP address!");
-					return;
-				} else if ($scope.newApicVersion == "" || $scope.newApicVersion == "undefined" || $scope.newApicVersion == undefined) {
-					alert("Please select APIC EM Version");
-					return;
-				} else {
 					var data = {
 						"apicemIP" : $scope.newApicIP,
 						"version" : $scope.newApicVersion,
@@ -140,11 +126,7 @@
 						$scope.newApicVersion = "";
 						$scope.location = "";
 						load();
-						alert("APIC EM Onboarded successfully");
-					}).error(function(data) {
-						alert("You have entered an invalid IP address!");
 					});
-				}
 			}
 			validateIp($scope.newApicIP);
 		}
@@ -159,8 +141,6 @@
 				};
 				$http.post(actionURL, data).success(function(data) {
 					console.log("Success Data is " + data);
-				}).error(function(data) {
-					alert("You have entered an invalid IP address!");
 				});
 			}
 			if ($scope.newApicIP != null && $scope.newApicIP != 'undefined') {
@@ -177,8 +157,6 @@
 				};
 				$http.post(actionURL, data).success(function(data) {
 					console.log("Success Data is " + data);
-				}).error(function(data) {
-					alert("You have entered an invalid IP address!");
 				});
 			}
 		}
@@ -195,9 +173,7 @@
 			$http.put(actionURL, data).success(function(data) {
 				console.log("Success Data is " + data);
 				load();
-				alert("APIC EM updated successfully");
 			}).error(function(data) {
-				alert("You have entered an invalid IP address!");
 				load();
 			});
 		}
@@ -207,11 +183,7 @@
 			$http.delete(actionURL).success(function(data) {
 				console.log("deleted successfully " );
 				load();
-			}).error(function(data){
-				alert("Error while deleting the APIC EM");
 			});
-			
-			
 		}
 
 		$scope.order = '+location';
@@ -224,12 +196,13 @@
 			return property === $scope.order.substring(1) ? $scope.order[0] === '+' ? 'glyphicon glyphicon-chevron-up' : 'glyphicon glyphicon-chevron-down' : '';
 		};
 
-		/*	$scope.setSelectedApicEm = function(apicem){
-				angular.element('#apicemIp').focus();
-				//angular.element('#apicemIp').val(apicem);
-				$scope.selectedApicem = apicem;
-				
-			}*/
+		/*
+		 * $scope.setSelectedApicEm = function(apicem){
+		 * angular.element('#apicemIp').focus();
+		 * //angular.element('#apicemIp').val(apicem); $scope.selectedApicem =
+		 * apicem;
+		 *  }
+		 */
 
 	});
 
@@ -254,8 +227,6 @@
 				$window.sessionStorage['devices'] = JSON.stringify(data);
 				$scope.devices = groupByData(data, groupType);
 				// }
-			}).error(function(data) {
-				alert("Internal server error.Please try again.");
 			});
 		}
 		load();
@@ -317,11 +288,14 @@
 			var date = $filter('date')(new Date(), 'shortDate');
 			var fileName = "NetworkDevices_" + date + ".xlsx";
 
-			//JSONToCSVConvertor(JSON.parse($window.sessionStorage["devices"]), 'NetworkDevices_'+ date, false);
-			/* var blob = new Blob([document.getElementById('deviceTable').innerHTML], {
-			    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
-			});
-			saveAs(blob, fileName);*/
+			// JSONToCSVConvertor(JSON.parse($window.sessionStorage["devices"]),
+			// 'NetworkDevices_'+ date, false);
+			/*
+			 * var blob = new
+			 * Blob([document.getElementById('deviceTable').innerHTML], { type:
+			 * "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+			 * }); saveAs(blob, fileName);
+			 */
 			$scope.printItems = [];
 			angular.forEach(DeviceData.getDeviceData(), function(device) {
 				var data = {
@@ -347,7 +321,8 @@
 				headers : true,
 				  caption: {
 			          title:'Network Assessment Application',
-			          style:'font-size: 100px; color:darkgray;' // Sorry, styles do not works
+			          style:'font-size: 100px; color:darkgray;' // Sorry, styles
+																// do not works
 			        },
 			        style:'background:white',
 			        column: {
@@ -666,7 +641,8 @@
 				headers : true,
 				caption : {
 					title : 'Bill Of Material',
-					style : 'font-size: 50px; color:blue;' // Sorry, styles do not works
+					style : 'font-size: 50px; color:blue;' // Sorry, styles do
+															// not works
 				},
 				style : 'background:#00FF00',
 				column : {
